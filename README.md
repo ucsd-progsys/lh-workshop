@@ -2,26 +2,22 @@ TODO
 ====
 
 1. Makefile
-   + rig rust-html to allow \begin{spec} ... \end{spec} as ....{.spec}
-   
-2. Contents
 
 Makefile
 --------
 
-1. Plain EMACS
-2. Rust-Book style webpage
-3. Reveal-Slides
++ rust-book-html
+- reveal-slides-html [HEREHEREHERE]
 
 Contents
 --------
 
-0. Go-Wrong
-1. Logic
-2. Refinements : div, foldr1, map, pos etc. --> CSV, weights, zipWith
-3. CASE STUDY  : eval.hs
-4. CASE STUDY  : map.hs 
-5. CASE STUDY  : bytestring.hs 
++ 00-motivation.lhs
+- 01-logic.lhs
+- 02-refinements.lhs (div, foldr1, map, pos etc. --> CSV, weights, zipWith)
+- 03-eval.lhs
+- 04-bst.lhs
+- 05-bytestring.lhs
 
 Comparison with DT
 ------------------

@@ -4,13 +4,8 @@ module InTex where
 
 import Data.Maybe
 import Text.Pandoc.JSON
--- import Text.Pandoc
--- import Data.Char (isSpace)
 import Data.List
--- import Data.Monoid (mempty)
 import Debug.Trace
--- import Text.Printf (printf)
--- import Text.Pandoc.Walk (walk)
 
 main :: IO ()
 main = toJSONFilter tx

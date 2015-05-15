@@ -1,13 +1,22 @@
+README
+======
+
 TODO
-====
+----
 
-1. Makefile
++ Makefile.rust
+- Makefile.reveal [HEREHEREHERE]
 
-Makefile
---------
+Build
+-----
 
-+ rust-book-html
-- reveal-slides-html [HEREHEREHERE]
+To build rust-style html (in dist/_site)
+
+     $ make -f Makefile.rust
+
+To build reveal.js slides (in dist/_slides)
+
+     $ make -f Makefile.rust
 
 Contents
 --------

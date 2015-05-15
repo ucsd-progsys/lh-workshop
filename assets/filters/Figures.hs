@@ -59,8 +59,8 @@ fileChapter = toInt . takeWhile isDigit . takeFileName
     toInt xs = Just $ read xs
 
 txFig :: Maybe Int -> Output -> IO ()
-txFig ch HTML  = txFigures ch HTML  "" "templates/figHtml.template"
-txFig ch LATEX = txFigures ch LATEX "" "templates/figLatex.template"
+txFig ch HTML  = txFigures ch HTML  "" "assets/templates/figHtml.template"
+txFig ch LATEX = txFigures ch LATEX "" "assets/templates/figLatex.template"
 
 
 txFigures :: Maybe Int -> Output -> FilePath -> FilePath -> IO ()

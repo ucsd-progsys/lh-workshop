@@ -25,16 +25,6 @@ INDEX=$(DIST)/index.lhs
 
 ##############################################
 
-PANDOCPDF=pandoc \
-	--highlight-style=tango \
-	--from=markdown+lhs \
-	--biblio templates/sw.bib \
-	--chapters \
-	--latex-engine=pdflatex \
-	--template=templates/default.latex \
-	--filter $(FILTERS)/Figures.hs \
-	--filter $(FILTERS)/Latex.hs
-
 PANDOCHTML=pandoc \
      --from=markdown+lhs \
 	 --to=html5 \
@@ -58,11 +48,7 @@ htmlObjects := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
 
 ####################################################################
 
-all: pdf
-
-pdf: $(lhsObjects)
-	cat $(lhsObjects) > $(DIST)/pbook.lhs
-	PANDOC_TARGET=pbook.pdf $(PANDOCPDF) $(PREAMBLE) $(BIB) $(DIST)/pbook.lhs -o $(DIST)/pbook.pdf
+all: html
 
 html: indexhtml $(htmlObjects)
 	mv src/*.html               $(SITE)/
@@ -78,7 +64,7 @@ $(INDEX):
 	$(INDEXER) src/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
 
 src/%.html: src/%.lhs
-	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? templates/bib.lhs -o $@
+	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? $(TEMPLATES)/bib.lhs -o $@
 
 clean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html

@@ -2,6 +2,8 @@ TODO
 ====
 
 1. Makefile
+   + rig rust-html to allow \begin{spec} ... \end{spec} as ....{.spec}
+   
 2. Contents
 
 Makefile
@@ -14,6 +16,7 @@ Makefile
 Contents
 --------
 
+0. Go-Wrong
 1. Logic
 2. Refinements : div, foldr1, map, pos etc. --> CSV, weights, zipWith
 3. CASE STUDY  : eval.hs

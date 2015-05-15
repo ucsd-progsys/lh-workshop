@@ -23,7 +23,7 @@ tx (Plain is)
 tx (Div (id, [cls], kvs) bs)
   = toHTML cls id kvs bs
 tx z
-  = z -- trace ("BLOCK:" ++ show z) z
+  = z
 
 txInline (RawInline (Format "tex") z)
   | isNoindent z
@@ -36,8 +36,8 @@ txInline (RawInline (Format "tex") z)
   = [LineBreak, Strong [Str z']]
   where z' = stripLatexCmd z
 
--- txInline (RawInline (Format "tex") z)
---   = error $ "BAD LATEX: " ++ show z
+txInline (RawInline (Format "tex") z)
+  = error $ "BAD LATEX: " ++ show z
 
 txInline i
   = [i']

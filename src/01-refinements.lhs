@@ -13,16 +13,17 @@ Simple Refinement Types
 
 \begin{code}
 {-@ LIQUID "--no-termination" @-}
+{-@ LIQUID "--diff"           @-}
+{-@ LIQUID "--short-names"    @-}
+
 module SimpleRefinements where
--- import Language.Haskell.Liquid.Prelude
 import Prelude hiding (abs, max)
 
--- boring haskell type sigs
-nats, poss :: [Int]
-zero       :: Int
-zero'      :: Int
-safeDiv    :: Int -> Int -> Int
-abs        :: Int -> Int
+nats, poss  :: [Int]
+zero        :: Int
+zero'       :: Int
+safeDiv     :: Int -> Int -> Int
+size, size' :: [a] -> Int
 \end{code}
 
 </div>
@@ -31,7 +32,6 @@ abs        :: Int -> Int
 Simple Refinement Types
 =======================
 
-<div class="slideonly">
 
 Types + Predicates
 ------------------
@@ -45,9 +45,7 @@ b := Int
    | a, b, c     -- type variables
 \end{spec}
 
-</div>
 
-<div class="slideonly">
 
 Types + Predicates
 ------------------
@@ -64,7 +62,6 @@ t := {x:b | p}   -- refined base
    | x:t -> t    -- refined function
 \end{spec}
 
-</div>
 
 Types + Predicates
 ------------------
@@ -175,14 +172,12 @@ poss     =  [0, 1, 2, 3]
 
 <br>
 
-<div class="fragment">
-**Q:** First, can you fix `Pos` so `poss` is **rejected**?
-</div>
+**Q:** Can you fix `Pos` so `poss` is **rejected**?
 
 <br>
 
 <div class="fragment">
-**Q:** Second, can you modify `poss` so it is **accepted**?
+**Q:** Now, can you modify `poss` so it is **accepted**?
 </div>
 
 Type Checking
@@ -290,7 +285,9 @@ Eliminates **boring** proofs ...
 
 <br>
 
+<div class="fragment">
 ... makes verification **practical**.
+</div>
 
 
 
@@ -347,60 +344,165 @@ Yikes, an error!
 **Q:** Can you **fix the type** of `safeDiv` to banish the error?
 </div>
 
-
-Precondition: `safeDiv`
------------------------
-
-<div class="slideonly">
-
-Specify pre-condition as **input type**
-
-\begin{spec} <div/>
-{-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
-\end{spec}
+Precond. Checked at Call-Site
+-----------------------------
 
 <br>
 
-</div>
-
-Precondition is checked at **call-site**
-
 \begin{code}
-{-@ bad :: Nat -> Int @-}
-bad n   = 10 `safeDiv` n
+avg2 x y   = safeDiv (x + y) 2
 \end{code}
 
 <br>
 
 <div class="slideonly">
 <div class="fragment">
-**Rejected As**
-
-$$(0 \leq n) \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
-
-</div>
-</div>
-
-Precondition: `safeDiv`
------------------------
-
-<div class="slideonly">
-
-Specify pre-condition as **input type**
+**Precondition**
 
 \begin{spec} <div/>
 {-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
 \end{spec}
+</div>
+</div>
 
 <br>
 
+<div class="slideonly">
+<div class="fragment">
+**Verifies As**
+
+$\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \subty \reftx{v}{v \not = 0}$
+</div>
 </div>
 
-Precondition is checked at **call-site**
+Precond. Checked at Call-Site
+-----------------------------
+
+<br>
 
 \begin{code}
-{-@ ok  :: Nat -> Int @-}
-ok n    = 10 `safeDiv` (n+1)
+avg2 x y   = safeDiv (x + y) 2
+\end{code}
+
+<br>
+
+<div class="slideonly">
+**Precondition**
+
+\begin{spec} <div/>
+{-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
+\end{spec}
+</div>
+
+<br>
+
+<div class="slideonly">
+**Verifies As**
+
+$$(v = 2) \Rightarrow (v \not = 0)$$
+</div>
+
+Exercise: Check That Data
+-------------------------
+
+\begin{code}
+calc :: IO ()
+calc = do
+  putStrLn "Enter numerator"
+  n <- readLn
+  putStrLn "Enter denominator"
+  d <- readLn
+  putStrLn $ "Result = " ++ show (div n d)
+  calc
+\end{code}
+
+<br>
+
+**Q:** Can you fix `calc` so it typechecks?
+
+
+Precond. Checked at Call-Site
+-----------------------------
+
+<br>
+
+\begin{code}
+avg        :: [Int] -> Int
+avg xs     = div total n
+  where
+    total  = sum    xs
+    n      = length xs
+\end{code}
+
+<br>
+
+<div class="slideonly">
+<div class="fragment">
+**Rejected** as `n` can be *any* `Int`
+
+$$(v = n) \not \Rightarrow (v \not = 0)$$
+
+</div>
+</div>
+
+`size` returns positive values
+------------------------------
+
+<br>
+
+\begin{code}
+size [_]    = 1
+size (_:xs) = 1 +  size xs
+-- size _   = die "We'll cross this bridge ..."
+\end{code}
+
+<br>
+
+<div class="fragment">
+Specify **post-condition** as **output type**
+
+<br>
+
+\begin{code}
+{-@ size :: [a] -> Pos @-}
+\end{code}
+</div>
+
+
+Postconds Checked at Return
+---------------------------
+
+<br>
+
+\begin{spec} <div/>
+{-@ size    :: [a] -> Pos @-}
+size []     = 1                        -- (1)
+size (_:xs) = 1 + n  where n = size xs -- (2)
+\end{spec}
+
+<br>
+
+<div class="fragment">
+**Verified As**
+
+<br>
+
+$$\begin{array}{rll}
+\True   & \Rightarrow (v = 1)     & \Rightarrow (0 < v) & \qquad \mbox{at (1)} \\
+(0 < n) & \Rightarrow (v = 1 + n) & \Rightarrow (0 < v) & \qquad \mbox{at (2)} \\
+\end{array}$$
+</div>
+
+Verifying `avg`
+---------------
+
+<br>
+
+\begin{code}
+avg' xs    = safeDiv total n
+  where
+    total  = sum  xs
+    n      = size xs
 \end{code}
 
 <br>
@@ -409,122 +511,60 @@ ok n    = 10 `safeDiv` (n+1)
 <div class="fragment">
 **Verifies As**
 
-$$(0 \leq n) \Rightarrow (v = n+1) \Rightarrow (v \not = 0)$$
+$$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
 </div>
 </div>
 
-Post-Conditions
----------------
+Recap
+=====
 
-**Ensures** output is a `Nat` greater than input `x`.
+ {#recap-01}
+------------
+
+
+<div class="fragment">
+**Refinement Types**
+
+Types + Predicates
+</div>
+
+<br>
+
+<div class="fragment">
+**Specify Properties**
+
+Via Refined Input- and Output- Types
+</div>
+
+<br>
+
+<div class="fragment">
+**Verify Properties**
+
+Via SMT based Predicate Subtyping
+</div>
+
+
+  {#exit-01}
+------------
+
+How to prevent calling `size` with **empty lists**?
+
+<br>
 
 \begin{code}
-abs x | 0 <= x    = x
-      | otherwise = 0 - x
+{-@ size'    :: [a] -> Pos @-}
+size' [_]    = 1
+size' (_:xs) = 1 + size' xs
+size' _      = die "Lets cross this bridge."
 \end{code}
 
 <br>
 
 <div class="fragment">
-Specify post-condition as **output type**
+[[continue...]](02-measures.html)
 
-\begin{code}
-{-@ abs :: x:Int -> {v:Nat | x <= v} @-}
-\end{code}
-</div>
-
-<br>
-
-<div class="fragment">
-**Dependent Function Types**
-
-Outputs *refer to* inputs
-</div>
-
-Postcondition: `abs`
---------------------
-
-Specify post-condition as **output type**
-
-\begin{spec} <div/>
-{-@ abs :: x:Int -> {v:Nat | x <= v} @-}
-abs x | 0 <= x    = x
-      | otherwise = 0 - x
-\end{spec}
-
-<br>
-
-Postcondition is checked at **return-site**
-
-<br>
-
-Postcondition: `abs`
---------------------
-
-Specify post-condition as **output type**
-
-\begin{spec} <div/>
-{-@ abs :: x:Int -> {v:Nat | x <= v} @-}
-abs x | 0 <= x    = x
-      | otherwise = 0 - x
-\end{spec}
-
-<br>
-
-**Verified As**
-
-<br>
-
-$$\begin{array}{rll}
-\bindx{x}{\Int},\bindx{\_}{0 \leq x}      & \vdash \reftx{v}{v = x}     & \subty \reftx{v}{0 \leq v \wedge x \leq v} \\
-\bindx{x}{\Int},\bindx{\_}{0 \not \leq x} & \vdash \reftx{v}{v = 0 - x} & \subty \reftx{v}{0 \leq v \wedge x \leq v} \\
-\end{array}$$
-
-Postcondition: `abs`
---------------------
-
-Specify post-condition as **output type**
-
-\begin{spec} <div/>
-{-@ abs :: x:Int -> {v:Nat | x <= v} @-}
-abs x | 0 <= x    = x
-      | otherwise = 0 - x
-\end{spec}
-
-<br>
-
-**Verified As**
-
-<br>
-
-$$\begin{array}{rll}
-(0 \leq x)      & \Rightarrow (v = x)     & \Rightarrow (0 \leq v \wedge x \leq v) \\
-(0 \not \leq x) & \Rightarrow (v = 0 - x) & \Rightarrow (0 \leq v \wedge x \leq v) \\
-\end{array}$$
-
-
-Recipe Scales Up
-----------------
-
-<br>
-
-<div class="fragment">
-Define type *checker* and get *inference* for free [[PLDI 08]](http://goto.ucsd.edu/~rjhala/papers/liquid_types.pdf)
-</div>
-
-<br>
-
-<div class="fragment">
-Scales to Collections, HOFs, Polymorphism ...
-</div>
-
-<br>
-
-<div class="fragment">
 [DEMO](../hs/001_Refinements.hs)
-
 <br>
 
-[[continue...]](02_Measures.lhs.slides.html)
 
-</div>

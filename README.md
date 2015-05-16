@@ -1,22 +1,20 @@
 README
 ======
 
-TODO
-----
-
-+ Makefile.rust
-- Makefile.reveal [HEREHEREHERE]
+This repository has the materials for a 2-hour workshop on
+[Programming with Refinement Types](http://www.refinement-types.org)
+which is also a tutorial introduction to [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
 Build
 -----
 
 To build rust-style html (in dist/_site)
 
-     $ make -f Makefile.rust
+     $ make html
 
 To build reveal.js slides (in dist/_slides)
 
-     $ make -f Makefile.rust
+     $ make slides
 
 Contents
 --------
@@ -27,6 +25,7 @@ Contents
 - 03-eval.lhs
 - 04-bst.lhs
 - 05-bytestring.lhs
+
 
 Comparison with DT
 ------------------

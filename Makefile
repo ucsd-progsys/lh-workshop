@@ -12,6 +12,7 @@ TEMPLATES=assets/templates
 FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
+IMG=assets/img
 
 ##############################################
 
@@ -50,8 +51,7 @@ REVEAL=pandoc \
 	   --mathjax \
 	   --section-divs                       \
 	   --template=$(TEMPLATES)/template.reveal  \
-	   --variable reveal=$(JS)/reveal.js \
-	   --variable cssdir=$(CSS) \
+	   --variable reveal=js/reveal.js \
 	   --variable mathjax=$(MATHJAX)
 
 LIQUID=liquid --short-names
@@ -61,8 +61,8 @@ LIQUID=liquid --short-names
 lhsObjects   := $(wildcard src/*.lhs)
 texObjects   := $(patsubst %.lhs,%.tex,$(wildcard src/*.lhs))
 htmlObjects  := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
-mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard lhs/*.lhs))
-slideObjects := $(patsubst %.lhs,%.lhs.slides.html,$(wildcard lhs/*.lhs))
+mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard src/*.lhs))
+slideObjects := $(patsubst %.lhs,%.lhs.slides.html,$(wildcard src/*.lhs))
 
 ####################################################################
 
@@ -72,7 +72,7 @@ all: html
 
 html: indexhtml $(htmlObjects)
 	mv src/*.html               $(SITE)/
-	cp -r assets/img            $(SITE)/
+	cp -r $(IMG)                $(SITE)/
 	cp -r $(LIQUIDCLIENT)/fonts $(SITE)/
 	cp -r $(LIQUIDCLIENT)/css   $(SITE)/
 	cp -r $(LIQUIDCLIENT)/js    $(SITE)/
@@ -89,12 +89,19 @@ src/%.html: src/%.lhs
 ################ reveal slides html ###################################
 
 slides: $(slideObjects)
+	cp src/*.slides.html $(SLIDES)/
+	cp -r $(IMG)         $(SLIDES)/
+	cp -r $(JS)          $(SLIDES)/
+	cp -r $(CSS)         $(SLIDES)/
 
-lhs/.liquid/%.lhs.markdown: lhs/%.lhs
+
+src/.liquid/%.lhs.markdown: src/%.lhs
 	-$(LIQUID) $?
 
-lhs/%.lhs.slides.html: lhs/.liquid/%.lhs.markdown
-	$(REVEAL) $? -o $@ 
+src/%.lhs.slides.html: src/.liquid/%.lhs.markdown
+	$(REVEAL) $? -o $@
+
+################ CLEAN and SYNC #######################################
 
 clean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
@@ -102,12 +109,7 @@ clean:
 rsync:
 	$(RSYNC) _site/ $(remoteuser) $(remotehost) $(remotedir)
 
-copy:
-	cp lhs/*lhs.slides.html $(SLIDES)/
-	cp $(CSS)/*.css html/
-
-clean:
-	cd lhs/ && ../cleanup && cd ../
+#clean:
+#	cd lhs/ && ../cleanup && cd ../
 #	cd html/ && rm -rf * && cd ../
 #	cp index.html html/
-

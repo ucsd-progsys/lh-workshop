@@ -29,9 +29,10 @@ size, size' :: [a] -> Int
 </div>
 
 
+<div class="slideonly">
+
 Simple Refinement Types
 =======================
-
 
 Types + Predicates
 ------------------
@@ -44,7 +45,6 @@ b := Int
    | ...         -- base types
    | a, b, c     -- type variables
 \end{spec}
-
 
 
 Types + Predicates
@@ -61,6 +61,8 @@ b := Int
 t := {x:b | p}   -- refined base
    | x:t -> t    -- refined function
 \end{spec}
+
+</div>
 
 
 Types + Predicates

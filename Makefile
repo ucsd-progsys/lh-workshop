@@ -50,6 +50,7 @@ REVEAL=pandoc \
 	   --standalone                         \
 	   --mathjax \
 	   --section-divs                       \
+	 --filter $(FILTERS)/Slides.hs \
 	   --template=$(TEMPLATES)/template.reveal  \
 	   --variable reveal=js/reveal.js \
 	   --variable mathjax=$(MATHJAX)

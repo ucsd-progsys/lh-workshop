@@ -1,9 +1,13 @@
 
+<div class="slideonly">
+
  {#simplerefinements}
 =======================
 
 Simple Refinement Types
 -----------------------
+
+</div>
 
 <div class="hidden">
 
@@ -23,9 +27,11 @@ abs        :: Int -> Int
 
 </div>
 
+
 Simple Refinement Types
 =======================
 
+<div class="slideonly">
 
 Types + Predicates
 ------------------
@@ -39,9 +45,9 @@ b := Int
    | a, b, c     -- type variables
 \end{spec}
 
-
 </div>
 
+<div class="slideonly">
 
 Types + Predicates
 ------------------
@@ -59,7 +65,6 @@ t := {x:b | p}   -- refined base
 \end{spec}
 
 </div>
-
 
 Types + Predicates
 ------------------
@@ -281,11 +286,11 @@ zero'     =  zero   -- zero :: Zero <: Nat
 
 <br>
 
-Eliminates *boring* proofs ...
+Eliminates **boring** proofs ...
 
 <br>
 
-... makes verification *practical*.
+... makes verification **practical**.
 
 
 
@@ -346,6 +351,8 @@ Yikes, an error!
 Precondition: `safeDiv`
 -----------------------
 
+<div class="slideonly">
+
 Specify pre-condition as **input type**
 
 \begin{spec} <div/>
@@ -353,6 +360,8 @@ Specify pre-condition as **input type**
 \end{spec}
 
 <br>
+
+</div>
 
 Precondition is checked at **call-site**
 
@@ -363,15 +372,19 @@ bad n   = 10 `safeDiv` n
 
 <br>
 
+<div class="slideonly">
 <div class="fragment">
 **Rejected As**
 
 $$(0 \leq n) \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
 </div>
+</div>
 
 Precondition: `safeDiv`
 -----------------------
+
+<div class="slideonly">
 
 Specify pre-condition as **input type**
 
@@ -380,6 +393,8 @@ Specify pre-condition as **input type**
 \end{spec}
 
 <br>
+
+</div>
 
 Precondition is checked at **call-site**
 
@@ -390,13 +405,13 @@ ok n    = 10 `safeDiv` (n+1)
 
 <br>
 
+<div class="slideonly">
 <div class="fragment">
 **Verifies As**
 
 $$(0 \leq n) \Rightarrow (v = n+1) \Rightarrow (v \not = 0)$$
 </div>
-
-HEREHEREHERE
+</div>
 
 Post-Conditions
 ---------------

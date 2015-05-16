@@ -45,8 +45,8 @@ Missing Keys
 <div class="fragment">
 \begin{spec}
 λ> :m +Data.Map
-λ> let m = fromList [ ("haskell", "lazy")
-                    , ("pyret"  , "eager")]
+λ> let m = fromList [ ("haskell"    , "lazy")
+                    , ("javascript" , "eager")]
 
 λ> m ! "haskell"
 "lazy"
@@ -68,7 +68,7 @@ Segmentation Faults
 <div class="fragment">
 \begin{spec}
 λ> :m +Data.Vector
-λ> let v = fromList ["haskell", "pyret"]
+λ> let v = fromList ["haskell", "javascript"]
 λ> unsafeIndex v 0
 "haskell"
 \end{spec}
@@ -104,7 +104,7 @@ Memory overflows **leaking secrets**...
 
 \begin{spec}
 λ> takeWord16 20 t
-"LambdaConf\1912\3148\SOH\NUL\15928\2486\SOH\NUL"
+"LambdaConf\1912\3148\NUL\15928\2486\SOH\NUL"
 \end{spec}
 </div>
 
@@ -119,37 +119,6 @@ Extend Type System
 
 + To enforce *program specific* properties
 
-
-Algorithmic Verification
-========================
-
-Tension
--------
-
-<img src="img/tension0.png" height=300px>
-
-Automation vs. Expressiveness
-
-Tension
--------
-
-<img src="img/tension1.png" height=300px>
-
-Extremes: Hindley-Milner vs. CoC
-
-Tension
--------
-
-<img src="img/tension2.png" height=300px>
-
-Trading off Automation for Expressiveness
-
-Tension
--------
-
-<img src="img/tension3.png" height=300px>
-
-**Goal:** Find a sweet spot?
 
 Refinement Types
 ----------------

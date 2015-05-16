@@ -10,15 +10,22 @@ import Debug.Trace
 main :: IO ()
 main = toJSONFilter tx
 
-tx :: Block -> Block
+tx :: Block -> [Block]
 tx (Para is)
-  = Para $ concatMap txInline is
+  = [Para $ concatMap txInline is]
 tx (Plain is)
-  = Plain $ concatMap txInline is
-tx (Div (id, [cls], kvs) bs)
-  = toHTML cls id kvs bs
+  = [Plain $ concatMap txInline is]
+tx (Div (id, ["hwex"], kvs) bs)
+  = [hwexHTML id kvs bs]
+tx (Div (_, ["fragment"], kvs) bs)
+  = bs
+tx (Div (_, ["slideonly"], _) _)
+  = []
+tx z@(Div (id, [cls], kvs) bs)
+  = trace ("TODO toHTML: " ++ show (id, cls))
+    [z]
 tx z
-  = z
+  = [z]
 
 txInline (RawInline (Format "tex") z)
   | isNoindent z
@@ -38,16 +45,12 @@ txInline i
   = [i']
   where i' = {- trace ("INLINE:" ++ show i) -} i
 
-toHTML "hwex" id kvs (b : bs)
+hwexHTML id kvs (b : bs)
   = Div (id, ["hwex"], kvs) bs'
     where
       bs' = (addHdr hdr b) : bs ++ [Plain [LineBreak, LineBreak]]
       hdr = Strong [Str $ "Exercise: (" ++ id ++ "): "]
 
-toHTML cls id kvs bs
-  = Div (id, [cls], kvs)
-    $ trace ("TODO toHTML: " ++ show (id, cls))
-    $ bs
 
 addHdr i (Plain is) = Plain (LineBreak : i : is)
 addHdr i (Para is)  = Para  (LineBreak : i : is)

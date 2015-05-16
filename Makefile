@@ -1,3 +1,4 @@
+MATHJAX=http://cdn.mathjax.org/mathjax/latest
 RSYNC=$(shell pwd)/sync.sh
 remoteuser=rjhala
 remotedir=/home/rjhala/public_html/liquid/book
@@ -9,6 +10,8 @@ SITE=dist/_site
 DIST=dist/_build
 TEMPLATES=assets/templates
 FILTERS=assets/filters
+JS=assets/js
+CSS=assets/css
 
 ##############################################
 
@@ -40,15 +43,32 @@ PANDOCHTML=pandoc \
 	 --variable=notitle \
 	 --highlight-style=tango
 
+REVEAL=pandoc \
+	   --from=markdown\
+	   --to=html5                           \
+	   --standalone                         \
+	   --mathjax \
+	   --section-divs                       \
+	   --template=$(TEMPLATES)/template.reveal  \
+	   --variable reveal=$(JS)/reveal.js \
+	   --variable cssdir=$(CSS) \
+	   --variable mathjax=$(MATHJAX)
+
+LIQUID=liquid --short-names
+
 ####################################################################
 
-lhsObjects  := $(wildcard src/*.lhs)
-texObjects  := $(patsubst %.lhs,%.tex,$(wildcard src/*.lhs))
-htmlObjects := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
+lhsObjects   := $(wildcard src/*.lhs)
+texObjects   := $(patsubst %.lhs,%.tex,$(wildcard src/*.lhs))
+htmlObjects  := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
+mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard lhs/*.lhs))
+slideObjects := $(patsubst %.lhs,%.lhs.slides.html,$(wildcard lhs/*.lhs))
 
 ####################################################################
 
 all: html
+
+################ rust style html ###################################
 
 html: indexhtml $(htmlObjects)
 	mv src/*.html               $(SITE)/
@@ -66,8 +86,28 @@ $(INDEX):
 src/%.html: src/%.lhs
 	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? $(TEMPLATES)/bib.lhs -o $@
 
+################ reveal slides html ###################################
+
+slides: $(slideObjects)
+
+lhs/.liquid/%.lhs.markdown: lhs/%.lhs
+	-$(LIQUID) $?
+
+lhs/%.lhs.slides.html: lhs/.liquid/%.lhs.markdown
+	$(REVEAL) $? -o $@ 
+
 clean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
 
 rsync:
 	$(RSYNC) _site/ $(remoteuser) $(remotehost) $(remotedir)
+
+copy:
+	cp lhs/*lhs.slides.html $(SLIDES)/
+	cp $(CSS)/*.css html/
+
+clean:
+	cd lhs/ && ../cleanup && cd ../
+#	cd html/ && rm -rf * && cd ../
+#	cp index.html html/
+

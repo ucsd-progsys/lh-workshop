@@ -27,9 +27,7 @@ Contents
 + 02-measures.lhs
     - foldr1, map  (BOS14/001_Refinements.hs)
 
-+ 03-order.lhs
-
-    - CSV, weights, zipWith
++ 03-sort.lhs
     - insert-sort (n), insert-sort (elts), insert-sort (ord)
     
 + 04-eval.lhs (BOOK)

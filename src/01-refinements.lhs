@@ -564,7 +564,12 @@ size' _      = die "Lets cross this bridge."
 <br>
 
 <div class="fragment">
-[[continue...]](02-measures.html)
+Next: A way to **describe properties of** structures
+
 <br>
+
+[[continue...]](02-measures.html)
+
+</div>
 
 

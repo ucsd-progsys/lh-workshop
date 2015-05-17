@@ -306,20 +306,20 @@ Pre-Conditions
 <br>
 
 \begin{code}
-{-@ die :: {v:_ | false} -> a @-}
-die msg = error msg
+{-@ impossible :: {v:_ | false} -> a @-}
+impossible msg = error msg
 \end{code}
 
 <br>
 
 <div class="fragment">
-No value satisfies `false` $\Rightarrow$ **no valid inputs** for `die`
+No value satisfies `false` $\Rightarrow$ **no valid inputs** for `impossible`
 </div>
 
 <br>
 
 <div class="fragment">
-Program type-checks $\Rightarrow$ `die` **never called at run-time**
+Program type-checks $\Rightarrow$ `impossible` **never called at run-time**
 </div>
 
 
@@ -332,7 +332,7 @@ Let's write a *safe* division function
 
 \begin{code}
 {-@ safeDiv :: Int -> Int -> Int   @-}
-safeDiv _ 0 = die "divide-by-zero"
+safeDiv _ 0 = impossible "divide-by-zero"
 safeDiv x n = x `div` n
 \end{code}
 
@@ -455,7 +455,7 @@ $$(v = n) \not \Rightarrow (v \not = 0)$$
 \begin{code}
 size [_]    = 1
 size (_:xs) = 1 +  size xs
--- size _   = die "We'll cross this bridge ..."
+-- size _   = impossible "size"
 \end{code}
 
 <br>
@@ -558,7 +558,7 @@ How to prevent calling `size` with **empty lists**?
 {-@ size'    :: [a] -> Pos @-}
 size' [_]    = 1
 size' (_:xs) = 1 + size' xs
-size' _      = die "Lets cross this bridge."
+size' _      = impossible "size"
 \end{code}
 
 <br>

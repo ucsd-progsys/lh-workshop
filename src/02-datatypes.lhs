@@ -114,6 +114,8 @@ length (_ ::: xs) = 1 + length xs
 Haskell function with *one equation per constructor*
 </div>
 
+<div class="slideonly">
+
 Specifying the Length of a List
 -------------------------------
 
@@ -128,9 +130,12 @@ length (_ ::: xs) = 1 + length xs
 
 <br>
 
+
 **Measure**
 
 *Strengthens* type of data constructor
+
+</div>
 
 
 Specifying the Length of a List
@@ -150,12 +155,15 @@ data List a where
         -> {v:List a| length v = 1 + length t}
 \end{spec}
 
+<div class="slideonly">
 
  {#asdmeas}
 ===========
 
 Using Measures
 --------------
+
+</div>
 
 Using Measures
 ==============

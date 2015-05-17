@@ -63,7 +63,7 @@ lhsObjects   := $(wildcard src/*.lhs)
 texObjects   := $(patsubst %.lhs,%.tex,$(wildcard src/*.lhs))
 htmlObjects  := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
 mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard src/*.lhs))
-slideObjects := $(patsubst %.lhs,%.lhs.slides.html,$(wildcard src/*.lhs))
+slideObjects := $(patsubst %.lhs,%.lhs.slide.html,$(wildcard src/*.lhs))
 
 ####################################################################
 
@@ -90,16 +90,16 @@ src/%.html: src/%.lhs
 ################ reveal slides html ###################################
 
 slides: $(slideObjects)
-	cp src/*.slides.html $(SLIDES)/
-	cp -r $(IMG)         $(SLIDES)/
-	cp -r $(JS)          $(SLIDES)/
-	cp -r $(CSS)         $(SLIDES)/
+	mv src/*.html $(SLIDES)/
+	cp -r $(IMG)  $(SLIDES)/
+	cp -r $(JS)   $(SLIDES)/
+	cp -r $(CSS)  $(SLIDES)/
 
 
 src/.liquid/%.lhs.markdown: src/%.lhs
 	-$(LIQUID) $?
 
-src/%.lhs.slides.html: src/.liquid/%.lhs.markdown
+src/%.lhs.slide.html: src/.liquid/%.lhs.markdown
 	$(REVEAL) $? -o $@
 
 ################ CLEAN and SYNC #######################################

@@ -8,13 +8,13 @@ module Refinements where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
 
-map    :: (a -> b) -> List a -> List b
-foldr1 :: (a -> a -> a) -> List a -> a
-head   :: List a -> a
-tail   :: List a -> List a
-append :: List a -> List a -> List a
-filter :: (a -> Bool) -> List a -> List a
-die    :: String -> a
+map           :: (a -> b) -> List a -> List b
+foldr1        :: (a -> a -> a) -> List a -> a
+head          :: List a -> a
+tail          :: List a -> List a
+append        :: List a -> List a -> List a
+filter        :: (a -> Bool) -> List a -> List a
+die           :: String -> a
 average       :: List Int -> Int
 annualAverage :: Year Int -> Int
 wtAverage     :: List (Int, Int) -> Int

@@ -24,15 +24,15 @@ Contents
 + 01-refinements.lhs
     + div, pos, etc.
 
-+ 02-measures.lhs
++ 02-datatypes.lhs
     - foldr1, map  (BOS14/001_Refinements.hs)
 
-+ 03-sort.lhs
++ 03-case-study-sorting.lhs
     - insert-sort (n), insert-sort (elts), insert-sort (ord)
     
-+ 04-eval.lhs (BOOK)
++ 04-case-study-evaluator.lhs (BOOK)
 
-- 05-bytestring.lhs (BOS14)
+- 05-case-study-bytestring.lhs (BOS14)
 
 
 02-measures

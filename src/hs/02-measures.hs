@@ -16,7 +16,7 @@ append :: List a -> List a -> List a
 filter :: (a -> Bool) -> List a -> List a
 die    :: String -> a
 average       :: List Int -> Int
-annualAverage :: Annual Int -> Int
+annualAverage :: Year Int -> Int
 wtAverage     :: List (Int, Int) -> Int
 
 -----------------------------------------------------------------------
@@ -105,34 +105,46 @@ average xs = total `div` n
     n      = length xs
 
 -----------------------------------------------------------------------
--- | Annual Average
+-- | Months
 -----------------------------------------------------------------------
 
-data Month = Jan | Feb | Mar | Apr | May | Jun
-           | Jul | Aug | Sep | Oct | Nov | Dec
-           deriving (Eq, Ord, Show)
+data Month = Month {month :: Int}
+             deriving (Eq, Ord, Show)
 
 
--- An `a` value for each month
+-- | Int within some range
 
-type Annual a = List (Month, a)
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v <= Hi} @-}
 
-{-@ type Annual a = ListN (Month, a) 12 @-}
+-- | Refine months to be in 1..12
 
-{-@ annualAverage :: Annual Int -> Int @-}
-annualAverage = average . map snd            -- fix
+{-@ data Month = Month { month :: Btwn 1 12 } @-}
+
+jan = Month 1   -- OK
+feb = Month 2   -- OK
+mar = Month 13  -- Invalid Month
+
+
+-----------------------------------------------------------------------
+-- | Year = An `a` value for each month
+-----------------------------------------------------------------------
+
+type Year a = List (Month, a)
+
+{-@ type Year a = ListN (Month, a) 12 @-}
+
+{-@ annualAverage :: Year Int -> Int @-}
+annualAverage = average . map snd
 
 
 -- | Lists of size equal to that of another Xs
 
-{-@ type ListX a X = ListN a (length X) @-}
-
-{-@ map :: (a -> b) -> xs:List a -> ListX b xs @-}
+{-@ map :: (a -> b) -> xs:List a -> ListN b {length xs} @-}
 map _ Emp         = Emp
 map f (x ::: xs)  = f x ::: map f xs
 
 -----------------------------------------------------------------------
--- | Weighted Average
+-- | Weighted Average (POLYMORPHISM CUT)
 -----------------------------------------------------------------------
 
 {-@ wtAverage :: ListNE (Pos, Pos)  -> Nat @-}
@@ -140,11 +152,8 @@ wtAverage wxs = total `div` weights
   where
     total     = sum $ map (\(w, x) -> w * x) wxs
     weights   = sum $ map (\(w, _) -> w    ) wxs
-    sum       = foldr1 plus -- (+)
+    sum       = foldr1 plus
     plus      = (+)
-
-
-
 
 
 -----------------------------------------------------------------------
@@ -153,7 +162,6 @@ wtAverage wxs = total `div` weights
 
 {-@ type Nat     = {v:Int | v >= 0} @-}
 {-@ type Pos     = {v:Int | v >  0} @-}
-{-@ type NonZero = {v:Int | v /= 0} @-}
 
 {-@ die :: {v:_ | false} -> a @-}
 die = error

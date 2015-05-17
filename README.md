@@ -21,16 +21,16 @@ Contents
 
 + 00-motivation.lhs
 
-- 01-logic.lhs
++ 01-refinements.lhs
+    + div, pos, etc.
+    - foldr1, map  (BOS14/001_Refinements.hs)
+    - CSV, weights, zipWith
 
-- 02-refinements.lhs (div, foldr1, map, pos etc. --> CSV, weights, zipWith)
-    (BOS/hs)
-- 03-eval.lhs
-    (BOOK)
-- 04-bst.lhs
-    (BOOK)
-- 05-bytestring.lhs
-    (from BOS14)
+- 02-eval.lhs (BOOK)
+
+- 03-bst.lhs  (BOOK)
+
+- 04-bytestring.lhs (BOS14)
 
 
 Comparison with DT

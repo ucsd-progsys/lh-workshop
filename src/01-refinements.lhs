@@ -565,8 +565,6 @@ size' _      = die "Lets cross this bridge."
 
 <div class="fragment">
 [[continue...]](02-measures.html)
-
-[DEMO](../hs/001_Refinements.hs)
 <br>
 
 

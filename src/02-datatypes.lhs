@@ -46,14 +46,11 @@ map         :: (a -> b) -> List a -> List b
 foldr1      :: (a -> a -> a) -> List a -> a
 head        :: List a -> a
 tail        :: List a -> List a
-init :: Int -> a -> List (Int, a)
-init' :: Int -> a -> List (Int, a)
-jan, feb, mar :: Month
+init, init' :: (Int -> a) -> Int -> List a
 -- append      :: List a -> List a -> List a
 -- filter      :: (a -> Bool) -> List a -> List a
 impossible         :: String -> a
 average     :: List Int -> Int
--- yearAverage :: Year Int -> Int
 -- wtAverage   :: List (Int, Int) -> Int
 
 infixr 9 :::
@@ -286,94 +283,54 @@ Refining Data Types
 Refining Data Types
 ===================
 
-Example: Months
----------------
-
-<br>
-
-\begin{code}
-type Month = Int
-\end{code}
-
-<br>
-
-**Legal Values**
-
-`1, ... , 12`
-
-Example: Months
----------------
-
-<br>
-
-**A Type for Bounded Integers**
-
-<br>
-
-\begin{code}
-{-@ type Btwn Lo Hi = {v:Int| Lo<=v && v<=Hi} @-}
-\end{code}
-
-Example: Months
----------------
-
-<br>
-
-**Refining `Month` to Legal Values**
-
-<br>
-
-\begin{code}
-{-@ type Month = Btwn 1 12 @-}
-\end{code}
-
-
-Example: Months
----------------
-
-<br>
-
-**Refining `Month` to Legal Values**
-
-<br>
-
-\begin{spec} <div/>
-{-@ type Month = Btwn 1 12 @-}
-\end{spec}
-
-<br>
-
-\begin{code}
-{-@ jan, feb, mar :: Month @-}
-jan = 1   -- OK
-feb = 2   -- OK
-mar = 13  -- Invalid
-\end{code}
-
 Example: Year is 12 Months
 --------------------------
 
 <br>
 
 \begin{code}
-data Year a = Year (List (Month, a))
+data Year a = Year (List a)
 \end{code}
 
 <br>
 
 <div class="fragment">
-*Make illegal states unrepresentable*
+**Legal Values**
+
+List of `12` values, e.g.
+
+<br>
+
+`[1,2,3,4,5,6,7,8,9,10,11,12]`
+
+</div>
+
+Example: Year is 12 Months
+--------------------------
+
+<br>
+
+**Refine Type to Legal Values**
 
 <br>
 
 \begin{code}
-{-@ data Year a = Year (ListN (Month, a) 12) @-}
+{-@ data Year a = Year (ListN a 12) @-}
 
 -- | An alias for `List`s of size `N`
 {-@ type ListN a N = {v:_ | length v == N} @-}
 \end{code}
 </div>
 
+<br>
+
+<div class="fragment">
+*Make illegal states unrepresentable*
+
+\begin{code}
+badYear = Year (1 ::: Emp)
+\end{code}
+</div>
 
 Exercise: `map`
 ---------------
@@ -381,10 +338,9 @@ Exercise: `map`
 <br>
 
 \begin{code}
-{-@ yearAverage :: Year Int -> Int @-}
-yearAverage (Year ms) = average months
-  where
-    months            = map snd ms
+{-@ map :: (a -> b) -> xs:List a -> List b @-}
+map _ Emp         = Emp
+map f (x ::: xs)  = f x ::: map f xs
 \end{code}
 
 <br>
@@ -395,12 +351,14 @@ yearAverage (Year ms) = average months
 <br>
 
 \begin{code}
-{-@ map :: (a -> b) -> xs:List a -> List b @-}
-map _ Emp         = Emp
-map f (x ::: xs)  = f x ::: map f xs
+data Weather = W { temp :: Int, rain :: Int }
+
+tempAverage :: Year Weather -> Int
+tempAverage (Year ms) = average months
+  where
+    months            = map temp ms
 \end{code}
 </div>
-
 
 Exercise: `init`
 ----------------
@@ -408,18 +366,10 @@ Exercise: `init`
 <br>
 
 \begin{code}
-{-@ init :: Nat -> a -> List (Int, a) @-}
-init 0 _ = Emp
-init n x = (n, x) ::: init (n-1) x
-
-{-@ init' :: n:Nat -> a -> ListN (Int, a) n @-}
-init' n x = go 0
-  where
-    {-@ go :: i:_ ->  ListN _ {n-i}         @-}
-    go i | i < n     = (i,x) ::: go (i+1)
-         | otherwise = Emp
+{-@ init :: (Int -> a) -> Nat -> List a @-}
+init _ 0 = Emp
+init f n = f n ::: init f (n-1)
 \end{code}
-
 
 <br>
 
@@ -429,11 +379,37 @@ init' n x = go 0
 <br>
 
 \begin{code}
-sandiegoWeather :: Year Int
-sandiegoWeather = Year (init' 12 72)
+sanDiegoWeather :: Year Int
+sanDiegoWeather = Year (init (const 72) 12)
 \end{code}
 </div>
 
+Exercise: `init'
+----------------
+
+<br>
+
+\begin{code}
+{-@ init' :: (Int -> a) -> n:Nat -> List a @-}
+init' f n = go 0
+  where
+    {-@ go :: i:_ ->  ListN _ {n-i}        @-}
+    go i | i < n     = f i ::: go (i+1)
+         | otherwise = Emp
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Q:** For bonus points, fix `init'` so the below is safe?
+
+<br>
+
+\begin{code}
+sanDiegoWeather' :: Year Int
+sanDiegoWeather' = Year (init' (const 72) 12)
+\end{code}
+</div>
 
 
  {#adasd}

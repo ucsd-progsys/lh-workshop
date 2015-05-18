@@ -45,38 +45,16 @@ Contents
 + SHOW append
 + SHOW filter
 + SHOW foldr1
++ EX   average
++ EX   rainAverage / map
 
 HEREHEREHEREHEREHERE
-
-- EX   average
-- EX   rainAverage / map
-- SHOW wtAverage
-- EX   risers
 
 -- SETS
 
 + SHOW insert/sort
 + SHOW elems
 + SHOW insert/sort' (compare)
-
-data Month = Jan | Feb | Mar | April | May  -- | ...
-type AnnualRain = {v: [(Month, Nat)] | length v == 12 }
-
-rainAverage :: AnnualRain -> Nat
-rainAverage = average . map snd
-
-map f []     = []
-map f (x:xs) = f x : map f xs
-
-
-{-@ wtAverage :: {v: List (Pos, Pos) | size v > 0} -> Int @-}
-wtAverage wxs = total `divide` weights
-  where
-    total     = sum $ map (\(w, x) -> w * x) wxs
-    weights   = sum $ map (\(w, _) -> w    ) wxs
-    sum       = foldr1 plus -- (+)
-    plus      = (+)
-
 
 Comparison with DT
 ------------------

@@ -8,6 +8,8 @@ module Refinements where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
 
+
+
 map           :: (a -> b) -> List a -> List b
 foldr1        :: (a -> a -> a) -> List a -> a
 head          :: List a -> a

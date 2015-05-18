@@ -45,9 +45,12 @@ Contents
 + SHOW append
 + SHOW filter
 + SHOW foldr1
-+ EX   average
-+ EX   rainAverage / map
-+ SHOW wtAverage
+
+HEREHEREHEREHEREHERE
+
+- EX   average
+- EX   rainAverage / map
+- SHOW wtAverage
 
 -- SETS
 

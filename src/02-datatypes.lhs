@@ -57,11 +57,12 @@ infixr 9 :::
 {-@ data List [length] a = Emp | (:::) {hd :: a, tl :: List a } @-}
 {-@ invariant {v: List a | 0 <= length v} @-}
 
-
-{-@ type Nat     = {v:Int | v >= 0} @-}
-{-@ type Pos     = {v:Int | v >  0} @-}
+{-@ type ListNE a = {v:List a | 0 < length v} @-}
+{-@ type Nat      = {v:Int | v >= 0} @-}
+{-@ type Pos      = {v:Int | v >  0} @-}
 
 {-@ impossible :: {v:_ | false} -> a @-}
+impossible :: String -> a
 impossible = error
 \end{code}
 
@@ -85,6 +86,7 @@ Example: Lists
 
 <br>
 
+<div class="fragment">
 Lets define our own `List` data type:
 
 <br>
@@ -92,6 +94,7 @@ Lets define our own `List` data type:
 \begin{code}
 data List a = Emp | (:::) a (List a)
 \end{code}
+</div>
 
 
 Specifying the Length of a List
@@ -142,18 +145,20 @@ Specifying the Length of a List
 -------------------------------
 
 <br>
+
+\begin{spec} <div/>
+data List a where
+  Emp   :: {v:List a | length v = 0}
+  (:::) :: x:a -> xs:List a
+        -> {v:List a | length v = 1 + length xs}
+\end{spec}
+
+<br>
+
 **Measure**
 
 *Strengthens* type of data constructor
 
-<br>
-
-\begin{spec} <div/>
-data List a where
-  Emp   :: {v: List a | length v = 0}
-  (:::) :: x:a -> xs:List a
-        -> {v:List a| length v = 1 + length t}
-\end{spec}
 
 <div class="slideonly">
 
@@ -170,7 +175,6 @@ Using Measures
 
 Exercise: *Partial* Functions
 -----------------------------
-
 
 Fear `head` and `tail` no more!
 
@@ -189,6 +193,114 @@ tail _          = impossible "tail"
 
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
+
+<div class="slideonly">
+
+Naming Non-Empty Lists
+----------------------
+
+<br>
+
+<div class="fragment">
+A convenient *type alias*
+
+<br>
+
+\begin{spec} <div/>
+{-@ type ListNE a = {v:List a| 0 < length v} @-}
+\end{spec}
+
+</div>
+
+
+`head` and `tail` are Safe
+--------------------------
+
+When called with *non-empty* lists:
+
+<br>
+
+\begin{spec} <div/>
+{-@ head :: ListNE a -> a @-}
+head (x ::: _)  = x
+head _          = impossible "head"
+
+{-@ tail :: ListNE a -> List a @-}
+tail (_ ::: xs) = xs
+tail _          = impossible "tail"
+\end{spec}
+
+</div>
+
+Tracking Sizes via Refinements
+------------------------------
+
+<br>
+
+An alias for `List`s of size `N`
+
+<br>
+
+\begin{code}
+{-@ type ListN a N = {v:_ | length v == N} @-}
+\end{code}
+
+
+Tracking Sizes via Refinements
+------------------------------
+
+<br>
+
+Can type usual `List` manipulating routines:
+
+<br>
+
+\begin{code}
+{-@ reverse :: xs:List a
+            -> ListN a {length xs}
+  @-}
+reverse             = go Emp
+  where
+    go acc Emp      = acc
+    go acc (x:::xs) = go (x:::acc) xs
+\end{code}
+
+Tracking Sizes via Refinements
+------------------------------
+
+<br>
+
+Can type usual `List` manipulating routines:
+
+<br>
+
+\begin{code}
+{-@ append :: xs:List a -> ys:List a
+           -> ListN a {length ys + length xs}
+  @-}
+append Emp ys      = ys
+append (x:::xs) ys = x ::: append xs ys
+\end{code}
+
+A Useful Partial Function `foldr1`
+----------------------------------
+
+*Fold* `f` over list initially using *first* element:
+
+\begin{code}
+{-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
+foldr1 f (x ::: xs) = foldr f x xs
+foldr1 _ _          = impossible "foldr1"
+
+foldr :: (a -> b -> b) -> b -> List a -> b
+foldr _ acc Emp        = acc
+foldr f acc (x ::: xs) = f x (foldr f acc xs)
+\end{code}
+
+</div>
+
+HEREHEREHEREHERE
+
 
  {#adasd}
 =========

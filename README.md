@@ -51,19 +51,13 @@ HEREHEREHEREHEREHERE
 - EX   average
 - EX   rainAverage / map
 - SHOW wtAverage
+- EX   risers
 
 -- SETS
 
 + SHOW insert/sort
 + SHOW elems
 + SHOW insert/sort' (compare)
-
-{-@ average   :: ListNE Nat -> Nat @-}
-average xs    = tot `divide` n
-  where
-    total     = foldr1 (+) xs
-    n         = length xs
-
 
 data Month = Jan | Feb | Mar | April | May  -- | ...
 type AnnualRain = {v: [(Month, Nat)] | length v == 12 }

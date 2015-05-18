@@ -65,7 +65,7 @@ tail _          = die "ok"
 
 {-@ append :: xs:List a -> ys:List a -> ListN a {length ys + length xs} @-}
 append Emp ys      = ys
-append (x:::xs) ys = x ::: (append xs ys)
+append (x:::xs) ys = x ::: append xs ys
 
 
 {-@ reverse :: xs:List a -> ListN a {length xs} @-}

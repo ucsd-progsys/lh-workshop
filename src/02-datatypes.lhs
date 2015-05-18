@@ -47,6 +47,7 @@ foldr1      :: (a -> a -> a) -> List a -> a
 head        :: List a -> a
 tail        :: List a -> List a
 init :: Int -> a -> List (Int, a)
+init' :: Int -> a -> List (Int, a)
 jan, feb, mar :: Month
 -- append      :: List a -> List a -> List a
 -- filter      :: (a -> Bool) -> List a -> List a
@@ -373,6 +374,34 @@ data Year a = Year (List (Month, a))
 \end{code}
 </div>
 
+
+Exercise: `map`
+---------------
+
+<br>
+
+\begin{code}
+{-@ yearAverage :: Year Int -> Int @-}
+yearAverage (Year ms) = average months
+  where
+    months            = map snd ms
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Q:** Can you fix `map` so that `yearAverage` verifies?
+
+<br>
+
+\begin{code}
+{-@ map :: (a -> b) -> xs:List a -> List b @-}
+map _ Emp         = Emp
+map f (x ::: xs)  = f x ::: map f xs
+\end{code}
+</div>
+
+
 Exercise: `init`
 ----------------
 
@@ -382,7 +411,15 @@ Exercise: `init`
 {-@ init :: Nat -> a -> List (Int, a) @-}
 init 0 _ = Emp
 init n x = (n, x) ::: init (n-1) x
+
+{-@ init' :: n:Nat -> a -> ListN (Int, a) n @-}
+init' n x = go 0
+  where
+    {-@ go :: i:_ ->  ListN _ {n-i}         @-}
+    go i | i < n     = (i,x) ::: go (i+1)
+         | otherwise = Emp
 \end{code}
+
 
 <br>
 
@@ -393,21 +430,9 @@ init n x = (n, x) ::: init (n-1) x
 
 \begin{code}
 sandiegoWeather :: Year Int
-sandiegoWeather = Year (init 12 72)
+sandiegoWeather = Year (init' 12 72)
 \end{code}
 </div>
-
-
-Exercise: `map`
----------------
-
-
-\begin{code}
-{-@ map :: (a -> b) -> xs:List a -> ListN b {length xs} @-}
-map _ Emp         = Emp
-map f (x ::: xs)  = f x ::: map f xs
-\end{code}
-
 
 
 

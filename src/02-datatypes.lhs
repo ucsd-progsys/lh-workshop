@@ -31,6 +31,7 @@ How to specify properties of **data types**?
 <div class="hidden">
 
 \begin{code}
+{-# LANGUAGE TupleSections    #-}
 {-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--no-termination" @-}
@@ -39,16 +40,18 @@ How to specify properties of **data types**?
 
 module DataTypes where
 
-import Prelude hiding (sum, length, map, filter, foldr, foldr1)
+import Prelude hiding (replicate, (++), sum, init, length, map, filter, foldr, foldr1)
 
--- map         :: (a -> b) -> List a -> List b
--- foldr1      :: (a -> a -> a) -> List a -> a
--- head        :: List a -> a
--- tail        :: List a -> List a
+map         :: (a -> b) -> List a -> List b
+foldr1      :: (a -> a -> a) -> List a -> a
+head        :: List a -> a
+tail        :: List a -> List a
+init :: Int -> a -> List (Int, a)
+jan, feb, mar :: Month
 -- append      :: List a -> List a -> List a
 -- filter      :: (a -> Bool) -> List a -> List a
--- impossible         :: String -> a
--- average     :: List Int -> Int
+impossible         :: String -> a
+average     :: List Int -> Int
 -- yearAverage :: Year Int -> Int
 -- wtAverage   :: List (Int, Int) -> Int
 
@@ -62,7 +65,6 @@ infixr 9 :::
 {-@ type Pos      = {v:Int | v >  0} @-}
 
 {-@ impossible :: {v:_ | false} -> a @-}
-impossible :: String -> a
 impossible = error
 \end{code}
 
@@ -232,55 +234,7 @@ tail _          = impossible "tail"
 
 </div>
 
-Tracking Sizes via Refinements
-------------------------------
 
-<br>
-
-An alias for `List`s of size `N`
-
-<br>
-
-\begin{code}
-{-@ type ListN a N = {v:_ | length v == N} @-}
-\end{code}
-
-
-Tracking Sizes via Refinements
-------------------------------
-
-<br>
-
-Can type usual `List` manipulating routines:
-
-<br>
-
-\begin{code}
-{-@ reverse :: xs:List a
-            -> ListN a {length xs}
-  @-}
-reverse             = go Emp
-  where
-    go acc Emp      = acc
-    go acc (x:::xs) = go (x:::acc) xs
-\end{code}
-
-Tracking Sizes via Refinements
-------------------------------
-
-<br>
-
-Can type usual `List` manipulating routines:
-
-<br>
-
-\begin{code}
-{-@ append :: xs:List a -> ys:List a
-           -> ListN a {length ys + length xs}
-  @-}
-append Emp ys      = ys
-append (x:::xs) ys = x ::: append xs ys
-\end{code}
 
 A Useful Partial Function `foldr1`
 ----------------------------------
@@ -299,7 +253,162 @@ foldr f acc (x ::: xs) = f x (foldr f acc xs)
 
 </div>
 
-HEREHEREHEREHERE
+Exercise: `average`
+-------------------
+
+<br>
+
+\begin{code}
+{-@ average :: List Int -> Int @-}
+average xs = total `div` n
+  where
+    total  = foldr1 (+) xs
+    n      = length xs
+\end{code}
+
+<br>
+
+**Q:** What is a safe input type for `average`?
+
+
+ {#flasd}
+=========
+
+Refining Data Types
+-------------------
+
+<br>
+<br>
+
+*Making illegal states unrepresentable*
+
+Refining Data Types
+===================
+
+Example: Months
+---------------
+
+<br>
+
+\begin{code}
+type Month = Int
+\end{code}
+
+<br>
+
+**Legal Values**
+
+`1, ... , 12`
+
+Example: Months
+---------------
+
+<br>
+
+**A Type for Bounded Integers**
+
+<br>
+
+\begin{code}
+{-@ type Btwn Lo Hi = {v:Int| Lo<=v && v<=Hi} @-}
+\end{code}
+
+Example: Months
+---------------
+
+<br>
+
+**Refining `Month` to Legal Values**
+
+<br>
+
+\begin{code}
+{-@ type Month = Btwn 1 12 @-}
+\end{code}
+
+
+Example: Months
+---------------
+
+<br>
+
+**Refining `Month` to Legal Values**
+
+<br>
+
+\begin{spec} <div/>
+{-@ type Month = Btwn 1 12 @-}
+\end{spec}
+
+<br>
+
+\begin{code}
+{-@ jan, feb, mar :: Month @-}
+jan = 1   -- OK
+feb = 2   -- OK
+mar = 13  -- Invalid
+\end{code}
+
+Example: Year is 12 Months
+--------------------------
+
+<br>
+
+\begin{code}
+data Year a = Year (List (Month, a))
+\end{code}
+
+<br>
+
+<div class="fragment">
+*Make illegal states unrepresentable*
+
+<br>
+
+\begin{code}
+{-@ data Year a = Year (ListN (Month, a) 12) @-}
+
+-- | An alias for `List`s of size `N`
+{-@ type ListN a N = {v:_ | length v == N} @-}
+\end{code}
+</div>
+
+Exercise: `init`
+----------------
+
+<br>
+
+\begin{code}
+{-@ init :: Nat -> a -> List (Int, a) @-}
+init 0 _ = Emp
+init n x = (n, x) ::: init (n-1) x
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Q:** Can you fix the type of `init` so the below is safe?
+
+<br>
+
+\begin{code}
+sandiegoWeather :: Year Int
+sandiegoWeather = Year (init 12 72)
+\end{code}
+</div>
+
+
+Exercise: `map`
+---------------
+
+
+\begin{code}
+{-@ map :: (a -> b) -> xs:List a -> ListN b {length xs} @-}
+map _ Emp         = Emp
+map f (x ::: xs)  = f x ::: map f xs
+\end{code}
+
+
 
 
  {#adasd}

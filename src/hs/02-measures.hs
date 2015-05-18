@@ -8,8 +8,6 @@ module Refinements where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
 
-
-
 map           :: (a -> b) -> List a -> List b
 foldr1        :: (a -> a -> a) -> List a -> a
 head          :: List a -> a
@@ -106,6 +104,7 @@ average xs = total `div` n
     total  = foldr1 (+) xs
     n      = length xs
 
+
 -----------------------------------------------------------------------
 -- | Months
 -----------------------------------------------------------------------
@@ -131,12 +130,14 @@ mar = Month 13  -- Invalid Month
 -- | Year = An `a` value for each month
 -----------------------------------------------------------------------
 
-type Year a = List (Month, a)
+data Year a = Year { year :: List (Month, a) }
 
-{-@ type Year a = ListN (Month, a) 12 @-}
+{-@ data Year a = Year { year :: ListN (Month, a) 12 } @-}
 
 {-@ annualAverage :: Year Int -> Int @-}
-annualAverage = average . map snd
+annualAverage (Year ms) = average months
+  where
+    months              = map snd ms
 
 
 -- | Lists of size equal to that of another Xs

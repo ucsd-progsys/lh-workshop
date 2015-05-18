@@ -64,6 +64,12 @@ infixr 9 :::
 
 {-@ impossible :: {v:_ | false} -> a @-}
 impossible = error
+
+{-@ average :: ListNE Int -> Int @-}
+average xs = total `div` n
+  where
+    total   = foldr1 (+) xs
+    n       = length xs
 \end{code}
 
 </div>
@@ -257,11 +263,11 @@ Exercise: `average`
 <br>
 
 \begin{code}
-{-@ average :: List Int -> Int @-}
-average xs = total `div` n
+{-@ average' :: List Int -> Int @-}
+average' xs = total `div` n
   where
-    total  = foldr1 (+) xs
-    n      = length xs
+    total   = foldr1 (+) xs
+    n       = length xs
 \end{code}
 
 <br>
@@ -295,20 +301,16 @@ data Year a = Year (List a)
 <br>
 
 <div class="fragment">
-**Legal Values**
-
-List of `12` values, e.g.
+**Legal Values:** List of `12` elements
 
 <br>
 
-`[1,2,3,4,5,6,7,8,9,10,11,12]`
+`"jan" ::: "feb" ::: ... ::: "dec" ::: Emp"`
 
 </div>
 
 Example: Year is 12 Months
 --------------------------
-
-<br>
 
 **Refine Type to Legal Values**
 
@@ -335,8 +337,6 @@ badYear = Year (1 ::: Emp)
 Exercise: `map`
 ---------------
 
-<br>
-
 \begin{code}
 {-@ map :: (a -> b) -> xs:List a -> List b @-}
 map _ Emp         = Emp
@@ -346,7 +346,7 @@ map f (x ::: xs)  = f x ::: map f xs
 <br>
 
 <div class="fragment">
-**Q:** Can you fix `map` so that `yearAverage` verifies?
+**Q:** Can you fix `map` to verify `tempAverage` verifies?
 
 <br>
 
@@ -355,15 +355,12 @@ data Weather = W { temp :: Int, rain :: Int }
 
 tempAverage :: Year Weather -> Int
 tempAverage (Year ms) = average months
-  where
-    months            = map temp ms
+  where months        = map temp ms
 \end{code}
 </div>
 
 Exercise: `init`
 ----------------
-
-<br>
 
 \begin{code}
 {-@ init :: (Int -> a) -> Nat -> List a @-}
@@ -384,16 +381,13 @@ sanDiegoWeather = Year (init (const 72) 12)
 \end{code}
 </div>
 
-Exercise: `init'
-----------------
-
-<br>
+Exercise: `init'`
+------------------
 
 \begin{code}
 {-@ init' :: (Int -> a) -> n:Nat -> List a @-}
 init' f n = go 0
   where
-    {-@ go :: i:_ ->  ListN _ {n-i}        @-}
     go i | i < n     = f i ::: go (i+1)
          | otherwise = Emp
 \end{code}
@@ -411,72 +405,24 @@ sanDiegoWeather' = Year (init' (const 72) 12)
 \end{code}
 </div>
 
-
- {#adasd}
-=========
-
-Multiple Measures
------------------
-
-Can support *many* measures for a type
-
-Multiple Measures
-=================
-
-Example: List Elements
-----------------------
-
-Measure describing *set of elements* of a `List`
-
-\begin{code}
-{- measure elems @-}
-\end{code}
-
-<br>
-
-<div class="fragment">
-LiquidHaskell **strengthens** data constructors
-
-\begin{spec}
-data L a where
-  N :: {v : List a | elems v = empty}
-  C :: x:a -> xs:List a
-    -> {v: List a | elems v = addElem x xs}
-\end{spec}
-
-</div>
-
-Conjoining Refinements
-----------------------
-
-Data constructor refinements are **conjoined**
-
-\begin{spec}
-data List a where
-  N :: {v:List a |  length v = 0
-                 && elems  v = empty}
-  C :: x:a
-    -> xs:List a
-    -> {v:List a |  length v = 1 + length xs
-                 && elems v  = addElem x  xs }
-\end{spec}
-
-
 Recap
 -----
 
 <br>
 <br>
 
-
-1. Refinements: Types + Predicates
-2. Subtyping: SMT Implication
-3. **Datatypes:** Strengthened Constructors
-
-<br>
-
-<div class="fragment">Automatic Verification of Data Structures</div>
+1. **Refinements:** Types + Predicates
+2. **Subtyping:** SMT Implication
+3. <div class="fragment">**Measures:** Specify Properties of data types</div>
 
 <br>
-<br>
+
+<div class="fragment">
+**Next: Case Studies**
+
++ [Sorting](03-case-study-insertsort.lhs.slides.html)
++ [Scoping](04-case-study-eval.lhs.slides.html)
++ [Buffering](05-case-study-bytestring.lhs.slides.html)
+</div>
+
 

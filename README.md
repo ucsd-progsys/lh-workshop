@@ -5,6 +5,17 @@ This repository has the materials for a 2-hour workshop on
 [Programming with Refinement Types](http://www.refinement-types.org)
 which is also a tutorial introduction to [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
+TODO
+----
+
+- remove nasty "fix@#$@#$" gibberish in error messages
+- remove GHC.Types.Int ~~~~> Int     in error messages
+- build VM image with emacs 
+- build image with spacemacs
+- post _site   on refinement-types.org
+- post _slides on refinement-types.org
+
+
 Build
 -----
 

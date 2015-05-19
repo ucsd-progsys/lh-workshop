@@ -45,6 +45,8 @@ Contents
     - SHOW: sortE
     - EX: whats a good type for insert?
     - But is it ACTUALLY SORTING?
+
+    - [HEREHEREHEREHEREHEREHERE]
     - Dependent Data Types
       - SHOW: Pair
       - EX:   CSV
@@ -55,27 +57,6 @@ Contents
 
 - 05-case-study-bytestring.lhs (BOS14)
 
-
-02-measures
------------
-
-+ DEF  type    list
-+ DEF  measure length
-+ EX   head/tail 
-+ SHOW alias ListNE
-+ SHOW append
-+ SHOW filter
-+ SHOW foldr1
-+ EX   average
-+ EX   rainAverage / map
-
-HEREHEREHEREHEREHERE
-
--- SETS
-
-+ SHOW insert/sort
-+ SHOW elems
-+ SHOW insert/sort' (compare)
 
 Comparison with DT
 ------------------
@@ -88,3 +69,5 @@ Comparison with DT
 
 
 https://github.com/davidfstr/idris-insertion-sort/tree/master
+http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
+https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs

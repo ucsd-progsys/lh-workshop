@@ -22,11 +22,14 @@ length :: List a -> Int
 length Emp        = 0
 length (_ ::: xs) = 1 + length xs
 
-data List a = Emp
-            | (:::) { hd :: a, tl :: List a }
-            deriving (Eq, Ord, Show)
+
+data List a  = Emp
+             | (:::) { hd :: a, tl :: List a }
+             deriving (Eq, Ord, Show)
 
 infixr 9 :::
+
+infixr 9 :<
 
 -- | Lists of a given size N
 {-@ type ListN a N = {v:List a | length v == N } @-}
@@ -130,9 +133,9 @@ Exercise: `insert`
 **Q:** Can you fix the type of `insert` so `sort` checks?
 
 \begin{code}
-{-@ sort :: (Ord a) => xs:[a] -> ListN a {len xs} @-}
-sort []     = Emp
-sort (x:xs) = insert x (sort xs)
+{-@ sort :: (Ord a) => xs:List a -> ListN a {length xs} @-}
+sort Emp          = Emp
+sort (x:::xs)     = insert x (sort xs)
 
 {-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
 insert x Emp      = x ::: Emp
@@ -140,6 +143,7 @@ insert x (y:::ys)
   | x <= y        = x ::: y ::: ys
   | otherwise     = y ::: insert x ys
 \end{code}
+
 
 <br>
 <br>
@@ -165,7 +169,7 @@ Permutation
 
 <br>
 
-Same *size* is all fine, how about *same elements* in output?
+Same size is all fine, how about **same elements** in output?
 
 <br>
 <br>
@@ -252,7 +256,7 @@ addElem x xs = S.singleton x `S.union` elems xs
 <br>
 
 Exercise: Verifying Permutation
-----------------------
+-------------------------------
 
 <br>
 
@@ -293,15 +297,37 @@ insertE x (y:::ys)
 
 
 Property 3: Order
-=================
+-----------------
 
-Yes, but does it actually *sort* ?
-----------------------------------
+Yes, yes, but `sort` actually **sort** ?
 
 <br>
+
+<div class="fragment">
 
 How to specify **ordered lists** ?
 
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ {#rdt}
+=======
+
+Refined Data Types
+------------------
 
 <br>
 <br>
@@ -318,8 +344,224 @@ How to specify **ordered lists** ?
 
 
 
-Specifying Ordered Lists
-------------------------
+Refined Data Types
+==================
+
+
+Ordered Pairs
+-------------
+
+<br>
+
+Lets write a type for **ordered pairs**
+
+<br>
+
+\begin{code}
+data OrdPair = OP {opX :: Int, opY :: Int}
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Legal Values** value of `opX < opY`
+
+<br>
+
+\begin{spec}
+okPair  = OP 2 4  -- legal
+badPair = OP 4 2  -- illegal
+\end{spec}
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Exercise: Ordered Pairs
+-----------------------
+
+<br>
+
+**Q:** Can you refine the data type to *legal* values only?
+
+<br>
+
+\begin{code}
+{-@ data OrdPair = OP { opX :: Int, opY :: Int} @-}
+
+okPair  = OP 2 4  -- legal
+badPair = OP 4 2  -- illegal
+\end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Refined: CSV Tables
+-------------------
+
+<br>
+
+\begin{code}
+data Csv = Csv {
+   hdrs :: List String
+ , vals :: List (List Int)
+ }
+
+scores  = Csv {
+   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
+ , vals = (   1 :::       25  :::      88 ::: Emp)
+      ::: (   2 :::       27  :::      83 ::: Emp)
+      ::: (   3 :::       19  :::      93 ::: Emp)
+      ::: Emp
+ }
+\end{code}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Exercise: Valid CSV Tables
+--------------------------
+
+<br>
+
+**Q:** Can you refine `Csv` so `scores'` is rejected?
+
+\begin{code}
+{-@ data Csv = Csv {
+      hdrs :: List String
+    , vals :: List (List Int)
+    }                                          @-}
+
+scores' = Csv {
+   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
+ , vals = (   1 :::       25  :::      88 ::: Emp)
+      ::: (   2 :::                    83 ::: Emp)
+      ::: (   3 :::       19  :::      93 ::: Emp)
+      ::: Emp
+ }
+\end{code}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ {#olist}
+=========
+
+Property 3: Ordered Lists
+-------------------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+Property 3: Ordered Lists
+=========================
+
+Ordered Lists
+-------------
+
+<br>
+
+Lets *define* a type for ordered lists
+
+<br>
+
+\begin{code}
+data OList a =
+      OEmp
+    | (:<) { oHd :: a
+           , oTl :: List a }
+\end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Ordered Lists
+-------------
+
+<br>
+
+Lets *refine* the type to enforce *order*
+
+<br>
+
+\begin{code}
+{-@ data OList a =
+      OEmp
+    | (:<) { oHd :: a
+           , oTl :: List {v:a | oHd <= v}} @-}
+\end{code}
+
+
 
 
 

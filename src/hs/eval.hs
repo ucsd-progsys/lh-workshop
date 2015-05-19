@@ -34,7 +34,7 @@ lookup _  Emp = impossible "lookup"
 
 {-@ insert :: k:_ -> _ -> m:_ -> {v: _ | keys v = addKey k m } @-}
 insert :: k -> v -> Map k v -> Map k v
-insert k v m = Bind k v m
+insert = Bind
 
 {-@ measure keys @-}
 keys :: (Ord k) => Map k v -> S.Set k

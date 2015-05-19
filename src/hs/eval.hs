@@ -11,49 +11,47 @@ impossible = error
 
 plus :: Expr -> Expr -> Expr
 
-type Map k v = [(k, v)]
+data Map k v = Emp
+             | Bind k v (Map k v)
+               deriving (Eq, Ord, Show)
 
-{-@ empty :: {m:_ | Set_emp (okeys m) }@-}
+{-@ empty :: {m:_ | noKeys m} @-}
 empty :: Map k v
-empty = []
+empty = Emp
 
 member :: (Eq k) => k -> Map k v -> Bool
-member k' ((k,_) : kvs)
+member k' (Bind k _ m)
   | k' == k   = True
-  | otherwise = member k' kvs
-member _ []   = False
+  | otherwise = member k' m
+member _  Emp = False
 
-{-@ lookup    :: (Eq k) => k:k -> {m:Map k v | HasKey k m } -> v @-}
+{-@ lookup    :: (Eq k) => k:k -> {m: _ | hasKey k m} -> v @-}
 lookup    :: (Eq k) => k -> Map k v -> v
-lookup k' ((k,v) : kvs)
+lookup k' (Bind k v m)
   | k' == k   = v
-  | otherwise = lookup k' kvs
-lookup _   [] = impossible "lookup"
+  | otherwise = lookup k' m
+lookup _  Emp = impossible "lookup"
 
-{-@ insert :: k:_ -> _ -> m:_ -> {mm: _ | okeys mm = Set_cup (Set_sng k) (okeys m) } @-}
+{-@ insert :: k:_ -> _ -> m:_ -> {v: _ | keys v = addKey k m } @-}
 insert :: k -> v -> Map k v -> Map k v
-insert k v kvs = (k, v) : kvs
+insert k v m = Bind k v m
 
-{- FIX measure keys @-}
--- FIX keys :: (Ord k) => Map k v -> S.Set k
--- FIX keys []       = S.empty
--- FIX keys (kv:kvs) = S.singleton (fst kv) `S.union` keys kvs
+{-@ measure keys @-}
+keys :: (Ord k) => Map k v -> S.Set k
+keys Emp          = S.empty
+keys (Bind k _ m) = addKey k m
 
-{- FIX inline hasKey @-}
--- FIX hasKey :: (Ord k) => k -> Map k v -> Bool
--- FIX hasKey k m = S.member k (okeys m)
+{-@ inline addKey @-}
+addKey :: (Ord k) => k -> Map k v -> S.Set k
+addKey k kvs = S.singleton k `S.union` keys kvs
 
--- FIX okeys  ===> keys
--- FIX HasKey ===> hasKey
+{-@ inline hasKey @-}
+hasKey :: (Ord k) => k -> Map k v -> Bool
+hasKey k m = S.member k (keys m)
 
-
-{-@ predicate HasKey K M = Set_mem K (okeys M) @-}
-
-{-@ measure okeys  :: [(a, b)] -> (S.Set a)
-    okeys ([])     = (Set_empty 0)
-    okeys (kv:kvs) = (Set_cup (Set_sng (fst kv)) (okeys kvs))
-  @-}
-
+{-@ inline noKeys @-}
+noKeys :: (Ord k) => Map k v -> Bool
+noKeys m = keys m == S.empty
 
 --------------------------------------------------------
 -- | Values
@@ -91,7 +89,7 @@ plus _         _         = impossible "plus"
 
 {-@ type Env = Map Var Val @-}
 
-{-@ eval :: g:Env -> ClosedExpr g -> Val @-}
+{-@ eval :: g:Env -> ScopedExpr g -> Val @-}
 eval _ i@(Const _)   = i
 eval g (Var x)       = lookup x g
 eval g (Plus e1 e2)  = plus  (eval g e1) (eval g e2)
@@ -100,7 +98,10 @@ eval g (Let x e1 e2) = eval g' e2
     g'               = insert x v1 g
     v1               = eval g e1
 
-{-@ type ClosedExpr G = {v:Expr | Set_sub (free v) (okeys G)} @-}
+{-@ type ScopedExpr G = {e: Expr | wellScoped G e} @-}
+
+{-@ inline wellScoped @-}
+wellScoped g e = free e `S.isSubsetOf` keys g
 
 {-@ measure free @-}
 free               :: Expr -> S.Set Var

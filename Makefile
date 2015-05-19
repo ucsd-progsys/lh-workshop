@@ -72,7 +72,7 @@ all: html
 ################ rust style html ###################################
 
 html: indexhtml $(htmlObjects)
-	mv src/*.html               $(SITE)/
+	cp src/*.html               $(SITE)/
 	cp -r $(IMG)                $(SITE)/
 	cp -r $(LIQUIDCLIENT)/fonts $(SITE)/
 	cp -r $(LIQUIDCLIENT)/css   $(SITE)/

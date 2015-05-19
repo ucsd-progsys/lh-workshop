@@ -1,5 +1,4 @@
 
-<div class="slideonly">
 
  {#measures}
 ============
@@ -26,14 +25,13 @@ So far: only specify properties of **base values** (e.g. `Int`) ...
 How to specify properties of **data types**?
 </div>
 
-</div>
 
 <div class="hidden">
 
 \begin{code}
 {-# LANGUAGE TupleSections    #-}
-{-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-warnings"    @-}
+{-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--totality"       @-}
 {-@ LIQUID "--diff"           @-}
@@ -58,7 +56,6 @@ infixr 9 :::
 {-@ data List [length] a = Emp | (:::) {hd :: a, tl :: List a } @-}
 {-@ invariant {v: List a | 0 <= length v} @-}
 
-{-@ type ListNE a = {v:List a | 0 < length v} @-}
 {-@ type Nat      = {v:Int | v >= 0} @-}
 {-@ type Pos      = {v:Int | v >  0} @-}
 
@@ -74,7 +71,6 @@ average xs = total `div` n
 
 </div>
 
-<div class="slideonly">
 
  {#meas}
 ====================
@@ -82,7 +78,20 @@ average xs = total `div` n
 Data Types
 ----------
 
-</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 Data Types
 ==========
@@ -102,6 +111,20 @@ data List a = Emp | (:::) a (List a)
 \end{code}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 Specifying the Length of a List
 -------------------------------
@@ -120,31 +143,24 @@ length (_ ::: xs) = 1 + length xs
 <div class="fragment">
 **Measure**
 
-Haskell function with *one equation per constructor*
++ Haskell function with *one equation per constructor*
+
++ *Strengthens* type of data constructor
 </div>
 
-<div class="slideonly">
-
-Specifying the Length of a List
--------------------------------
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
-\begin{spec}
-{-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
-\end{spec}
-
-<br>
-
-
-**Measure**
-
-*Strengthens* type of data constructor
-
-</div>
 
 
 Specifying the Length of a List
@@ -165,8 +181,19 @@ data List a where
 
 *Strengthens* type of data constructor
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<div class="slideonly">
 
  {#asdmeas}
 ===========
@@ -174,7 +201,6 @@ data List a where
 Using Measures
 --------------
 
-</div>
 
 Using Measures
 ==============
@@ -200,24 +226,47 @@ tail _          = impossible "tail"
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
 
-<div class="slideonly">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Naming Non-Empty Lists
 ----------------------
 
 <br>
 
-<div class="fragment">
 A convenient *type alias*
 
 <br>
 
-\begin{spec} <div/>
+\begin{code}
 {-@ type ListNE a = {v:List a| 0 < length v} @-}
-\end{spec}
+\end{code}
 
-</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
+<div class="slideonly">
 
 `head` and `tail` are Safe
 --------------------------
@@ -226,7 +275,7 @@ When called with *non-empty* lists:
 
 <br>
 
-\begin{spec} <div/>
+\begin{spec}
 {-@ head :: ListNE a -> a @-}
 head (x ::: _)  = x
 head _          = impossible "head"
@@ -237,6 +286,20 @@ tail _          = impossible "tail"
 \end{spec}
 
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 
@@ -255,7 +318,19 @@ foldr _ acc Emp        = acc
 foldr f acc (x ::: xs) = f x (foldr f acc xs)
 \end{code}
 
-</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Exercise: `average`
 -------------------
@@ -274,6 +349,19 @@ average' xs = total `div` n
 
 **Q:** What is a safe input type for `average`?
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
  {#flasd}
 =========
@@ -285,6 +373,20 @@ Refining Data Types
 <br>
 
 *Making illegal states unrepresentable*
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Refining Data Types
 ===================
@@ -309,6 +411,20 @@ data Year a = Year (List a)
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Example: Year is 12 Months
 --------------------------
 
@@ -322,7 +438,6 @@ Example: Year is 12 Months
 -- | An alias for `List`s of size `N`
 {-@ type ListN a N = {v:_ | length v == N} @-}
 \end{code}
-</div>
 
 <br>
 
@@ -333,6 +448,20 @@ Example: Year is 12 Months
 badYear = Year (1 ::: Emp)
 \end{code}
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Exercise: `map`
 ---------------
@@ -359,6 +488,20 @@ tempAverage (Year ms) = average months
 \end{code}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Exercise: `init`
 ----------------
 
@@ -380,6 +523,20 @@ sanDiegoWeather :: Year Int
 sanDiegoWeather = Year (init (const 72) 12)
 \end{code}
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Exercise: `init'`
 ------------------
@@ -405,6 +562,20 @@ sanDiegoWeather' = Year (init' (const 72) 12)
 \end{code}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Recap
 -----
 
@@ -413,7 +584,7 @@ Recap
 
 1. **Refinements:** Types + Predicates
 2. **Subtyping:** SMT Implication
-3. <div class="fragment">**Measures:** Specify Properties of data types</div>
+3. <div class="fragment">**Measures:** Specify Properties of Data</div>
 
 <br>
 
@@ -425,4 +596,17 @@ Recap
 + [Buffering](05-case-study-bytestring.lhs.slides.html)
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 

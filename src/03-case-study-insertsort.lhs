@@ -527,7 +527,7 @@ Lets *define* a type for ordered lists
 data OList a =
       OEmp
     | (:<) { oHd :: a
-           , oTl :: List a }
+           , oTl :: OList a }
 \end{code}
 
 <br>
@@ -542,7 +542,6 @@ data OList a =
 <br>
 <br>
 <br>
-
 
 
 Ordered Lists
@@ -558,8 +557,63 @@ Lets *refine* the type to enforce *order*
 {-@ data OList a =
       OEmp
     | (:<) { oHd :: a
-           , oTl :: List {v:a | oHd <= v}} @-}
+           , oTl :: OList {v:a | oHd <= v}} @-}
 \end{code}
+
+<br>
+
+*Head is smaller than values in tail*
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Ordered Lists
+-------------
+
+<br>
+
+*Illegal values unrepresentable*
+
+<br>
+
+\begin{code}
+okList :: OList Int
+okList = 1 :< 2 :< 3 :< OEmp
+
+badList :: OList Int
+badList = 1 :< 3 :< 2 :< OEmp
+\end{code}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Insertion Sort
+--------------
+
 
 
 

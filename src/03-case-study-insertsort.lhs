@@ -1,6 +1,53 @@
 
- {#adasd}
+ {#asdl}
 =========
+
+<div class="hidden">
+
+\begin{code}
+{-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--no-warnings"    @-}
+{-@ LIQUID "--no-termination" @-}
+
+module InsertSort where
+
+import Prelude hiding (sum, length, map, filter, foldr, foldr1)
+import qualified Data.Set as S -- hiding (elems, insert)
+
+-- insert, insertE :: (Ord a) => a -> List a -> List a
+-- sort, sortE     :: (Ord a) => [a] -> List a
+
+{-@ measure length @-}
+length :: List a -> Int
+length Emp        = 0
+length (_ ::: xs) = 1 + length xs
+
+data List a = Emp
+            | (:::) { hd :: a, tl :: List a }
+            deriving (Eq, Ord, Show)
+
+infixr 9 :::
+
+-- | Lists of a given size N
+{-@ type ListN a N = {v:List a | length v == N } @-}
+\end{code}
+</div>
+
+Case Study: Insertion Sort
+--------------------------
+
+\begin{code}
+{-@ sort :: (Ord a) => xs:[a] -> ListN a {len xs} @-}
+sort []     = Emp
+sort (x:xs) = insert x (sort xs)
+
+{-@ insert :: (Ord a) => a -> xs:List a -> ListN a {1 + length xs} @-}
+insert x Emp      = x ::: Emp
+insert x (y:::ys)
+  | x <= y        = x ::: y ::: ys
+  | otherwise     = y ::: insert x ys
+\end{code}
+
 
 Multiple Measures
 -----------------

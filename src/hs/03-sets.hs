@@ -2,13 +2,21 @@
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--no-termination" @-}
 
-module Sets where
+module InsertSort where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
-import Data.Set hiding (elems, insert)
+import qualified Data.Set as S -- hiding (elems, insert)
 
-insert, insertE         :: (Ord a) => a -> List a -> List a
-sort, sortE :: (Ord a) => [a] -> List a
+insert, insertE :: (Ord a) => a -> List a -> List a
+sort, sortE     :: (Ord a) => [a] -> List a
+
+{-@ measure length @-}
+length :: List a -> Int
+length Emp        = 0
+length (_ ::: xs) = 1 + length xs
+
+-- | Lists of a given size N
+{-@ type ListN a N = {v:List a | length v == N } @-}
 
 -----------------------------------------------------------------------
 -- | Size Preserving Insert Sort
@@ -29,13 +37,13 @@ insert x (y:::ys)
 -----------------------------------------------------------------------
 
 {-@ measure elems @-}
-elems :: (Ord a) => List a -> Set a
-elems Emp      = empty
+elems :: (Ord a) => List a -> S.Set a
+elems Emp      = S.empty
 elems (x:::xs) = addElem x xs
 
 {-@ inline addElem @-}
-addElem :: (Ord a) => a -> List a -> Set a
-addElem x xs = singleton x `union` elems xs
+addElem :: (Ord a) => a -> List a -> S.Set a
+addElem x xs = S.singleton x `S.union` elems xs
 
 {-@ type ListE a S = {v:List a | elems v = S }@-}
 
@@ -72,16 +80,4 @@ badList :: List Int
 badList = 1 ::: 3 ::: 2 ::: Emp
 
 
-
------------------------------------------------------------------------
--- | Specifying the length of a List
------------------------------------------------------------------------
-
-{-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
-
--- | Lists of a given size N
-{-@ type ListN a N = {v:List a | length v == N } @-}
 

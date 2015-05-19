@@ -27,7 +27,7 @@ To build reveal.js slides (in dist/_slides)
 
      $ make slides
 
-Contents
+Conents
 --------
 
 + 00-motivation.lhs
@@ -36,10 +36,20 @@ Contents
     + div, pos, etc.
 
 + 02-datatypes.lhs
-    - foldr1, map  (BOS14/001_Refinements.hs)
+    + foldr1, map  (BOS14/001_Refinements.hs)
 
 + 03-case-study-sorting.lhs
-    - insert-sort (n), insert-sort (elts), insert-sort (ord)
+    - SHOW: sort (n)
+    - EX: whats a good type for insert?
+    - SHOW: elems, addElem
+    - SHOW: sortE
+    - EX: whats a good type for insert?
+    - But is it ACTUALLY SORTING?
+    - Dependent Data Types
+      - Pair
+      - CSV
+      - OrdList 
+    - insert-sort (ord)
     
 + 04-case-study-evaluator.lhs (BOOK)
 

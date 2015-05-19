@@ -33,6 +33,17 @@ infixr 9 :<
 
 -- | Lists of a given size N
 {-@ type ListN a N = {v:List a | length v == N } @-}
+
+{-@ type OListE a S = {v:OList a | elemsO v = S }@-}
+
+{-@ measure elemsO @-}
+elemsO :: (Ord a) => OList a -> S.Set a
+elemsO OEmp    = S.empty
+elemsO (x:<xs) = addElemO x xs
+
+{-@ inline addElemO @-}
+addElemO :: (Ord a) => a -> OList a -> S.Set a
+addElemO x xs = S.singleton x `S.union` elemsO xs
 \end{code}
 </div>
 
@@ -508,9 +519,6 @@ Property 3: Ordered Lists
 <br>
 <br>
 
-
-
-
 Property 3: Ordered Lists
 =========================
 
@@ -611,19 +619,28 @@ badList = 1 :< 3 :< 2 :< OEmp
 <br>
 
 
-Insertion Sort
---------------
+Exercise: Insertion Sort
+------------------------
 
+<br>
 
+**Q:** Oops. There's a problem! Can you fix it?
 
+<br>
 
+\begin{code}
+{-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
+sortO Emp      = OEmp
+sortO (x:::xs) = insertO x (sortO xs)
 
+{-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
+insertO x (y :< ys)
+  | x <= y     = y :< x :< ys
+  | otherwise  = y :< insertO x ys
+insertO x _    = x :< OEmp
+\end{code}
 
-
-
-
-
-
+<br>
 
 
 Multiple Measures
@@ -713,5 +730,37 @@ Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
 <br>
 <br>
 
+Refinements vs. Full Dependent Types
+------------------------------------
 
+<br>
+
++ *Limited* to **decidable logics** but ...
+
++ *Offer* massive amounts of **automation**
+
+<br>
+
+<div class="fragment">
+
+Compare with `insertionSort` in:
+
++ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
++ [Idris](https://github.com/davidfstr/idris-insertion-sort/tree/master)
++ [Coq](http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v)
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 

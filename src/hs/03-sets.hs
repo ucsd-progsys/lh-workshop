@@ -5,7 +5,7 @@
 module InsertSort where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
-import qualified Data.Set as S -- hiding (elems, insert)
+import qualified Data.Set as S
 
 insert, insertE :: (Ord a) => a -> List a -> List a
 sort, sortE     :: (Ord a) => [a] -> List a
@@ -14,6 +14,12 @@ sort, sortE     :: (Ord a) => [a] -> List a
 length :: List a -> Int
 length Emp        = 0
 length (_ ::: xs) = 1 + length xs
+
+data List a = Emp
+            | (:::) { hd :: a, tl :: List a }
+            deriving (Eq, Ord, Show)
+
+infixr 9 :::
 
 -- | Lists of a given size N
 {-@ type ListN a N = {v:List a | length v == N } @-}
@@ -60,12 +66,6 @@ insertE x (y:::ys)
 -----------------------------------------------------------------------
 -- | A List Data Type
 -----------------------------------------------------------------------
-
-data List a = Emp
-            | (:::) { hd :: a, tl :: List a }
-            deriving (Eq, Ord, Show)
-
-infixr 9 :::
 
 {-@ data List a = Emp
                 | (:::) { hd :: a

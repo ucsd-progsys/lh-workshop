@@ -36,17 +36,114 @@ infixr 9 :::
 Case Study: Insertion Sort
 --------------------------
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Case Study: Insertion Sort
+==========================
+
+Exercise: `insert`
+------------------
+
+**Q:** Lets fix the type of `insert` so `sort` checks?
+
 \begin{code}
 {-@ sort :: (Ord a) => xs:[a] -> ListN a {len xs} @-}
 sort []     = Emp
 sort (x:xs) = insert x (sort xs)
 
-{-@ insert :: (Ord a) => a -> xs:List a -> ListN a {1 + length xs} @-}
+{-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
 insert x Emp      = x ::: Emp
 insert x (y:::ys)
   | x <= y        = x ::: y ::: ys
   | otherwise     = y ::: insert x ys
 \end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+Permutation
+-----------
+
+<br>
+
+Same *size* is all fine, how about *same *elements* in output?
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+SMT Solvers Reason About Sets
+-----------------------------
+
+<div class="fragment">
+
+<br>
+
+Hence, we can write `Set`-valued measures (over `Data.Set` API)
+
+\begin{spec} <div/>
+import qualified Data.Set as S
+\end{spec}
+
+</div>
+
+Specifying List Elements
+------------------------
+
+<br>
+
+\begin{code}
+{-@ measure elems @-}
+elems :: (Ord a) => List a -> S.Set a
+elems Emp      = S.empty
+elems (x:::xs) = addElem x xs
+
+{-@ inline addElem @-}
+addElem :: (Ord a) => a -> List a -> S.Set a
+addElem x xs = S.singleton x `S.union` elems xs
+\end{code}
+
+<br>
+
+<div class="fragment">
+`inline` lets us use Haskell terms in refinements.
+</div>
+
 
 
 Multiple Measures

@@ -3,7 +3,6 @@
 =========
 
 <div class="hidden">
-
 \begin{code}
 {-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-warnings"    @-}
@@ -29,22 +28,23 @@ data List a  = Emp
 
 infixr 9 :::
 
-infixr 9 :<
+infixr 9 :<:
 
 -- | Lists of a given size N
 {-@ type ListN a N = {v:List a | length v == N } @-}
 
-{-@ type OListE a S = {v:OList a | elemsO v = S }@-}
+{-@ type OListE a S = {v:OList a | elemsO v = S} @-}
 
 {-@ measure elemsO @-}
 elemsO :: (Ord a) => OList a -> S.Set a
-elemsO OEmp    = S.empty
-elemsO (x:<xs) = addElemO x xs
+elemsO OEmp       = S.empty
+elemsO (x :<: xs) = addElemO x xs
 
 {-@ inline addElemO @-}
 addElemO :: (Ord a) => a -> OList a -> S.Set a
 addElemO x xs = S.singleton x `S.union` elemsO xs
 \end{code}
+
 </div>
 
 Case Study: Insertion Sort
@@ -95,9 +95,9 @@ Case Study: Insertion Sort
 
 <br>
 
-1. <div class="fragment">Is the same *size* as the input,</div>
-2. <div class="fragment">Has the same *elements* as the input,</div>
-3. <div class="fragment">Is in *increasing order**.</div>
+1. <div class="fragment">Is the same **size** as the input,</div>
+2. <div class="fragment">Has the same **elements** as the input,</div>
+3. <div class="fragment">Is in increasing **order**.</div>
 
 <br>
 <br>
@@ -527,15 +527,15 @@ Ordered Lists
 
 <br>
 
-Lets *define* a type for ordered lists
+Lets define a type for ordered lists
 
 <br>
 
 \begin{code}
 data OList a =
       OEmp
-    | (:<) { oHd :: a
-           , oTl :: OList a }
+    | (:<:) { oHd :: a
+            , oTl :: OList a }
 \end{code}
 
 <br>
@@ -557,20 +557,21 @@ Ordered Lists
 
 <br>
 
-Lets *refine* the type to enforce *order*
+Lets **refine** the type to enforce **order**
 
 <br>
 
 \begin{code}
 {-@ data OList a =
       OEmp
-    | (:<) { oHd :: a
-           , oTl :: OList {v:a | oHd <= v}} @-}
+    | (:<:) { oHd :: a
+            , oTl :: OList {v:a | oHd <= v}} @-}
 \end{code}
 
 <br>
 
-*Head is smaller than values in tail*
+Head `oHd` is **smaller than every value** `v` in tail `oTl`
+
 
 
 <br>
@@ -598,10 +599,10 @@ Ordered Lists
 
 \begin{code}
 okList :: OList Int
-okList = 1 :< 2 :< 3 :< OEmp
+okList = 1 :<: 2 :<: 3 :<: OEmp
 
 badList :: OList Int
-badList = 1 :< 3 :< 2 :< OEmp
+badList = 1 :<: 3 :<: 2 :<: OEmp
 \end{code}
 
 
@@ -634,12 +635,24 @@ sortO Emp      = OEmp
 sortO (x:::xs) = insertO x (sortO xs)
 
 {-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
-insertO x (y :< ys)
-  | x <= y     = y :< x :< ys
-  | otherwise  = y :< insertO x ys
-insertO x _    = x :< OEmp
+insertO x (y :<: ys)
+  | x <= y     = y :<: x :<: ys
+  | otherwise  = y :<: insertO x ys
+insertO x _    = x :<: OEmp
 \end{code}
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
 
@@ -649,13 +662,14 @@ Multiple Measures
 Different Measures for `List`
 -----------------------------
 
+<br>
+
 We just wrote *two* measures for `List`
 
 <br>
 
 + `length :: List a -> Nat`
 + `elems  :: List a -> Set a`
-+ ...
 
 <br>
 <br>
@@ -673,18 +687,20 @@ We just wrote *two* measures for `List`
 Multiple Measures are Conjoined
 -------------------------------
 
+<br>
+
 Data constructor refinements are **conjoined**
 
 <br>
 
 \begin{spec}
 data List a where
-  N :: {v:List a |  length v = 0
+  Emp   :: {v:List a |  length v = 0
                  && elems  v = empty}
-  C :: x:a
-    -> xs:List a
-    -> {v:List a |  length v = 1 + length xs
-                 && elems v  = addElem x  xs }
+  (:::) :: x:a
+        -> xs:List a
+        -> {v:List a |  length v = 1 + length xs
+                     && elems v  = addElem x  xs }
 \end{spec}
 
 <br>

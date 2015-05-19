@@ -14,8 +14,8 @@ module InsertSort where
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
 import qualified Data.Set as S -- hiding (elems, insert)
 
--- insert, insertE :: (Ord a) => a -> List a -> List a
--- sort, sortE     :: (Ord a) => [a] -> List a
+insert, insertE :: (Ord a) => a -> List a -> List a
+sort, sortE     :: (Ord a) => List a -> List a
 
 {-@ measure length @-}
 length :: List a -> Int
@@ -34,29 +34,100 @@ infixr 9 :::
 </div>
 
 Case Study: Insertion Sort
---------------------------
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+==========================
 
 
 Case Study: Insertion Sort
-==========================
+--------------------------
+
+Recall the simplest sorting algorithm:
+
+<br>
+
+\begin{spec}
+sort :: (Ord a) => List a -> List a
+sort []           = Emp
+sort (x:xs)       = insert x (sort xs)
+
+insert :: (Ord a) => a -> List a -> List a
+insert x Emp      = x ::: Emp
+insert x (y:::ys)
+  | x <= y        = x ::: y ::: ys
+  | otherwise     = y ::: insert x ys
+\end{spec}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Case Study: Insertion Sort
+--------------------------
+
+<br>
+
+**Goal:** specify & verify that output:
+
+<br>
+
+1. <div class="fragment">Is the same *size* as the input,</div>
+2. <div class="fragment">Has the same *elements* as the input,</div>
+3. <div class="fragment">Is in *increasing order**.</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ {#pr1}
+=======
+
+
+Property 1: Size
+----------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Property 1: Size
+================
+
 
 Exercise: `insert`
 ------------------
 
-**Q:** Lets fix the type of `insert` so `sort` checks?
+**Q:** Can you fix the type of `insert` so `sort` checks?
 
 \begin{code}
 {-@ sort :: (Ord a) => xs:[a] -> ListN a {len xs} @-}
@@ -85,13 +156,16 @@ insert x (y:::ys)
 
 
 
+Property 2: Elements
+====================
+
 
 Permutation
 -----------
 
 <br>
 
-Same *size* is all fine, how about *same *elements* in output?
+Same *size* is all fine, how about *same elements* in output?
 
 <br>
 <br>
@@ -114,13 +188,33 @@ SMT Solvers Reason About Sets
 
 <br>
 
-Hence, we can write `Set`-valued measures (over `Data.Set` API)
+Hence, we can write *Set-valued* measures
+
+<br>
+
+Using the `Data.Set` API for convenience
+
+<br>
 
 \begin{spec} <div/>
 import qualified Data.Set as S
 \end{spec}
 
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Specifying List Elements
 ------------------------
@@ -141,46 +235,134 @@ addElem x xs = S.singleton x `S.union` elems xs
 <br>
 
 <div class="fragment">
-`inline` lets us use Haskell terms in refinements.
+`inline` lets us reuse Haskell terms in refinements.
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-
-Multiple Measures
------------------
-
-Can support *many* measures for a type
-
-Multiple Measures
-=================
-
-Example: List Elements
+Exercise: Verifying Permutation
 ----------------------
 
-Measure describing *set of elements* of a `List`
+<br>
+
+Lets verify that `sortE` returns the same set of elements:
+
+<br>
 
 \begin{code}
-{- measure elems @-}
+{-@ type ListE a S = {v:List a | elems v = S }@-}
+
+{-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
+sortE Emp         = Emp
+sortE (x:::xs)    = insertE x (sortE xs)
+
+{-@ insertE :: (Ord a) => x:a -> xs:List a -> List a @-}
+insertE x Emp     = x ::: Emp
+insertE x (y:::ys)
+  | x <= y        = x ::: y ::: ys
+  | otherwise     = y ::: insertE x ys
 \end{code}
 
 <br>
 
-<div class="fragment">
-LiquidHaskell **strengthens** data constructors
+**Q:** What is the right type for `insertE`?
 
-\begin{spec}
-data L a where
-  N :: {v : List a | elems v = empty}
-  C :: x:a -> xs:List a
-    -> {v: List a | elems v = addElem x xs}
-\end{spec}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-</div>
 
-Conjoining Refinements
-----------------------
+Property 3: Order
+=================
+
+Yes, but does it actually *sort* ?
+----------------------------------
+
+<br>
+
+How to specify **ordered lists** ?
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Specifying Ordered Lists
+------------------------
+
+
+
+
+
+
+
+
+
+
+Multiple Measures
+=================
+
+Different Measures for `List`
+-----------------------------
+
+We just wrote *two* measures for `List`
+
+<br>
+
++ `length :: List a -> Nat`
++ `elems  :: List a -> Set a`
++ ...
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Multiple Measures are Conjoined
+-------------------------------
 
 Data constructor refinements are **conjoined**
+
+<br>
 
 \begin{spec}
 data List a where
@@ -192,22 +374,48 @@ data List a where
                  && elems v  = addElem x  xs }
 \end{spec}
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-Recap
------
+Measures vs. Indexed Types
+--------------------------
 
+<br>
+
+Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
+
+<br>
+
+<div class="fragment">
+
++ **Decouple** properties from data type
+
++ **Reuse** same data type with different invariants
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 
 
-1. Refinements: Types + Predicates
-2. Subtyping: SMT Implication
-3. **Datatypes:** Strengthened Constructors
-
-<br>
-
-<div class="fragment">Automatic Verification of Data Structures</div>
-
-<br>
-<br>
 

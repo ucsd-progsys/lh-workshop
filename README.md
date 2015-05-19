@@ -27,7 +27,7 @@ To build reveal.js slides (in dist/_slides)
 
      $ make slides
 
-Conents
+Contents
 --------
 
 + 00-motivation.lhs
@@ -46,10 +46,10 @@ Conents
     - EX: whats a good type for insert?
     - But is it ACTUALLY SORTING?
     - Dependent Data Types
-      - Pair
-      - CSV
-      - OrdList 
-    - insert-sort (ord)
+      - SHOW: Pair
+      - EX:   CSV
+      - SHOW: OrdList 
+    - SHOW: insert-sort (ord)
     
 + 04-case-study-evaluator.lhs (BOOK)
 

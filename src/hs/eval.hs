@@ -90,7 +90,7 @@ add :: (Ord k) => k -> Map k v -> S.Set k
 add k kvs = S.singleton k `S.union` keys kvs
 
 --------------------------------------------------------
--- | Values
+-- | Expressions
 --------------------------------------------------------
 
 type Var  = String

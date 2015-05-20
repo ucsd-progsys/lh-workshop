@@ -55,6 +55,7 @@ noKeys m = keys m == S.empty
 -- | Membership test (SKIP?)
 --------------------------------------------------------
 
+{-@ member :: (Eq k) => k:_ -> m:_ -> {v:Bool | Prop v <=> has k m} @-}
 member :: (Eq k) => k -> Map k v -> Bool
 member k' (Bind k _ m)
   | k' == k   = True

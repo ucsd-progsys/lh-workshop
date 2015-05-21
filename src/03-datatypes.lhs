@@ -43,11 +43,23 @@ average xs = total `div` n
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 Data Types
 ==========
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -73,7 +85,8 @@ Lets define our own `List` data type:
 <br>
 
 \begin{code}
-data List a = Emp | (:::) a (List a)
+data List a = Emp               -- Nil
+            | (:::) a (List a)  -- Cons
 \end{code}
 </div>
 
@@ -94,6 +107,14 @@ data List a = Emp | (:::) a (List a)
 
 Specifying the Length of a List
 -------------------------------
+
+<br>
+
+<div class="fragment">
+**Measure**
+
+Haskell function with *a single equation per constructor*
+</div>
 
 <br>
 
@@ -105,16 +126,6 @@ length (_ ::: xs) = 1 + length xs
 \end{code}
 
 <br>
-
-<div class="fragment">
-**Measure**
-
-+ Haskell function with *one equation per constructor*
-
-+ *Strengthens* type of data constructor
-</div>
-
-<br>
 <br>
 <br>
 <br>
@@ -132,20 +143,27 @@ length (_ ::: xs) = 1 + length xs
 Specifying the Length of a List
 -------------------------------
 
-<br>
-
-\begin{spec} <div/>
-data List a where
-  Emp   :: {v:List a | length v = 0}
-  (:::) :: x:a -> xs:List a
-        -> {v:List a | length v = 1 + length xs}
-\end{spec}
 
 <br>
 
 **Measure**
 
 *Strengthens* type of data constructor
+
+<br>
+
+<div class="fragment">
+
+\begin{spec} <div/>
+data List a where
+
+  Emp   :: {v:List a | length v = 0}
+
+  (:::) :: x:a -> xs:List a
+        -> {v:List a | length v = 1 + length xs}
+\end{spec}
+
+</div>
 
 <br>
 <br>
@@ -187,15 +205,19 @@ Using Measures
 Exercise: *Partial* Functions
 -----------------------------
 
+<br>
+
 Fear `head` and `tail` no more!
 
 <br>
 
 <div class="fragment">
 \begin{code}
+{-@ head        :: List a -> a @-}
 head (x ::: _)  = x
 head _          = impossible "head"
 
+{-@ tail        :: List a -> List a @-}
 tail (_ ::: xs) = xs
 tail _          = impossible "tail"
 \end{code}
@@ -285,7 +307,11 @@ tail _          = impossible "tail"
 A Useful Partial Function `foldr1`
 ----------------------------------
 
+<br>
+
 *Fold* `f` over list initially using *first* element:
+
+<br>
 
 \begin{code}
 {-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
@@ -326,7 +352,7 @@ average' xs = total `div` n
 
 <br>
 
-**Q:** What is a safe input type for `average`?
+**Q:** What is a safe input type for `average'`?
 
 <br>
 <br>
@@ -350,7 +376,7 @@ Refining Data Types
 <br>
 <br>
 
-*Making illegal states unrepresentable*
+&nbsp; &nbsp; *Make illegal states unrepresentable*
 
 <br>
 <br>
@@ -377,7 +403,7 @@ data Year a = Year (List a)
 <br>
 
 <div class="fragment">
-**Legal Values:** List of `12` elements
+**Legal Values:** Lists of `12` elements, e.g.
 
 <br>
 
@@ -402,21 +428,26 @@ data Year a = Year (List a)
 Example: Year is 12 Months
 --------------------------
 
-**Refine Type to Legal Values**
-
 <br>
+
+**Refine Type to Legal Values**
 
 \begin{code}
 {-@ data Year a = Year (ListN a 12) @-}
+\end{code}
 
--- | An alias for `List`s of size `N`
-{-@ type ListN a N = {v:_ | length v == N} @-}
+<br>
+
+**Lists Of A Given Size**
+
+\begin{code}
+{-@ type ListN a N = {v: List a | length v == N} @-}
 \end{code}
 
 <br>
 
 <div class="fragment">
-*Make illegal states unrepresentable*
+**Make illegal states unrepresentable**
 
 \begin{code}
 badYear = Year (1 ::: Emp)
@@ -440,6 +471,8 @@ badYear = Year (1 ::: Emp)
 Exercise: `map`
 ---------------
 
+<br>
+
 \begin{code}
 {-@ map :: (a -> b) -> xs:List a -> List b @-}
 map _ Emp         = Emp
@@ -449,7 +482,7 @@ map f (x ::: xs)  = f x ::: map f xs
 <br>
 
 <div class="fragment">
-**Q:** Can you fix `map` to verify `tempAverage` verifies?
+**Q:** Can you fix `map` to verify `tempAverage`?
 
 <br>
 
@@ -458,7 +491,8 @@ data Weather = W { temp :: Int, rain :: Int }
 
 tempAverage :: Year Weather -> Int
 tempAverage (Year ms) = average months
-  where months        = map temp ms
+  where
+    months            = map temp ms
 \end{code}
 </div>
 
@@ -479,6 +513,8 @@ tempAverage (Year ms) = average months
 Exercise: `init`
 ----------------
 
+<br>
+
 \begin{code}
 {-@ init :: (Int -> a) -> Nat -> List a @-}
 init _ 0 = Emp
@@ -488,13 +524,13 @@ init f n = f n ::: init f (n-1)
 <br>
 
 <div class="fragment">
-**Q:** Can you fix the type of `init` so the below is safe?
+**Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted? 
 
 <br>
 
 \begin{code}
-sanDiegoWeather :: Year Int
-sanDiegoWeather = Year (init (const 72) 12)
+sanDiegoTemp :: Year Int
+sanDiegoTemp = Year (init (const 72) 12)
 \end{code}
 </div>
 
@@ -515,6 +551,8 @@ sanDiegoWeather = Year (init (const 72) 12)
 Exercise: `init'`
 ------------------
 
+<br>
+
 \begin{code}
 {-@ init' :: (Int -> a) -> n:Nat -> List a @-}
 init' f n = go 0
@@ -526,13 +564,13 @@ init' f n = go 0
 <br>
 
 <div class="fragment">
-**Q:** For bonus points, fix `init'` so the below is safe?
+**Q:** For bonus points, fix `init'` so `sanDiegoTemp'`is accepted?
 
 <br>
 
 \begin{code}
-sanDiegoWeather' :: Year Int
-sanDiegoWeather' = Year (init' (const 72) 12)
+sanDiegoTemp' :: Year Int
+sanDiegoTemp' = Year (init' (const 72) 12)
 \end{code}
 </div>
 

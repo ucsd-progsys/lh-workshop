@@ -18,6 +18,8 @@ main = putStrLn "Easter Egg: to force Makefile"
 <br>
 <br>
 <br>
+<br>
+<br>
 
 With: N. Vazou, E. Seidel, P. Rondon, M. Kawaguchi, D. Vytiniotis, S. Peyton-Jones
 
@@ -33,11 +35,8 @@ With: N. Vazou, E. Seidel, P. Rondon, M. Kawaguchi, D. Vytiniotis, S. Peyton-Jon
 <br>
 
 
-Well-Typed Programs Can Go Wrong
-================================
-
- {#asd}
--------
+Well-Typed Programs *Can* Go Wrong
+==================================
 
 
 <div class="hidden">
@@ -215,10 +214,10 @@ Memory overflows **leaking secrets**...
 
 
 
-Goal
-----
+Goal: Extend Type System
+------------------------
 
-Extend Type System
+<br>
 
 <br>
 
@@ -249,54 +248,23 @@ Plan
 ----
 
 <br>
-
-**Part I**
-
-Refinement Types
-
 <br>
 
-<div class="fragment">
-**Part II**
+**Part I: Refinement Types**
 
-Case Studies
-</div>
-
-<br>
++ <div class="fragment"> [**Refinements**](02-refinements.html)</div>
++ <div class="fragment"> [**Data Types**](03-datatypes.html)</div>
 
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-I: Refinement Types
--------------------
 
-<br>
+**Part II: Case Studies**
 
-<div class="fragment">
-[**Motivation**](01-motivation.html)
-</div>
++ <div class="fragment">[**Insertion Sort**](04-case-study-insertsort.html)</div>
++ <div class="fragment">[**Well Scoped Evaluator**](05-case-study-eval.html)</div>
++ <div class="fragment">[**Low-level Memory**](06-case-study-bytestring.html)</div>
 
-<br>
-
-<div class="fragment">
-[**Refinements**](02-refinements.html)
-</div>
-
-<br>
-
-<div class="fragment">
-[**Data Types**](03-datatypes.html)
-</div>
 
 
 <br>
@@ -311,8 +279,6 @@ I: Refinement Types
 <br>
 <br>
 <br>
-
-
 
 II: Case Studies
 ----------------

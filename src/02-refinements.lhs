@@ -326,7 +326,7 @@ zero'     = zero
 <br>
 <br>
 
-Predicate Subtyping [[PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+Predicate Subtyping [[Nuprl, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 -------------------
 
 <br>
@@ -360,7 +360,7 @@ $$\Gamma \defeq \overline{\bindx{x_i}{P_i}}$$
 <br>
 
 
-Predicate Subtyping [[PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+Predicate Subtyping [[Nuprl, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 ------------------------
 
 <br>

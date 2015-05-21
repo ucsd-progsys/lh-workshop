@@ -8,8 +8,8 @@
 
     <link href="$$root$$/css/bootstrap.css" rel="stylesheet">
     <link href="$$root$$/css/bootstrap-theme.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="$$root$$/css/rust-book.css">
-    <link rel="stylesheet" type="text/css" href="$$root$$/css/editor.css">
+    <link rel="stylesheet" type="text/css" href="$$root$$/css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="$$root$$/css/editor-slides.css">
 
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">

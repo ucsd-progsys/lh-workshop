@@ -47,14 +47,13 @@
 \newcommand{\Int}{\mathtt{Int}}
 \newcommand{\Nat}{\mathtt{Nat}}
 \newcommand{\Zero}{\mathtt{Zero}}
-\newcommand{\foo}[4]{{#1}^{#4} + {#2}^{#4} = {#3}^{#4}}
+\newcommand{\kvar}[1]{\color{kvcol}{\mathbf{\kappa_{#1}}}}
+\newcommand{\llen}[1]{\mathtt{llen}(#1)}
 \newcommand{\reft}[3]{\{\bindx{#1}{#2} \mid {#3}\}}
 \newcommand{\ereft}[3]{\bindx{#1}{\{#2 \mid #3\}}}
 \newcommand{\bindx}[2]{{#1}\!:\!{#2}}
 \newcommand{\reftx}[2]{\{{#1}\mid{#2}\}}
 \newcommand{\inferrule}[3][]{\frac{#2}{#3}\;{#1}}
-\newcommand{\kvar}[1]{\color{kvcol}{\mathbf{\kappa_{#1}}}}
-\newcommand{\llen}[1]{\mathtt{llen}(#1)}
 \)
 
 <div class="reveal">

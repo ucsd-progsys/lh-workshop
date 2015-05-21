@@ -48,9 +48,6 @@ average xs = total `div` n
 Data Types
 ==========
 
- {#as}
-------
-
 <br>
 <br>
 <br>
@@ -167,10 +164,9 @@ data List a where
 Using Measures
 ==============
 
- {#asdmeas}
------------
-
-
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -350,8 +346,6 @@ average' xs = total `div` n
 Refining Data Types
 ===================
 
- {#flasd}
----------
 
 <br>
 <br>

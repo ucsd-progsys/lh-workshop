@@ -8,8 +8,8 @@
 
     <link href="$$root$$/css/bootstrap.css" rel="stylesheet">
     <link href="$$root$$/css/bootstrap-theme.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="$$root$$/css/rust-book.css">
-    <link rel="stylesheet" type="text/css" href="$$root$$/css/editor.css">
+    <link rel="stylesheet" type="text/css" href="$$root$$/css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="$$root$$/css/editor-slides.css">
 
    
     <style type="text/css">code{white-space: pre;}
@@ -58,6 +58,27 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <script type="text/javascript" src="$$root$$/js/jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="$$root$$/js/angular/angular.js"></script>
 <script type="text/javascript" src="$$root$$/js/bootstrap/bootstrap.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      True: "\\mathit{True}", 
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}", 
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }    
+  }
+});
+</script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 
@@ -72,6 +93,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
        </button>
     </div>
 
+    
 <div id='toc' class='mobile-hidden'>
 $toc
 </div>

@@ -1,14 +1,3 @@
-
-<div class="slideonly">
-
- {#simplerefinements}
-=======================
-
-Simple Refinement Types
------------------------
-
-</div>
-
 <div class="hidden">
 
 \begin{code}
@@ -28,23 +17,48 @@ size, size' :: [a] -> Int
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<div class="slideonly">
 
 Simple Refinement Types
 =======================
 
-Types + Predicates
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Simple Refinement Types
 ------------------
 
 <br>
 
-\begin{spec}<div/>
-b := Int
-   | Bool
-   | ...         -- base types
-   | a, b, c     -- type variables
-\end{spec}
+Refinement Types = *Types* + *Predicates*
 
 
 <br>
@@ -61,46 +75,15 @@ b := Int
 <br>
 
 
-Types + Predicates
-------------------
+Types
+-----
 
 <br>
 
 \begin{spec}<div/>
-b := Int
+b := Int         -- base types
    | Bool
-   | ...         -- base types
-   | a, b, c     -- type variables
-
-t := {x:b | p}   -- refined base
-   | x:t -> t    -- refined function
-\end{spec}
-
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Types + Predicates
-------------------
-
-<br>
-
-\begin{spec}<div/>
-b := Int
-   | Bool
-   | ...         -- base types
+   | ...
    | a, b, c     -- type variables
 
 t := {x:b | p}   -- refined base
@@ -175,7 +158,7 @@ e := x, y, z,...    -- variable
 
 **Refinement Logic: QF-UFLIA**
 
-Quant.-Free. Uninterpreted Functions and Linear Arithmetic
+Quantifier-Free Logic of Uninterpreted Functions and Linear Arithmetic
 
 </div>
 
@@ -267,12 +250,12 @@ poss     =  [0, 1, 2, 3]
 
 <br>
 
-**Q:** Can you fix `Pos` so `poss` is **rejected**?
+**Q:** First, can you fix `Pos` so `poss` is **rejected**?
 
 <br>
 
 <div class="fragment">
-**Q:** Now, can you modify `poss` so it is **accepted**?
+**Q:** Next, can you modify `poss` so it is **accepted**?
 </div>
 
 
@@ -289,11 +272,57 @@ poss     =  [0, 1, 2, 3]
 <br>
 <br>
 
-Type Checking
-=============
+Refinement Type Checking
+========================
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
 
 A Term Can Have *Many* Types
 ----------------------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+A Term Can Have *Many* Types
+----------------------------
+
+
 
 <br>
 
@@ -326,8 +355,16 @@ zero'     = zero
 <br>
 <br>
 
-Predicate Subtyping [[Nuprl, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+Predicate Subtyping
 -------------------
+
+<br>
+
+[(NUPRL, PVS)](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+
+<br>
+
+In **environment** $\Gamma$ the type $t_1$ is a **subtype** of the type $t_2$
 
 <br>
 
@@ -337,11 +374,11 @@ $$\boxed{\Gamma \vdash t_1 \preceq t_2}$$
 
 <br>
 
-Where **environment** $\Gamma$ is a sequence of binders
+**Environment** $\Gamma$ is a sequence of binders
 
 <br>
 
-$$\Gamma \defeq \overline{\bindx{x_i}{P_i}}$$
+$$\Gamma \doteq \overline{\bindx{x_i}{P_i}}$$
 
 </div>
 
@@ -360,8 +397,8 @@ $$\Gamma \defeq \overline{\bindx{x_i}{P_i}}$$
 <br>
 
 
-Predicate Subtyping [[Nuprl, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
-------------------------
+Predicate Subtyping
+--------------------
 
 <br>
 
@@ -374,7 +411,7 @@ $$
 \begin{array}{rll}
 {\mathbf{If\ VC\ is\ Valid}}   & \bigwedge_i P_i \Rightarrow  Q  \Rightarrow R & (\mbox{By SMT}) \\
                 &  & \\
-{\mathbf{Then}} & \overline{\bindx{x_i}{P_i}} \vdash \reft{v}{b}{Q} \subty \reft{v}{b}{R} & \\
+{\mathbf{Then}} & \overline{\bindx{x_i}{P_i}} \vdash \reft{v}{b}{Q} \preceq \reft{v}{b}{R} & \\
 \end{array}
 $$
 
@@ -411,7 +448,7 @@ $$
 \begin{array}{rcrccll}
 \mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 0   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
 %                &           &             &          &             &           \\
-\mathbf{So:}      & \emptyset & \vdash      & \Zero  & \subty      & \Nat   &   \\
+\mathbf{So:}      & \emptyset & \vdash      & \Zero  & \preceq & \Nat   &   \\
 \end{array}
 $$
 </div>
@@ -449,13 +486,9 @@ zero'     =  zero   -- zero :: Zero <: Nat
 
 <br>
 
-Eliminates **boring** proofs ...
+Eliminates *boring* proofs ... makes verification practical.
 
 <br>
-
-<div class="fragment">
-... makes verification **practical**.
-</div>
 
 
 <br>
@@ -475,8 +508,25 @@ Eliminates **boring** proofs ...
 Contracts: Function Types
 =========================
 
- {#as}
-------
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
 
 Pre-Conditions
 --------------
@@ -518,7 +568,9 @@ Program type-checks $\Rightarrow$ `impossible` **never called at run-time**
 Exercise: Pre-Conditions
 ------------------------
 
-Let's write a *safe* division function
+<br>
+
+Let's write a **safe division** function
 
 <br>
 
@@ -531,11 +583,7 @@ safeDiv x n = x `div` n
 <br>
 
 <div class="fragment">
-Yikes, an error!
-
-<br>
-
-**Q:** Can you **fix the type** of `safeDiv` to banish the error?
+**Q:** Yikes! Can you **fix the type** of `safeDiv` to banish the error?
 </div>
 
 
@@ -564,7 +612,6 @@ avg2 x y   = safeDiv (x + y) 2
 
 <br>
 
-<div class="slideonly">
 <div class="fragment">
 **Precondition**
 
@@ -572,17 +619,14 @@ avg2 x y   = safeDiv (x + y) 2
 {-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
 \end{spec}
 </div>
-</div>
 
 <br>
 
-<div class="slideonly">
-<div class="fragment">
 **Verifies As**
 
-$\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \subty \reftx{v}{v \not = 0}$
-</div>
-</div>
+$$\inferrule{}{(v = 2) \Rightarrow (v \not = 0)}
+            {\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \preceq \reftx{v}{v \not = 0}}
+$$
 
 
 <br>
@@ -598,51 +642,11 @@ $\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \subty \reftx{v}{v \no
 <br>
 <br>
 
-
-
-Precondition Checked at Call-Site
----------------------------------
-
-<br>
-
-\begin{code}
-avg2 x y   = safeDiv (x + y) 2
-\end{code}
-
-<br>
-
-<div class="slideonly">
-**Precondition**
-
-\begin{spec} <div/>
-{-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
-\end{spec}
-</div>
-
-<br>
-
-<div class="slideonly">
-**Verifies As**
-
-$$(v = 2) \Rightarrow (v \not = 0)$$
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Exercise: Check That Data
 -------------------------
+
+<br>
 
 \begin{code}
 calc :: IO ()
@@ -651,7 +655,7 @@ calc = do
   n <- readLn
   putStrLn "Enter denominator"
   d <- readLn
-  putStrLn $ "Result = " ++ show (div n d)
+  putStrLn $ "Result = " ++ show (safeDiv n d)
   calc
 \end{code}
 
@@ -674,28 +678,26 @@ calc = do
 <br>
 
 
-Precond. Checked at Call-Site
------------------------------
+Precondition Checked at Call-Site
+---------------------------------
 
 <br>
 
 \begin{code}
 avg        :: [Int] -> Int
-avg xs     = div total n
+avg xs     = safeDiv total n
   where
     total  = sum    xs
-    n      = length xs
+    n      = length xs  -- returns a Nat
 \end{code}
 
 <br>
 
-<div class="slideonly">
 <div class="fragment">
 **Rejected** as `n` can be *any* `Nat`
 
 $$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
-</div>
 </div>
 
 
@@ -717,23 +719,16 @@ $$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
 <br>
 
-\begin{code}
-size [_]    = 1
-size (_:xs) = 1 +  size xs
--- size _   = impossible "size"
-\end{code}
-
-<br>
-
-<div class="fragment">
 Specify **post-condition** as **output type**
 
 <br>
 
 \begin{code}
 {-@ size :: [a] -> Pos @-}
+size [_]    = 1
+size (_:xs) = 1 +  size xs
+-- size _   = impossible "size"
 \end{code}
-</div>
 
 
 <br>
@@ -750,8 +745,8 @@ Specify **post-condition** as **output type**
 <br>
 
 
-Postconds Checked at Return
----------------------------
+Postconditions Checked at Return
+--------------------------------
 
 <br>
 
@@ -802,12 +797,10 @@ avg' xs    = safeDiv total n
 
 <br>
 
-<div class="slideonly">
 <div class="fragment">
 **Verifies As**
 
 $$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
-</div>
 </div>
 
 
@@ -825,11 +818,9 @@ $$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
 <br>
 
 Recap
-=====
+-----
 
- {#recap-01}
-------------
-
+<br>
 
 <div class="fragment">
 **Refinement Types**
@@ -868,8 +859,10 @@ Via SMT based Predicate Subtyping
 <br>
 
 
-  {#exit-01}
-------------
+Unfinished Business
+-------------------
+
+<br>
 
 How to prevent calling `size` with **empty lists**?
 

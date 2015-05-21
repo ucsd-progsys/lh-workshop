@@ -21,7 +21,7 @@ main = putStrLn "Easter Egg: to force Makefile"
 <br>
 <br>
 
-With: N. Vazou, E. Seidel, P. Rondon, M. Kawaguchi, D. Vytiniotis, S. Peyton-Jones
+With: N. Vazou, E. Seidel, D. Vytiniotis, S. Peyton-Jones
 
 
 <br>
@@ -248,7 +248,6 @@ Plan
 ----
 
 <br>
-<br>
 
 **Part I: Refinement Types**
 
@@ -256,8 +255,6 @@ Plan
 + <div class="fragment"> [**Data Types**](03-datatypes.html)</div>
 
 <br>
-<br>
-
 
 **Part II: Case Studies**
 
@@ -266,41 +263,6 @@ Plan
 + <div class="fragment">[**Low-level Memory**](06-case-study-bytestring.html)</div>
 
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-II: Case Studies
-----------------
-
-<br>
-
-
-<div class="fragment">
-[**Insertion Sort**](04-case-study-insertsort.html)
-</div>
-
-<br>
-
-<div class="fragment">
-[**Well Scoped Evaluator**](05-case-study-eval.html)
-</div>
-
-<br>
-
-<div class="fragment">
-[**Low-level Memory**](06-case-study-bytestring.html)
-</div>
 
 <br>
 <br>
@@ -416,8 +378,8 @@ Thank You!
 <br>
 <br>
 
-http://www.refinement-types.org
 
+[`http://www.refinement-types.org`](http://www.refinement-types.org)
 
 <br>
 <br>

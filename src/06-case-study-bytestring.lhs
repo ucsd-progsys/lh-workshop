@@ -1,8 +1,3 @@
-Case Study: Low Level Memory
-============================
-
- {#mem}
--------
 
 <div class="hidden">
 
@@ -28,6 +23,27 @@ import Language.Haskell.Liquid.Prelude
 
 </div>
 
+Case Study: Low Level Memory
+============================
+
+ {#mem}
+-------
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 "HeartBleed" in Haskell
 -----------------------
 
@@ -41,6 +57,18 @@ import Language.Haskell.Liquid.Prelude
 Implementation errors could open up vulnerabilities
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 
@@ -67,10 +95,24 @@ chop s n = s'
     s'   = unpack b'      -- up to high-level
 \end{spec}
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 "HeartBleed" in Haskell (2/3)
 -----------------------------
 
-<img src="../img/overflow.png" height=100px>
+<img src="img/overflow.png" height=100px>
 
 
 Works if you use the **valid prefix** size
@@ -88,7 +130,7 @@ Works if you use the **valid prefix** size
 "HeartBleed" in Haskell (3/3)
 -----------------------------
 
-<img src="../img/overflow.png" height=100px>
+<img src="img/overflow.png" height=100px>
 
 Leaks *overflow buffer* if **invalid prefix** size!
 
@@ -409,7 +451,7 @@ Errors at *each* level are prevented by types at *lower* levels
 Type
 -------
 
-<img src="../img/bytestring.png" height=150px>
+<img src="img/bytestring.png" height=150px>
 
 \begin{code}
 data ByteString = PS {
@@ -423,7 +465,7 @@ data ByteString = PS {
 Refined Type
 ------------
 
-<img src="../img/bytestring.png" height=150px>
+<img src="img/bytestring.png" height=150px>
 
 \begin{code}
 {-@ data ByteString = PS {
@@ -436,7 +478,7 @@ Refined Type
 Refined Type
 ------------
 
-<img src="../img/bytestring.png" height=150px>
+<img src="img/bytestring.png" height=150px>
 
 <br>
 

@@ -4,12 +4,8 @@ main = putStrLn "Easter Egg: to force Makefile"
 \end{code}
 </div>
 
-LiquidHaskell 
-==============
-
 Refinement Types for Haskell
-------------------------------
-
+============================
 
 <br>
 <br>
@@ -17,22 +13,36 @@ Refinement Types for Haskell
 <div class="fragment">
 **Ranjit Jhala**
 
-University of California, San Diego
+*University of California, San Diego*
 
 <br>
 <br>
 
-Joint work with: 
+Joint work with:
 
-N. Vazou, E. Seidel, P. Rondon, M. Kawaguchi
-
-D. Vytiniotis, S. Peyton-Jones
+N. Vazou, E. Seidel, P. Rondon, M. Kawaguchi, D. Vytiniotis, S. Peyton-Jones
 
 </div>
 
 
- {#plan}
--------
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+Plan
+----
 
 **Part I**
 
@@ -48,113 +58,206 @@ Case Studies
 
 <br>
 
-
-<div class="fragment">
-**Part III**
-
-Haskell (Lazy Evaluation)
-</div>
-
- {#plan}
---------
-
-
 <br>
-
-(And *if* we have time...)
-
-
 <br>
-
-**Part IV**
-
-Abstract Refinements
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 I: Refinement Types
 -------------------
 
 <br>
 
-<a href="00_Motivation.lhs.slides.html" target="_blank">**Motivation**</a>
-
-<br>
-
 <div class="fragment">
-<a href="01_SimpleRefinements.lhs.slides.html" target="_blank">**Refinements**</a>
+[**Motivation**](01-motivation.html)
 </div>
 
 <br>
 
 <div class="fragment">
-<a href="02_Measures.lhs.slides.html" target= "_blank">**Measures**</a>
+[**Refinements**](02-refinements.html)
 </div>
 
-II: Case Studies 
+<br>
+
+<div class="fragment">
+[**Data Types**](03-datatypes.html)
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+II: Case Studies
 ----------------
 
 <br>
 
-<a href="13_RedBlack.lhs.slides.html" target="_blank">**Red-Black Trees**</a>
-
-<br>
-
-<a href="14_Memory.lhs.slides.html" target="_blank">**Low-level Memory Safety**</a>
-
-
-III: Haskell
-------------
-
-<br>
-
-<a href="09_Laziness.lhs.slides.html" target="_blank">**Lazy Evaluation**</a>
-
-<br>
 
 <div class="fragment">
-<a href="10_Termination.lhs.slides.html" target="_blank">**Termination**</a>
+[**Insertion Sort**](04-case-study-insertsort.html)
 </div>
 
 <br>
 
 <div class="fragment">
-<a href="11_Evaluation.lhs.slides.html" target="_blank">**Evaluation**</a>
+[**Well Scoped Evaluator**](05-case-study-eval.html)
 </div>
-
-
-IV: Abstract Refinements
-------------------------
-
-
-<br>
-
-<a href="04_AbstractRefinements.lhs.slides.html" target= "_blank">**Abstracting Refinements over Types**</a>
 
 <br>
 
 <div class="fragment">
-
-**Demos**
-
-<br>
-
-+ [Basic](../hs/02_AbstractRefinements.hs)
-+ [Induction](../hs/02_AbstractRefinements.hs)
-+ [Recursion](../hs/02_AbstractRefinements.hs)
-+ [Key-Value](../hs/02_AbstractRefinements.hs)
-
+[**Low-level Memory**](06-case-study-bytestring.html)
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Conclusion
 ----------
 
 <br>
-<br>
+
+**Refinement Types:** Automated Dependent Typing via SMT
+
 <br>
 
 <div class="fragment">
 
-<a href="12_Conclusion.lhs.slides.html" target="_blank">[Continue]</a>
+-------------------       ------------------------------------------------
+**Properties:**           Predicates  *+ Types*
+**Proofs:**               SMT Solvers *+ Subtyping*
+**Inference:**            Abstract Interpretation *+ Hindley-Milner*
+-------------------       ------------------------------------------------
 
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Current & Future Work
+---------------------
+
+<br>
+
+**Technology**
+
+<br>
+
++ GHC
++ Speed
++ Effects
++ *Error Messages*
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Current & Future Work
+---------------------
+
+<br>
+
+**Applications**
+
+<br>
+
++ Testing
++ Web frameworks
++ Concurrency
++ Code Completion
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Thank You!
+----------
+
+<br>
+<br>
+
+http://www.refinement-types.org
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 

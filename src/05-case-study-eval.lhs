@@ -694,6 +694,33 @@ safeEval g e
 <br>
 
 
+Continue
+--------
+
+<br>
+
+<div class="fragment">
+**Next: Case Studies**
+
++ [Insertion Sort](04-case-study-insertsort.html)
++ [Well Scoped Evaluator](05-case-study-eval.html)
++ [Low-level Memory](06-case-study-bytestring.html)
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 <div class="hidden">
 
 CHEAT SHEET :)

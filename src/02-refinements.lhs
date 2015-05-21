@@ -47,6 +47,20 @@ b := Int
 \end{spec}
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Types + Predicates
 ------------------
 
@@ -64,6 +78,19 @@ t := {x:b | p}   -- refined base
 
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Types + Predicates
 ------------------
@@ -83,6 +110,18 @@ p := ...         -- predicate in decidable logic
 \end{spec}
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 
@@ -101,6 +140,20 @@ p := e           -- atom
 \end{spec}
 
 <br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Expressions
 -----------
@@ -126,6 +179,20 @@ Quant.-Free. Uninterpreted Functions and Linear Arithmetic
 
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Example: Integers equal to `0`
 ------------------------------
 
@@ -146,6 +213,19 @@ Refinement types via special comments `{-@ ... @-}`
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Example: Natural Numbers
 ------------------------
 
@@ -158,6 +238,19 @@ Example: Natural Numbers
 nats     =  [0, 1, 2, 3]
 \end{code}
 
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
 Exercise: Positive Integers
@@ -182,11 +275,25 @@ poss     =  [0, 1, 2, 3]
 **Q:** Now, can you modify `poss` so it is **accepted**?
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Type Checking
 =============
 
-A Term Can Have Many Types
---------------------------
+A Term Can Have *Many* Types
+----------------------------
 
 <br>
 
@@ -204,6 +311,20 @@ zero'     = zero
 \end{spec}
 
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Predicate Subtyping [[PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 -------------------
@@ -224,6 +345,21 @@ $$\Gamma \defeq \overline{\bindx{x_i}{P_i}}$$
 
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Predicate Subtyping [[PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 ------------------------
 
@@ -241,6 +377,21 @@ $$
 {\mathbf{Then}} & \overline{\bindx{x_i}{P_i}} \vdash \reft{v}{b}{Q} \subty \reft{v}{b}{R} & \\
 \end{array}
 $$
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 Example: Natural Numbers
@@ -278,6 +429,21 @@ zero'     =  zero   -- zero :: Zero <: Nat
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
 [SMT](http://en.wikipedia.org/wiki/Satisfiability_modulo_theories) Automates Subtyping
 ------------------------
 
@@ -291,6 +457,19 @@ Eliminates **boring** proofs ...
 ... makes verification **practical**.
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Contracts: Function Types
@@ -323,6 +502,19 @@ Program type-checks $\Rightarrow$ `impossible` **never called at run-time**
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Exercise: Pre-Conditions
 ------------------------
 
@@ -346,8 +538,23 @@ Yikes, an error!
 **Q:** Can you **fix the type** of `safeDiv` to banish the error?
 </div>
 
-Precond. Checked at Call-Site
------------------------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Precondition Checked at Call-Site
+---------------------------------
 
 <br>
 
@@ -377,8 +584,24 @@ $\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \subty \reftx{v}{v \no
 </div>
 </div>
 
-Precond. Checked at Call-Site
------------------------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Precondition Checked at Call-Site
+---------------------------------
 
 <br>
 
@@ -404,6 +627,20 @@ avg2 x y   = safeDiv (x + y) 2
 $$(v = 2) \Rightarrow (v \not = 0)$$
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Exercise: Check That Data
 -------------------------
 
@@ -423,6 +660,20 @@ calc = do
 **Q:** Can you fix `calc` so it typechecks?
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Precond. Checked at Call-Site
 -----------------------------
 
@@ -440,12 +691,26 @@ avg xs     = div total n
 
 <div class="slideonly">
 <div class="fragment">
-**Rejected** as `n` can be *any* `Int`
+**Rejected** as `n` can be *any* `Nat`
 
-$$(v = n) \not \Rightarrow (v \not = 0)$$
+$$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
 </div>
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 `size` returns positive values
 ------------------------------
@@ -469,6 +734,20 @@ Specify **post-condition** as **output type**
 {-@ size :: [a] -> Pos @-}
 \end{code}
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Postconds Checked at Return
@@ -495,6 +774,20 @@ $$\begin{array}{rll}
 \end{array}$$
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Verifying `avg`
 ---------------
 
@@ -516,6 +809,20 @@ avg' xs    = safeDiv total n
 $$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
 </div>
 </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Recap
 =====
@@ -547,6 +854,20 @@ Via SMT based Predicate Subtyping
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
   {#exit-01}
 ------------
 
@@ -568,8 +889,20 @@ Next: A way to **describe properties of** structures
 
 <br>
 
-[[continue...]](02-measures.html)
+[[continue...]](03-datatypes.html)
 
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

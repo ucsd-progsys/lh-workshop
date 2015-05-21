@@ -1,31 +1,3 @@
-
-
- {#measures}
-============
-
-Recap
------
-
-<br>
-<br>
-
-1. <div class="fragment">**Refinements:** Types + Predicates</div>
-2. <div class="fragment">**Subtyping:** SMT Implication</div>
-
-<br>
-<br>
-
-<div class="fragment">
-So far: only specify properties of **base values** (e.g. `Int`) ...
-</div>
-
-<br>
-
-<div class="fragment">
-How to specify properties of **data types**?
-</div>
-
-
 <div class="hidden">
 
 \begin{code}
@@ -72,29 +44,26 @@ average xs = total `div` n
 </div>
 
 
- {#meas}
-====================
-
-Data Types
-----------
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Data Types
 ==========
+
+ {#as}
+------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Example: Lists
 --------------
@@ -195,15 +164,29 @@ data List a where
 <br>
 
 
- {#asdmeas}
-===========
-
-Using Measures
---------------
-
-
 Using Measures
 ==============
+
+ {#asdmeas}
+-----------
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
 
 Exercise: *Partial* Functions
 -----------------------------
@@ -363,11 +346,12 @@ average' xs = total `div` n
 <br>
 
 
- {#flasd}
-=========
 
 Refining Data Types
--------------------
+===================
+
+ {#flasd}
+---------
 
 <br>
 <br>
@@ -386,10 +370,6 @@ Refining Data Types
 <br>
 <br>
 <br>
-
-
-Refining Data Types
-===================
 
 Example: Year is 12 Months
 --------------------------
@@ -591,9 +571,9 @@ Recap
 <div class="fragment">
 **Next: Case Studies**
 
-+ [Sorting](03-case-study-insertsort.lhs.slides.html)
-+ [Scoping](04-case-study-eval.lhs.slides.html)
-+ [Buffering](05-case-study-bytestring.lhs.slides.html)
++ [Insertion Sort](04-case-study-insertsort.html)
++ [Well Scoped Evaluator](05-case-study-eval.html)
++ [Low-level Memory](06-case-study-bytestring.html)
 </div>
 
 

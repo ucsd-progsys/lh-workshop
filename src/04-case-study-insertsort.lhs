@@ -1,7 +1,4 @@
 
- {#asdl}
-=========
-
 <div class="hidden">
 \begin{code}
 {-@ LIQUID "--short-names"    @-}
@@ -51,8 +48,8 @@ Case Study: Insertion Sort
 ==========================
 
 
-Case Study: Insertion Sort
---------------------------
+ {#asdisort}
+------------
 
 Recall the simplest sorting algorithm:
 
@@ -86,8 +83,8 @@ insert x (y:::ys)
 
 
 
-Case Study: Insertion Sort
---------------------------
+Goal: Verified Insertion Sort
+-----------------------------
 
 <br>
 
@@ -112,30 +109,34 @@ Case Study: Insertion Sort
 <br>
 <br>
 
- {#pr1}
-=======
-
-
-Property 1: Size
-----------------
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Property 1: Size
 ================
+
+ {#pr1}
+-------
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 Exercise: `insert`
@@ -173,6 +174,24 @@ insert x (y:::ys)
 
 Property 2: Elements
 ====================
+
+ {#pr2}
+-------
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 Permutation
@@ -231,8 +250,8 @@ import qualified Data.Set as S
 <br>
 <br>
 
-Specifying List Elements
-------------------------
+Specifying A `List`s Elements
+-----------------------------
 
 <br>
 
@@ -291,7 +310,7 @@ insertE x (y:::ys)
 
 <br>
 
-**Q:** What is the right type for `insertE`?
+**Q:** Can you fix the type for `insertE` so `sortE` verifies?
 
 <br>
 <br>
@@ -308,9 +327,14 @@ insertE x (y:::ys)
 
 
 Property 3: Order
------------------
+=================
 
-Yes, yes, but `sort` actually **sort** ?
+ {#pr3}
+-------
+
+<br>
+
+Yes, yes, but does `sort` actually **sort** ?
 
 <br>
 
@@ -320,7 +344,6 @@ How to specify **ordered lists** ?
 
 </div>
 
-
 <br>
 <br>
 <br>
@@ -334,11 +357,8 @@ How to specify **ordered lists** ?
 <br>
 <br>
 
- {#rdt}
-=======
-
-Refined Data Types
-------------------
+Recall: Refined Data Types
+--------------------------
 
 <br>
 <br>
@@ -355,12 +375,8 @@ Refined Data Types
 
 
 
-Refined Data Types
-==================
-
-
-Ordered Pairs
--------------
+Refined Data: Ordered Pairs
+---------------------------
 
 <br>
 
@@ -429,8 +445,8 @@ badPair = OP 4 2  -- illegal
 <br>
 <br>
 
-Refined: CSV Tables
--------------------
+Refined Data: CSV Tables
+------------------------
 
 <br>
 
@@ -500,13 +516,14 @@ scores' = Csv {
 <br>
 <br>
 
- {#olist}
-=========
-
 Property 3: Ordered Lists
 -------------------------
 
 <br>
+
+**Refine** the `List` data type to enforce *ordering**!
+
+<br>
 <br>
 <br>
 <br>
@@ -519,15 +536,13 @@ Property 3: Ordered Lists
 <br>
 <br>
 
-Property 3: Ordered Lists
-=========================
 
-Ordered Lists
--------------
+Lists
+-----
 
 <br>
 
-Lets define a type for ordered lists
+Lets **define** a type for ordered lists
 
 <br>
 
@@ -659,6 +674,24 @@ insertO x _    = x :<: OEmp
 Multiple Measures
 =================
 
+ {#multimeas}
+-------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Different Measures for `List`
 -----------------------------
 
@@ -767,6 +800,7 @@ Compare with `insertionSort` in:
 
 </div>
 
+
 <br>
 <br>
 <br>
@@ -780,3 +814,28 @@ Compare with `insertionSort` in:
 <br>
 <br>
 
+Continue
+--------
+
+<br>
+
+<div class="fragment">
+**Next: Case Studies**
+
++ [Insertion Sort](04-case-study-insertsort.html)
++ [Well Scoped Evaluator](05-case-study-eval.html)
++ [Low-level Memory](06-case-study-bytestring.html)
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

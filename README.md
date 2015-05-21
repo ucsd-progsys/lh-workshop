@@ -5,19 +5,70 @@ This repository has the materials for a 2-hour workshop on
 [Programming with Refinement Types](http://www.refinement-types.org)
 which is also a tutorial introduction to [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
+Running LiquidHaskell
+---------------------
+    
+You can run this code in *any of* the following ways:
+
+1. [Online](http://ucsd-progsys.github.io/lh-workshop/)
+
+2. [Virtual Machine](http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova)
+
+3. [Build LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
+
+The **online web demo** is easiest for the workshop. See below 
+
+Option 1: Online
+----------------
+
+This is the easiest by far; point your browser [here](http://ucsd-progsys.github.io/lh-workshop/)
+
+
+Option 2: Virtual Machine
+-------------------------
+
+This is also very easy, if you can manage the 2Gb download.
+
+**Step 1** Download [this VM image](http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova)
+
+he code files are in `lh-workshop/src/*.lhs`
+
+**Step 2** Choose your editor. For *emacs* do:
+
+       tar -zxvf liquid-emacs.tgz
+       
+and for *Spacemacs* (a great Vim-Emacs hybrid) do:
+
+       tar -zxvf liquid-spacemacs.tgz
+
+**Step 3** The code files are in
+
+       ~/lh-workshop/src/*.lhs
+
+
+Option 3: Local Build
+---------------------
+
+Finally, if you prefer, you can build LiquidHaskell from:
+
+1. [cabal](https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
+
+2. [github](https://github.com/ucsd-progsys/liquidhaskell/#how-to-clone-build-and-install)
+
+
 TODO
 ----
 
-- remove nasty "fix@#$@#$" gibberish in error messages
-- remove GHC.Types.Int ~~~~> Int     in error messages
+- fix README.md
 - build VM image with emacs 
 - build image with spacemacs
-- post _site   on refinement-types.org
 - post _slides on refinement-types.org
 
+  liquidhaskell.github.io/book/
+  liquidhaskell.github.io/tutorial/
 
-Build
------
+Build Slides
+------------
 
 To build rust-style html (in dist/_site)
 
@@ -27,47 +78,17 @@ To build reveal.js slides (in dist/_slides)
 
      $ make slides
 
-Contents
---------
+Misc Links
+----------
 
-+ 00-motivation.lhs
+WBL Heaps
 
-+ 01-refinements.lhs
-    + div, pos, etc.
++ [HS+DT proof](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/CombinedProofs.hs#L68)
++ [HS](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/NoProofs.hs#L96)
++ [HS+Liquid](https://github.com/ucsd-progsys/liquidhaskell/blob/master/tests/pos/WBL.hs#L129)
 
-+ 02-datatypes.lhs
-    + foldr1, map  (BOS14/001_Refinements.hs)
+Insert Sort
 
-+ 03-case-study-sorting.lhs
-    - SHOW: sort (n)
-    - EX: whats a good type for insert?
-    - SHOW: elems, addElem
-    - SHOW: sortE
-    - EX: whats a good type for insert?
-    - But is it ACTUALLY SORTING?
-
-    - [HEREHEREHEREHEREHEREHERE]
-    - Dependent Data Types
-      - SHOW: Pair
-      - EX:   CSV
-      - SHOW: OrdList 
-    - SHOW: insert-sort (ord)
-    
-+ 04-case-study-evaluator.lhs (BOOK)
-
-- 05-case-study-bytestring.lhs (BOS14)
-
-
-Comparison with DT
-------------------
-
-[HS+DT proof](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/CombinedProofs.hs#L68)
-
-[HS](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/NoProofs.hs#L96)
-
-[HS+Liquid](https://github.com/ucsd-progsys/liquidhaskell/blob/master/tests/pos/WBL.hs#L129)
-
-
-https://github.com/davidfstr/idris-insertion-sort/tree/master
-http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
-https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
++ https://github.com/davidfstr/idris-insertion-sort/tree/master
++ http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
++ https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs

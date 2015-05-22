@@ -346,7 +346,6 @@ Implementation errors could open up vulnerabilities
 <h2>&quot;HeartBleed&quot; in Haskell (1/3)</h2>
 <p><br></p>
 <p><strong>A String Truncation Function</strong></p>
-<p><br></p>
 <pre class="spec"><code>import Data.ByteString.Char8  (pack, unpack)
 import Data.ByteString.Unsafe (unsafeTake)
 
@@ -536,7 +535,7 @@ type ForeignPtrN a N = {v:ForeignPtrN a | fplen v == N }
 <section id="refined-api-operations-33" class="level2">
 <h2>Refined API: Operations (3/3)</h2>
 <p><br></p>
-<p><strong>Read &amp; Write</strong> require <em>non-empty remaining buffer</em></p>
+<p><strong>Pointers To Non-empty Buffers</strong></p>
 <pre class="spec"><code>type PtrNE a = {v:Ptr a | 0 &lt; plen v}
 </code></pre>
 <p><strong>Read</strong></p>

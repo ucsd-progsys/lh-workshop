@@ -11,7 +11,28 @@
     <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
     <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
 
-  <style type="text/css">code{white-space: pre;}</style>
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .slideonly {
+        display: none;
+      }
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
   <style type="text/css">
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -31,22 +52,49 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #06287e; }
 code > span.er { color: #ff0000; font-weight: bold; }
   </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      True: "\\mathit{True}", 
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}", 
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }    
+  }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 
-<body class="rustdoc">
- 
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+    <div id="nav">
+       <button id="toggle-nav" class="toggle-nav">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+       </button>
+    </div>
+
+    
 <div id='toc' class='mobile-hidden'>
-
-</div>
-
-<div id='page'>
-<h1 style="border-bottom:none">Programming with Refinement Types</b>
-<h2 style="border-bottom:none">An Introduction to LiquidHaskell</h2>
-<h4 style="border-bottom: 2px solid #ddd"><i>Ranjit Jhala, Eric Seidel, Niki Vazou</i></h4>
-<br>
-
-<p><a href="book.pdf">[PDF]</a></p>
-
 <ul class='chapter'>
 <li><a href='01-index.html'><b>1.</b>Well-Typed Programs <em>Can</em> Go Wrong</a></li>
 <ul class='section'>
@@ -187,7 +235,279 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 </ul>
 
+</div>
+      
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<div class="hidden">
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">main = putStrLn "Easter Egg: to force Makefile"</div>
+</div>
 
 </div>
+<p><br> <br> <br> <br> <br></p>
+<h1 style="border-bottom:none">
+Refinement Types for Haskell
+</h1>
+<p><br></p>
+<p>    <strong>Ranjit Jhala</strong> <em>(University of California, San Diego)</em></p>
+<p><br></p>
+<p>    With: N. Vazou, E. Seidel, D. Vytiniotis, S. Peyton-Jones</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<section id="well-typed-programs-can-go-wrong" class="level1">
+<h1>Well-Typed Programs <em>Can</em> Go Wrong</h1>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<section id="division-by-zero" class="level2">
+<h2>Division By Zero</h2>
+<pre class="spec"><code>λ&gt; let average xs = sum xs `div` length xs
+
+λ&gt; average [100, 202, 300]
+2
+</code></pre>
+<p><br></p>
+<pre class="spec"><code>λ&gt; average []
+*** Exception: divide by zero
+</code></pre>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="missing-keys" class="level2">
+<h2>Missing Keys</h2>
+<pre class="spec"><code>λ&gt; :m +Data.Map
+λ&gt; let m = fromList [ (&quot;haskell&quot;    , &quot;lazy&quot;)
+                    , (&quot;javascript&quot; , &quot;eager&quot;)]
+
+λ&gt; m ! &quot;haskell&quot;
+&quot;lazy&quot;
+</code></pre>
+<p><br></p>
+<pre class="spec"><code>λ&gt; m ! &quot;racket&quot;
+&quot;*** Exception: key is not in the map
+</code></pre>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="segmentation-faults" class="level2">
+<h2>Segmentation Faults</h2>
+<pre class="spec"><code>λ&gt; :m +Data.Vector
+λ&gt; let v = fromList [&quot;haskell&quot;, &quot;javascript&quot;]
+λ&gt; unsafeIndex v 0
+&quot;haskell&quot;
+</code></pre>
+<br>
+<pre class="spec"><code>λ&gt; V.unsafeIndex v 3
+
+&#39;ghci&#39; terminated by signal SIGSEGV ...
+</code></pre>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="heartbleeds" class="level2">
+<h2>&quot;HeartBleeds&quot;</h2>
+<pre class="spec"><code>λ&gt; :m + Data.Text Data.Text.Unsafe
+λ&gt; let t = pack &quot;LambdaConf&quot;
+λ&gt; takeWord16 5 t
+&quot;Lambda&quot;
+</code></pre>
+<p><br></p>
+<p>Memory overflows <strong>leaking secrets</strong>...</p>
+<p><br></p>
+<pre class="spec"><code>λ&gt; takeWord16 20 t
+&quot;LambdaConf\1912\3148\NUL\15928\2486\SOH\NUL&quot;
+</code></pre>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="goal-extend-type-system" class="level2">
+<h2>Goal: Extend Type System</h2>
+<p><br></p>
+<p><br></p>
+<ul>
+<li><p>To prevent <strong>wider class</strong> of errors</p></li>
+<li><p>To enforce <strong>program specific</strong> properties</p></li>
+</ul>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="plan" class="level2">
+<h2>Plan</h2>
+<p><br></p>
+<p><strong>Part I: Refinement Types</strong></p>
+<ul>
+<li><a href="02-refinements.html"><strong>Refinements</strong></a></li>
+<li><a href="03-datatypes.html"><strong>Data Types</strong></a></li>
+</ul>
+<p><br></p>
+<p><strong>Part II: Case Studies</strong></p>
+<ul>
+<li><a href="04-case-study-insertsort.html"><strong>Insertion Sort</strong></a></li>
+<li><a href="05-case-study-eval.html"><strong>Well Scoped Evaluator</strong></a></li>
+<li><a href="06-case-study-bytestring.html"><strong>Low-level Memory</strong></a></li>
+</ul>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="conclusion" class="level2">
+<h2>Conclusion</h2>
+<p><br></p>
+<p><strong>Refinement Types:</strong> Automated Dependent Typing via SMT</p>
+<p><br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Properties:</strong></td>
+<td style="text-align: left;">Predicates <em>+ Types</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Proofs:</strong></td>
+<td style="text-align: left;">SMT Solvers <em>+ Subtyping</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Inference:</strong></td>
+<td style="text-align: left;">Abstract Interpretation <em>+ Hindley-Milner</em></td>
+</tr>
+</tbody>
+</table>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="current-future-work" class="level2">
+<h2>Current &amp; Future Work</h2>
+<p><br></p>
+<p><strong>Technology</strong></p>
+<p><br></p>
+<ul>
+<li>GHC</li>
+<li>Speed</li>
+<li>Effects</li>
+<li><em>Error Messages</em></li>
+</ul>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="current-future-work-1" class="level2">
+<h2>Current &amp; Future Work</h2>
+<p><br></p>
+<p><strong>Applications</strong></p>
+<p><br></p>
+<ul>
+<li>Testing</li>
+<li>Web frameworks</li>
+<li>Concurrency</li>
+<li>Code Completion</li>
+</ul>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="thank-you" class="level2">
+<h2>Thank You!</h2>
+<p><br> <br></p>
+<p><a href="http://www.refinement-types.org"><code>http://www.refinement-types.org</code></a></p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+</section>
+
+</div>
+</div>
+
+<div class="hidden">
+<!--Site Meter -->
+  <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+  <!-- Copyright (c)2009 Site Meter -->
+</div>
+
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "http://goto.ucsd.edu:8090/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
 </body>
 </html>

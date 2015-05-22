@@ -323,12 +323,14 @@ addElemO x xs = S.singleton x `S.union` elemsO xs</div>
 </div>
 
 </div>
+<p><br> <br> <br> <br> <br> <br></p>
 <section id="case-study-insertion-sort" class="level1">
 <h1>Case Study: Insertion Sort</h1>
-<section id="asdisort" class="level2">
-<h2></h2>
-<p>Recall the simplest sorting algorithm:</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<section id="case-study-insertion-sort-1" class="level2">
+<h2>Case Study: Insertion Sort</h2>
 <p><br></p>
+<p>Recall the simplest sorting algorithm:</p>
 <pre class="spec"><code>sort :: (Ord a) =&gt; List a -&gt; List a
 sort []           = Emp
 sort (x:xs)       = insert x (sort xs)
@@ -356,14 +358,12 @@ insert x (y:::ys)
 </section>
 <section id="property-1-size" class="level1">
 <h1>Property 1: Size</h1>
-<section id="pr1" class="level2">
-<h2></h2>
-<p><br> <br> <br> <br> <br></p>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 <section id="exercise-insert" class="level2">
 <h2>Exercise: <code>insert</code></h2>
+<p><br></p>
 <p><strong>Q:</strong> Can you fix the type of <code>insert</code> so <code>sort</code> checks?</p>
+<p><br></p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -388,20 +388,17 @@ insert x (y:::ys)
 </section>
 <section id="property-2-elements" class="level1">
 <h1>Property 2: Elements</h1>
-<section id="pr2" class="level2">
-<h2></h2>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 <section id="permutation" class="level2">
 <h2>Permutation</h2>
 <p><br></p>
 <p>Same size is all fine, how about <strong>same elements</strong> in output?</p>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="smt-solvers-reason-about-sets" class="level2">
 <h2>SMT Solvers Reason About Sets</h2>
 <p><br></p>
-<p>Hence, we can write <em>Set-valued</em> measures</p>
+<p>Hence, we can write <strong>Set-valued</strong> measures</p>
 <p><br></p>
 <p>Using the <code>Data.Set</code> API for convenience</p>
 <p><br></p>
@@ -467,17 +464,14 @@ insertE x (y:::ys)
 </section>
 <section id="property-3-order" class="level1">
 <h1>Property 3: Order</h1>
-<section id="pr3" class="level2">
-<h2></h2>
 <p><br></p>
 <p>Yes, yes, but does <code>sort</code> actually <strong>sort</strong> ?</p>
 <p><br></p>
 <p>How to specify <strong>ordered lists</strong> ?</p>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
 <section id="recall-refined-data-types" class="level2">
 <h2>Recall: Refined Data Types</h2>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="refined-data-ordered-pairs" class="level2">
 <h2>Refined Data: Ordered Pairs</h2>
@@ -555,6 +549,7 @@ scores  = Csv {
 <h2>Exercise: Valid CSV Tables</h2>
 <p><br></p>
 <p><strong>Q:</strong> Can you refine <code>Csv</code> so <code>scores'</code> is rejected?</p>
+<p><br></p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -582,8 +577,8 @@ scores' = Csv {
 <section id="property-3-ordered-lists" class="level2">
 <h2>Property 3: Ordered Lists</h2>
 <p><br></p>
-<p><strong>Refine</strong> the <code>List</code> data type to enforce *ordering**!</p>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<p><strong>Refine</strong> the <code>List</code> data type to enforce <strong>ordering</strong>!</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="lists" class="level2">
 <h2>Lists</h2>
@@ -680,14 +675,11 @@ insertO x _    = x :<: OEmp</div>
 </section>
 <section id="multiple-measures" class="level1">
 <h1>Multiple Measures</h1>
-<section id="multimeas" class="level2">
-<h2></h2>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 <section id="different-measures-for-list" class="level2">
 <h2>Different Measures for <code>List</code></h2>
 <p><br></p>
-<p>We just wrote <em>two</em> measures for <code>List</code></p>
+<p>We just wrote <strong>two</strong> measures for <code>List</code></p>
 <p><br></p>
 <ul>
 <li><code>length :: List a -&gt; Nat</code></li>

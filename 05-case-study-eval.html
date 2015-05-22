@@ -272,8 +272,6 @@ MathJax.Hub.Config({
 <div id='page-wrapper'>
 <div id='page'>
 
-<section id="assdidl" class="level1">
-<h1></h1>
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
 
@@ -286,7 +284,7 @@ MathJax.Hub.Config({
   <div id="program-0" class="programbox">{-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
 
-module Eval (Map, Expr (..), plus, eval, topEval, safeEval) where
+module Eval (Map, Expr (..), plus, eval, safeEval) where
 
 import Prelude hiding (lookup)
 import qualified Data.Set as S
@@ -298,7 +296,6 @@ impossible = error
 type Env = Map Var Expr
 
 plus :: Expr -> Expr -> Expr
-topEval :: Expr -> Expr
 safeEval :: Map Var Expr -> Expr -> Maybe Expr
 
 --------------------------------------------------------
@@ -314,11 +311,14 @@ member _  Emp = False</div>
 </div>
 
 </div>
-<section id="case-study-associative-maps-evaluation" class="level2">
+<p><br> <br> <br> <br> <br></p>
+<section id="case-study-associative-maps-evaluation" class="level1">
+<h1>Case Study: Associative Maps &amp; Evaluation</h1>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+<section id="case-study-associative-maps-evaluation-1" class="level2">
 <h2>Case Study: Associative Maps &amp; Evaluation</h2>
 <p><br></p>
 <p>We've all been bitten by these!</p>
-<p><br></p>
 <pre class="spec"><code>ghci&gt; :m +Data.Map
 ghci&gt; let m = fromList [ (&quot;haskell&quot;   , &quot;lazy&quot;)
                        , (&quot;javascript&quot;, &quot;eager&quot;)]
@@ -331,24 +331,20 @@ ghci&gt; m ! &quot;python&quot;
 </code></pre>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
-<section id="case-study-associative-maps-evaluation-1" class="level2">
+<section id="case-study-associative-maps-evaluation-2" class="level2">
 <h2>Case Study: Associative Maps &amp; Evaluation</h2>
 <p><br></p>
 <p>Next, lets see how to use:</p>
-<p><br></p>
 <ul>
-<li><p>Sets to create safe <strong>associative maps</strong></p></li>
-<li><p>Measures to create <strong>well-scoped evaluators</strong></p></li>
+<li><p><strong>Sets</strong> to create safe <strong>associative maps</strong></p></li>
+<li><p><strong>Measures</strong> to create <strong>well-scoped evaluators</strong></p></li>
 </ul>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 </section>
 <section id="associative-maps" class="level1">
 <h1>Associative Maps</h1>
-<section id="safemap" class="level2">
-<h2></h2>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 <section id="a-simple-associative-map" class="level2">
 <h2>A Simple Associative Map</h2>
 <p><br></p>
@@ -372,18 +368,15 @@ ghci&gt; m ! &quot;python&quot;
 <section id="tracking-the-keys-in-a-map" class="level2">
 <h2>Tracking the Keys in a Map</h2>
 <p><br></p>
-<p>We will banish unpleasant exceptions of the form:</p>
+<p><strong>Banish unpleasant exceptions of the form:</strong></p>
 <pre class="spec"><code>*** Exception: key is not in the map ***
 </code></pre>
-<p><br></p>
-<p>By tracking the set of defined <code>keys</code> in the API</p>
+<p><strong>By tracking the set of defined <code>keys</code> in the API</strong></p>
 <pre class="spec"><code>keys   :: Map k v -&gt; Set k
-
 empty  :: {m:Map k v | keys m = emp}
-
-insert :: k:k -&gt; v -&gt; m:Map k v -&gt; {m&#39;: Map k v | keys m&#39; = add k m}
-
 lookup :: k:k -&gt; {m: Map | has k m} -&gt; v
+insert :: k:k -&gt; v -&gt; m:Map k v
+       -&gt; {m&#39;: Map k v | keys m&#39; = add k m}
 </code></pre>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
@@ -410,7 +403,9 @@ keys (Bind k _ m) = add k m</div>
 </section>
 <section id="the-empty-map" class="level2">
 <h2>The Empty <code>Map</code></h2>
-<p>The <code>empty</code> map has <strong>no keys</strong></p>
+<p><br></p>
+<p><strong>The <code>empty</code> map has no keys</strong></p>
+<p><br></p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -419,20 +414,17 @@ keys (Bind k _ m) = add k m</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">{-@ empty :: {m:Map k v | noKeys m} @-}
+  <div id="program-3" class="programbox">{-@ empty :: {m:Map k v | Set_emp (keys m) } @-}
 empty :: Map k v
-empty = Emp
-
-{-@ inline noKeys @-}
-noKeys :: (Ord k) => Map k v -> Bool
-noKeys m = keys m == S.empty</div>
+empty = Emp</div>
 </div>
 
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="inserting-a-new-key-value-binding" class="level2">
 <h2>Inserting a New Key-Value Binding</h2>
 <p><br></p>
-<p>Adds the key to those of the old <code>Map</code></p>
+<p><strong>Adds the key to those of the old <code>Map</code></strong></p>
 <p><br></p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
@@ -451,6 +443,7 @@ add :: (Ord k) => k -> Map k v -> S.Set k
 add k kvs = S.singleton k `S.union` keys kvs</div>
 </div>
 
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="exercise-looking-up-a-keys-value" class="level2">
 <h2>Exercise: Looking Up a Key's Value</h2>
@@ -472,13 +465,13 @@ lookup _  Emp = impossible "lookup"
 
 {-@ inline has @-}
 has :: (Ord k) => k -> Map k v -> Bool
-has k m = k `S.member` keys m -- True
+has k m = True -- EXERCISE
 
--- HINT
---   keys     :: Map k v -> Set k
---   S.member :: k -> S.Set k -> Bool</div>
+-- HINT:  keys     :: Map k v -> Set k
+--        S.member :: k -> S.Set k -> Bool</div>
 </div>
 
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="key-not-found-begone" class="level2">
 <h2>Key Not Found Begone!</h2>
@@ -505,14 +498,12 @@ has k m = k `S.member` keys m -- True
     py    = "python"</div>
 </div>
 
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 </section>
 <section id="well-scoped-evaluators" class="level1">
 <h1>Well-Scoped Evaluators</h1>
-<section id="evalapi" class="level2">
-<h2></h2>
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 <section id="expressions" class="level2">
 <h2>Expressions</h2>
 <p><br></p>
@@ -572,7 +563,8 @@ isVal _       = False</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">plus (Val i) (Val j) = Val (i+j)
+  <div id="program-9" class="programbox">{-@ plus :: Expr -> Expr -> Expr     @-}
+plus (Val i) (Val j) = Val (i+j)
 plus _         _     = impossible "plus"</div>
 </div>
 
@@ -600,7 +592,6 @@ plus _         _     = impossible "plus"</div>
 <h2>Evaluate Using Environments</h2>
 <p><br></p>
 <p>We can now <code>eval</code> an <code>Expr</code> as:</p>
-<p><br></p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -619,17 +610,13 @@ eval g (Let x e1 e2) = eval gx e2
     v1               = eval g e1</div>
 </div>
 
-<p><br></p>
-<p><strong>Yikes! <code>lookup</code> is rejected!</strong></p>
-<p><br></p>
-<p><em>How to ensure that <code>Var</code> is in <code>Env</code>?</em></p>
+<p><strong>Yikes! <code>lookup</code> is rejected! How to ensure that <code>Var</code> is in <code>Env</code>?</strong></p>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="free-variables" class="level2">
 <h2>Free Variables</h2>
 <p><br></p>
 <p><code>eval</code> looks-up <code>Env</code> for values of <a href="http://en.wikipedia.org/wiki/Free_variables_and_bound_variables">free variables</a></p>
-<p><br></p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -700,11 +687,12 @@ wellScoped g e = free e `S.isSubsetOf` keys g</div>
 <p><strong>Q:</strong> Can you go back and fix the type of <code>eval</code> so it is safe?</p>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
-<section id="exercise-top-level-evaluation" class="level2">
-<h2>Exercise: Top-level Evaluation</h2>
+<section id="exercise-checked-top-level-evaluation" class="level2">
+<h2>Exercise: Checked Top-level Evaluation</h2>
 <p><br></p>
-<p>A <strong>closed</strong> <code>Expr</code> can be evaluated in an <strong>empty</strong> environment.</p>
+<p><code>safeEval</code> should work with <strong>any</strong> <code>Expr</code> and <code>Env</code></p>
 <p><br></p>
+<p><strong>Q:</strong> What is the right check <code>ok</code> such that <code>safeEval</code> verifies?</p>
 <div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -713,46 +701,7 @@ wellScoped g e = free e `S.isSubsetOf` keys g</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-14" class="programbox">{-@ type ClosedExpr = {e: Expr | closed e} @-}
-
-{-@ topEval :: ClosedExpr -> Val @-}
-topEval =  eval Emp</div>
-</div>
-
-<p><br></p>
-<p><strong>Q:</strong> Fix the definition of <code>closed</code> so <code>topEval</code> is safe?</p>
-<p><br></p>
-<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-15" class="programbox">{-@ inline closed @-}
-closed :: Expr -> Bool
-closed e = True -- EXERCISE</div>
-</div>
-
-<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
-</section>
-<section id="exercise-checked-top-level-evaluation" class="level2">
-<h2>Exercise: Checked Top-level Evaluation</h2>
-<p><br></p>
-<p><code>safeEval</code> should work with <strong>any</strong> <code>Expr</code> and <code>Env</code></p>
-<p><br></p>
-<p><strong>Q:</strong> What is the right check <code>ok</code> such that <code>safeEval</code> verifies?</p>
-<p><br></p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ safeEval :: Env -> Expr -> Maybe Val @-}
+  <div id="program-14" class="programbox">{-@ safeEval :: Env -> Expr -> Maybe Val @-}
 safeEval g e
   | ok        = Just $ eval g e
   | otherwise = Nothing
@@ -760,6 +709,18 @@ safeEval g e
     ok        = True -- EXERCISE</div>
 </div>
 
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</section>
+<section id="recap-associative-maps-evaluation" class="level2">
+<h2>Recap: Associative Maps &amp; Evaluation</h2>
+<p><br></p>
+<p>We saw how to use:</p>
+<ul>
+<li><p><strong>Sets</strong> to track the <strong>keys</strong> of an associative map</p></li>
+<li><p><strong>Measures</strong> to create <strong>well-scoped evaluators</strong></p></li>
+</ul>
+<p><br></p>
+<p>Can implement <a href="www.refinement-types.org">Balanced, BST-based maps with same API</a></p>
 <p><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br></p>
 </section>
 <section id="continue" class="level2">

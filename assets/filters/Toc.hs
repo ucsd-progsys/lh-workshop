@@ -24,6 +24,7 @@ import qualified Data.Text.Lazy as L
 import qualified Data.Text.IO as TIO
 import System.Environment (getArgs)
 import Data.Text.Template
+import Data.Either.Combinators (rightToMaybe)
 
 -- Use as:
 -- toc src/ templates/pagemeta.template templates/index.template dist/page.template src/index.html dist/links.txt
@@ -78,11 +79,11 @@ dirLhs dir = do
   let fs' = [f | f <- fs, takeExtension f == ".lhs"]
   return fs'
 
-readDoc   :: FilePath -> IO Pandoc
+readDoc   :: FilePath -> IO (Maybe Pandoc)
 readDoc f = do
   str <- readFile f
-  let doc = readMarkdown def str --  <$> readFile f
-  return doc
+  let doc = readMarkdown def str  -- <$> readFile f
+  return $ rightToMaybe doc
 
 fileTOC :: FilePath -> IO [(Ref, Info)]
 fileTOC f = query (getRef f) <$> readDoc f
@@ -144,5 +145,3 @@ inlinePandoc is = Pandoc mempty [Plain is]
 
 tocDB   :: TOC -> String
 tocDB _ = "undefined"
-
-

@@ -56,17 +56,6 @@ Finally, if you prefer, you can build LiquidHaskell from:
 2. [github](https://github.com/ucsd-progsys/liquidhaskell/#how-to-clone-build-and-install)
 
 
-TODO
-----
-
-- fix README.md
-- build VM image with emacs 
-- build image with spacemacs
-- post _slides on refinement-types.org
-
-  liquidhaskell.github.io/book/
-  liquidhaskell.github.io/tutorial/
-
 Build Slides
 ------------
 

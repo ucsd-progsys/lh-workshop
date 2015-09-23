@@ -119,7 +119,7 @@ Missing Keys
 
 <div class="fragment">
 \begin{spec}
-λ> m ! "racket"
+λ> m ! "clojure"
 "*** Exception: key is not in the map
 \end{spec}
 </div>
@@ -181,9 +181,9 @@ Segmentation Faults
 
 \begin{spec}
 λ> :m + Data.Text Data.Text.Unsafe
-λ> let t = pack "LambdaConf"
+λ> let t = pack "StrangeLoop"
 λ> takeWord16 5 t
-"Lambda"
+"Stran"
 \end{spec}
 
 <br>
@@ -195,7 +195,7 @@ Memory overflows **leaking secrets**...
 
 \begin{spec}
 λ> takeWord16 20 t
-"LambdaConf\1912\3148\NUL\15928\2486\SOH\NUL"
+"StrangeLoop\1912\3148\NUL\15928\2486\SOH\NUL"
 \end{spec}
 </div>
 

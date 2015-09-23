@@ -11,6 +11,7 @@ import Prelude hiding (abs, max)
 nats, poss  :: [Int]
 zero        :: Int
 zero'       :: Int
+four        :: Int
 safeDiv     :: Int -> Int -> Int
 size, size' :: [a] -> Int
 \end{code}
@@ -478,6 +479,60 @@ zero'     =  zero   -- zero :: Zero <: Nat
 <br>
 <br>
 <br>
+
+
+
+Example: Natural Numbers
+------------------------
+
+<br>
+
+\begin{spec} <div/>
+        type Nat = {v:Int | 0 <= v}
+\end{spec}
+
+<br>
+
+<div class="fragment">
+
+$$
+\begin{array}{rcrccll}
+\mathbf{VC\ is\ Valid:} & x = 3      & \Rightarrow &  v = x + 1   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
+%                &           &             &          &             &           \\
+\mathbf{So:}      & \bindx{x}{x = 3} & \vdash      & \Zero  & \preceq & \Nat   &   \\
+\end{array}
+$$
+</div>
+
+<br>
+
+<div class="fragment">
+
+Hence, we can type:
+
+\begin{code}
+{-@ four :: Nat @-}
+four  = x + 1            -- x = 3 |- {v = x + 1} <: Nat
+  where
+    x = 3
+\end{code}
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 
 

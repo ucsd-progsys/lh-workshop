@@ -93,11 +93,10 @@ MathJax.Hub.Config({
        </button>
     </div>
 
-    
 <div id='toc' class='mobile-hidden'>
 $toc
 </div>
-      
+
        <div id="checker-status">
          <!-- Verifying ... -->
          <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"

@@ -55,7 +55,7 @@ REVEAL=pandoc \
 	   --variable reveal=js/reveal.js \
 	   --variable mathjax=$(MATHJAX)
 
-LIQUID=liquid --short-names
+# LIQUID=liquid --short-names
 
 ####################################################################
 

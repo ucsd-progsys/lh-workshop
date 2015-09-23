@@ -73,11 +73,10 @@ txFigures ch tgt prefix templateF
 resetChapter LATEX _        _ = return ()
 resetChapter HTML  Nothing  _ = return ()
 resetChapter HTML  (Just n) r = replicateM_ (n-1) (newChapter r)
- 
+
 tx tgt prefix t r b0
-  = do b1 <- txBlock tgt prefix t r b0
-       b2 <- txLink               r b1
-       return b2
+  = do b1    <- txBlock tgt prefix t r b0
+       return $ txLink               r b1
 
 txLink r = walkM (reLink r)
 
@@ -94,7 +93,7 @@ txBlock _   _      _ r z@(Header 1 _ _)
 
 txBlock tgt prefix t r (Div (id, [cls], kvs) _)
   | isFigure cls
-  = makeFigure tgt prefix t r id cls kvs 
+  = makeFigure tgt prefix t r id cls kvs
 
 txBlock _ _ _ _ z
   = return z -- $ trace ("IAMTHIS:" ++ show z) z
@@ -149,4 +148,3 @@ getCount r id
 newChapter r
   = do info <- readIORef r
        writeIORef r (info {count = 1, chapter = 1 + chapter info})
-

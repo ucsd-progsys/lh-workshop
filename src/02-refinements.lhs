@@ -153,8 +153,6 @@ e := x, y, z,...    -- variable
    | (f e1 ... en)  -- uninterpreted function
 \end{spec}
 
-<br>
-
 <div class="fragment">
 
 **Refinement Logic: QF-UFLIA**
@@ -356,12 +354,8 @@ zero'     = zero
 <br>
 <br>
 
-Predicate Subtyping
--------------------
-
-<br>
-
-[(NUPRL, PVS)](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
+----------------------------------
 
 <br>
 
@@ -398,7 +392,7 @@ $$\Gamma \doteq \overline{\bindx{x_i}{P_i}}$$
 <br>
 
 
-Predicate Subtyping
+Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 --------------------
 
 <br>
@@ -431,15 +425,8 @@ $$
 <br>
 
 
-
 Example: Natural Numbers
 ------------------------
-
-<br>
-
-\begin{spec} <div/>
-        type Nat = {v:Int | 0 <= v}
-\end{spec}
 
 <br>
 
@@ -448,8 +435,8 @@ Example: Natural Numbers
 $$
 \begin{array}{rcrccll}
 \mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 0   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
-%                &           &             &          &             &           \\
-\mathbf{So:}      & \emptyset & \vdash      & \Zero  & \preceq & \Nat   &   \\
+                        &           &             &          &             &           &        \\
+\mathbf{So:}            & \emptyset & \vdash      & \Zero    & \preceq     & \Nat      &   \\
 \end{array}
 $$
 </div>
@@ -458,7 +445,7 @@ $$
 
 <div class="fragment">
 
-Hence, we can type:
+And so, we can type:
 
 \begin{code}
 {-@ zero' :: Nat @-}
@@ -487,19 +474,13 @@ Example: Natural Numbers
 
 <br>
 
-\begin{spec} <div/>
-        type Nat = {v:Int | 0 <= v}
-\end{spec}
-
-<br>
-
 <div class="fragment">
 
 $$
 \begin{array}{rcrccll}
-\mathbf{VC\ is\ Valid:} & x = 3      & \Rightarrow &  v = x + 1   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
-%                &           &             &          &             &           \\
-\mathbf{So:}      & \bindx{x}{x = 3} & \vdash      & \Zero  & \preceq & \Nat   &   \\
+\mathbf{VC\ is\ Valid:} & x = 3 & \Rightarrow &  v = x + 1 & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
+                        &       &             &            &             &               \\
+\mathbf{So:}            & x = 3 & \vdash      & \Zero      & \preceq     & \Nat      &   \\
 \end{array}
 $$
 </div>
@@ -508,11 +489,11 @@ $$
 
 <div class="fragment">
 
-Hence, we can type:
+And so, we can type:
 
 \begin{code}
 {-@ four :: Nat @-}
-four  = x + 1            -- x = 3 |- {v = x + 1} <: Nat
+four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
   where
     x = 3
 \end{code}
@@ -541,7 +522,7 @@ four  = x + 1            -- x = 3 |- {v = x + 1} <: Nat
 
 <br>
 
-Eliminates *boring* proofs ... makes verification practical.
+**Eliminates boring proofs** ... makes verification practical.
 
 <br>
 
@@ -665,8 +646,6 @@ Precondition Checked at Call-Site
 avg2 x y   = safeDiv (x + y) 2
 \end{code}
 
-<br>
-
 <div class="fragment">
 **Precondition**
 
@@ -710,7 +689,7 @@ calc = do
   n <- readLn
   putStrLn "Enter denominator"
   d <- readLn
-  putStrLn $ "Result = " ++ show (safeDiv n d)
+  putStrLn ("Result = " ++ show (safeDiv n d))
   calc
 \end{code}
 
@@ -743,7 +722,7 @@ avg        :: [Int] -> Int
 avg xs     = safeDiv total n
   where
     total  = sum    xs
-    n      = length xs  -- returns a Nat
+    n      = length xs         -- returns a Nat
 \end{code}
 
 <br>
@@ -781,7 +760,7 @@ Specify **post-condition** as **output type**
 \begin{code}
 {-@ size :: [a] -> Pos @-}
 size [_]    = 1
-size (_:xs) = 1 +  size xs
+size (_:xs) = 1 + size xs
 -- size _   = impossible "size"
 \end{code}
 
@@ -816,8 +795,6 @@ size (_:xs) = 1 + n  where n = size xs -- (2)
 <div class="fragment">
 **Verified As**
 
-<br>
-
 $$\begin{array}{rll}
 \True   & \Rightarrow (v = 1)     & \Rightarrow (0 < v) & \qquad \mbox{at (1)} \\
 (0 < n) & \Rightarrow (v = 1 + n) & \Rightarrow (0 < v) & \qquad \mbox{at (2)} \\
@@ -847,7 +824,7 @@ Verifying `avg`
 avg' xs    = safeDiv total n
   where
     total  = sum  xs
-    n      = size xs
+    n      = size xs           -- returns a Pos
 \end{code}
 
 <br>
@@ -879,7 +856,6 @@ Recap
 
 <div class="fragment">
 **Refinement Types**
-
 Types + Predicates
 </div>
 
@@ -933,12 +909,7 @@ size' _      = impossible "size"
 <br>
 
 <div class="fragment">
-Next: A way to **describe properties of** structures
-
-<br>
-
-[[continue...]](03-datatypes.html)
-
+Next: How to **describe properties of** structures [[continue...]](03-datatypes.html)
 </div>
 
 

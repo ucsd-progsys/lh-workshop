@@ -209,8 +209,6 @@ Exercise: *Partial* Functions
 
 Fear `head` and `tail` no more!
 
-<br>
-
 <div class="fragment">
 \begin{code}
 {-@ head        :: List a -> a @-}
@@ -221,8 +219,6 @@ head _          = impossible "head"
 tail (_ ::: xs) = xs
 tail _          = impossible "tail"
 \end{code}
-
-<br>
 
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
@@ -304,12 +300,40 @@ tail _          = impossible "tail"
 
 
 
-A Useful Partial Function `foldr1`
-----------------------------------
+A Useful Partial Function: Fold / Reduce
+----------------------------------------
 
 <br>
 
-*Fold* `f` over list initially using *first* element:
+**Fold** or **Reduce** `f` over *any* list using seed `acc`
+
+<br>
+
+\begin{code}
+foldr :: (a -> b -> b) -> b -> List a -> b
+foldr _ acc Emp        = acc
+foldr f acc (x ::: xs) = f x (foldr f acc xs)
+\end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+A Useful Partial Function: Fold / Reduce
+----------------------------------------
+
+<br>
+
+**Fold** or **Reduce** `f` over *non-empty* list using *first element* as seed
 
 <br>
 
@@ -317,10 +341,6 @@ A Useful Partial Function `foldr1`
 {-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
 foldr1 f (x ::: xs) = foldr f x xs
 foldr1 _ _          = impossible "foldr1"
-
-foldr :: (a -> b -> b) -> b -> List a -> b
-foldr _ acc Emp        = acc
-foldr f acc (x ::: xs) = f x (foldr f acc xs)
 \end{code}
 
 <br>
@@ -436,7 +456,6 @@ Example: Year is 12 Months
 {-@ data Year a = Year (ListN a 12) @-}
 \end{code}
 
-<br>
 
 **Lists Of A Given Size**
 
@@ -444,7 +463,6 @@ Example: Year is 12 Months
 {-@ type ListN a N = {v: List a | length v == N} @-}
 \end{code}
 
-<br>
 
 <div class="fragment">
 **Make illegal states unrepresentable**
@@ -479,10 +497,8 @@ map _ Emp         = Emp
 map f (x ::: xs)  = f x ::: map f xs
 \end{code}
 
-<br>
-
 <div class="fragment">
-**Q:** Can you fix `map` to verify `tempAverage`?
+**Q:** Can you fix `map` to verify `tempAverage`? HEREHEREHERE
 
 <br>
 
@@ -524,7 +540,7 @@ init f n = f n ::: init f (n-1)
 <br>
 
 <div class="fragment">
-**Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted? 
+**Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted?
 
 <br>
 
@@ -621,4 +637,3 @@ Recap
 <br>
 <br>
 <br>
-

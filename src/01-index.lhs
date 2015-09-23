@@ -1,10 +1,3 @@
-<div class="hidden">
-\begin{code}
-main = putStrLn "Easter Egg: to force Makefile"
-\end{code}
-</div>
-
-
 <br>
 <br>
 <br>
@@ -321,11 +314,9 @@ Current & Future Work
 
 <br>
 
-+ GHC
-+ Speed
-+ Effects
++ GHC Integration
++ Faster Checking
 + *Error Messages*
-
 
 <br>
 <br>
@@ -356,6 +347,33 @@ Current & Future Work
 + Concurrency
 + Code Completion
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Current & Future Work
+---------------------
+
+<br>
+
+**Other Languages**
+
+<br>
+
++ Typescript (*Coming soon!*)
+
++ ? *(Your favorite language here)*
 
 <br>
 <br>

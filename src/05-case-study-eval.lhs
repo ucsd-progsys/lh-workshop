@@ -283,7 +283,7 @@ insert k v m = Bind k v m
 
 {-@ inline add @-}
 add :: (Ord k) => k -> Map k v -> S.Set k
-add k kvs = S.singleton k `S.union` keys kvs
+add k kvs = S.union (S.singleton k) (keys kvs)
 \end{code}
 
 
@@ -319,9 +319,9 @@ lookup _  Emp = impossible "lookup"
 
 {-@ inline has @-}
 has :: (Ord k) => k -> Map k v -> Bool
-has k m = True    -- Fix this definition, using:
-                  -- keys     :: Map k v -> Set k
-                  -- S.member :: k -> S.Set k -> Bool
+has k m = True    -- EXERCISE fix using,
+                  --   keys     :: Map k v -> Set k
+                  --   S.member :: k -> S.Set k -> Bool
 \end{code}
 
 <br>
@@ -536,11 +536,7 @@ eval g (Let x e1 e2) = eval gx e2
 
 <br>
 
-**Yikes! `lookup` is rejected!**
-
-<br>
-
-*How to ensure that `Var` is in `Env`?*
+**Yikes! `lookup` is rejected!** How to ensure that `x::Var` is in `g::Env`?
 
 <br>
 <br>
@@ -554,15 +550,46 @@ eval g (Let x e1 e2) = eval gx e2
 <br>
 <br>
 <br>
+
+
+
+
+Free vs Bound Variables
+-----------------------
+
+<br>
+
+For example in `let x = 10 in x + y`
+
++ `y` occurs **free**,  *i.e.* defined *outside*,
++ `x` occurs **bound**, *i.e.* defined *inside* (as `10`).
+
+<br>
+
+`eval` looks-up `Env` for values of [free variables](http://en.wikipedia.org/wiki/Free_variables_and_bound_variables)
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 
 Free Variables
 --------------
 
 <br>
-
-`eval` looks-up `Env` for values of [free variables](http://en.wikipedia.org/wiki/Free_variables_and_bound_variables)
-
+Specify `free` variables as a `measure`
 <br>
 
 \begin{code}
@@ -570,15 +597,13 @@ Free Variables
 free               :: Expr -> S.Set Var
 free (Val _)       = S.empty
 free (Var x)       = S.singleton x
-free (Plus e1 e2)  = xs1 `S.union`  xs2
-  where
-    xs1            = free e1
-    xs2            = free e2
-free (Let x e1 e2) = xs1 `S.union` (xs2 `S.difference` xs)
-  where
-    xs1            = free e1
-    xs2            = free e2
-    xs             = S.singleton x
+free (Plus e1 e2)  = S.union xs1 xs2
+  where xs1        = free e1
+        xs2        = free e2
+free (Let x e1 e2) = S.union xs1 (S.difference xs2 xs)
+  where xs1        = free e1
+        xs2        = free e2
+        xs         = S.singleton x
 \end{code}
 
 <br>
@@ -594,17 +619,8 @@ free (Let x e1 e2) = xs1 `S.union` (xs2 `S.difference` xs)
 <br>
 <br>
 
-
-
-Free Variables
---------------
-
-<br>
-
-For example in `let x = 10 in x + y`
-
-+ `y` occurs free,
-+ `x` occurs bound.
+Free Variables: Example
+-----------------------
 
 <br>
 
@@ -615,7 +631,7 @@ ghci> let e1 = Let (V "x") (Val 10)
                  (Plus (Var (V "x")) (Var (V "y")))
 
 ghci> free e1
-      fromList [V "y"]
+      S.Set (V "y")
 \end{spec}
 </div>
 
@@ -633,13 +649,12 @@ ghci> free e1
 <br>
 
 
-
 Well-scoped Expressions
 -----------------------
 
 <br>
 
-`e` is **well-scoped** in an env `G` if free variables of `e` are defined in `G`:
+`e` is **well-scoped** in an env `G` if **free** variables of `e` are **defined in** `G`:
 
 <br>
 
@@ -648,7 +663,7 @@ Well-scoped Expressions
 
 {-@ inline wellScoped @-}
 wellScoped :: Env -> Expr -> Bool
-wellScoped g e = free e `S.isSubsetOf` keys g
+wellScoped g e = S.isSubsetOf (free e) (keys g)
 \end{code}
 
 <br>
@@ -692,8 +707,6 @@ Exercise: Top-level Evaluation
 
 A **closed** `Expr` can be evaluated in an **empty** environment.
 
-<br>
-
 \begin{code}
 {-@ type ClosedExpr = {e: Expr | closed e} @-}
 
@@ -701,11 +714,7 @@ A **closed** `Expr` can be evaluated in an **empty** environment.
 topEval =  eval Emp
 \end{code}
 
-<br>
-
 **Q:** Fix the definition of `closed` so `topEval` is safe?
-
-<br>
 
 \begin{code}
 {-@ inline closed @-}
@@ -764,6 +773,33 @@ safeEval g e
 <br>
 
 
+
+Wrap Up: Associative Maps & Evaluation
+--------------------------------------
+
+<br>
+<br>
+
+1. **Missing key** errors are everywhere (and annoying!)
+
+2. **Use sets** to refine associative map API
+
+3. **Use measures** to create well-scoped evaluators
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Continue
 --------
 
@@ -777,6 +813,9 @@ Continue
 + [Low-level Memory](06-case-study-bytestring.html)
 </div>
 
+<br>
+
+[[Continue]](06-case-study-bytestring.html)
 
 <br>
 <br>

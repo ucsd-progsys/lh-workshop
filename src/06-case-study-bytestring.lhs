@@ -23,11 +23,15 @@ import Language.Haskell.Liquid.Prelude
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Case Study: Low Level Memory
 ============================
 
- {#mem}
--------
 
 
 <br>

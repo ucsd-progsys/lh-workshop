@@ -1,5 +1,3 @@
- {#assdidl}
-===========
 
 <div class="hidden">
 \begin{code}
@@ -35,14 +33,37 @@ member _  Emp = False
 \end{code}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Case Study: Associative Maps & Evaluation
------------------------------------------
+=========================================
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Associative Maps
+----------------
 
 <br>
 
 We've all been bitten by these!
-
-<br>
 
 \begin{spec}
 ghci> :m +Data.Map
@@ -73,8 +94,8 @@ ghci> m ! "python"
 
 
 
-Case Study: Associative Maps & Evaluation
------------------------------------------
+Associative Maps & Evaluation
+-----------------------------
 
 <br>
 
@@ -103,8 +124,6 @@ Next, lets see how to use:
 Associative Maps
 ================
 
- {#safemap}
------------
 
 <br>
 <br>
@@ -149,29 +168,23 @@ data Map k v = Emp
 <br>
 
 
-
-Tracking the Keys in a Map
---------------------------
+Lets Banish Missing Key Exceptions!
+-----------------------------------
 
 <br>
 
-We will banish unpleasant exceptions of the form:
+**1. Refine the Type with defined `keys`**
 
-\begin{spec} <div/>
-*** Exception: key is not in the map ***
+\begin{spec}
+keys   :: Map k v -> Set k
+type MapK k v Ks = {m:Map k v | keys m = Ks}
 \end{spec}
 
-<br>
+**2. Refine the API to track `keys`**
 
-By tracking the set of defined `keys` in the API
-
-\begin{spec} <div/>
-keys   :: Map k v -> Set k
-
-empty  :: {m:Map k v | keys m = emp}
-
-insert :: k:k -> v -> m:Map k v -> {m': Map k v | keys m' = add k m}
-
+\begin{spec}
+empty  :: MapK k v emp
+insert :: k:k -> v -> m:Map k v -> MapK k v {add k m}
 lookup :: k:k -> {m: Map | has k m} -> v
 \end{spec}
 
@@ -224,7 +237,11 @@ keys (Bind k _ m) = add k m
 The Empty `Map`
 ---------------
 
+<br>
+
 The `empty` map has **no keys**
+
+<br>
 
 \begin{code}
 {-@ empty :: {m:Map k v | noKeys m} @-}
@@ -235,6 +252,19 @@ empty = Emp
 noKeys :: (Ord k) => Map k v -> Bool
 noKeys m = keys m == S.empty
 \end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Inserting a New Key-Value Binding
@@ -257,12 +287,28 @@ add k kvs = S.singleton k `S.union` keys kvs
 \end{code}
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Exercise: Looking Up a Key's Value
 ----------------------------------
 
 <br>
 
 **Q:** Urgh! How can we *prevent the impossible* from happening?
+
+<br>
 
 \begin{code}
 {-@ lookup :: (Eq k) => k:k -> {m:Map k v | has k m} -> v @-}
@@ -273,13 +319,23 @@ lookup _  Emp = impossible "lookup"
 
 {-@ inline has @-}
 has :: (Ord k) => k -> Map k v -> Bool
-has k m = k `S.member` keys m -- True
-
--- HINT
---   keys     :: Map k v -> Set k
---   S.member :: k -> S.Set k -> Bool
+has k m = True    -- Fix this definition, using:
+                  -- keys     :: Map k v -> Set k
+                  -- S.member :: k -> S.Set k -> Bool
 \end{code}
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Key Not Found Begone!
 ---------------------
@@ -303,12 +359,20 @@ test      = [ lookup hs langs   -- Ok
     py    = "python"
 \end{code}
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Well-Scoped Evaluators
 ======================
 
- {#evalapi}
------------
-
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>

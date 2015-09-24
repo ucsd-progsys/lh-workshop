@@ -498,9 +498,7 @@ map f (x ::: xs)  = f x ::: map f xs
 \end{code}
 
 <div class="fragment">
-**Q:** Can you fix `map` to verify `tempAverage`? HEREHEREHERE
-
-<br>
+**Q:** Can you fix `map` to verify `tempAverage`?
 
 \begin{code}
 data Weather = W { temp :: Int, rain :: Int }
@@ -582,7 +580,6 @@ init' f n = go 0
 <div class="fragment">
 **Q:** For bonus points, fix `init'` so `sanDiegoTemp'`is accepted?
 
-<br>
 
 \begin{code}
 sanDiegoTemp' :: Year Int

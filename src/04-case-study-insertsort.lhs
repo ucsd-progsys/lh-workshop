@@ -44,14 +44,37 @@ addElemO x xs = S.singleton x `S.union` elemsO xs
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Case Study: Insertion Sort
 ==========================
 
 
- {#asdisort}
-------------
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-Recall the simplest sorting algorithm:
+Insertion Sort {#asdisort}
+--------------
 
 <br>
 
@@ -113,9 +136,6 @@ Goal: Verified Insertion Sort
 Property 1: Size
 ================
 
- {#pr1}
--------
-
 
 
 <br>
@@ -174,9 +194,6 @@ insert x (y:::ys)
 
 Property 2: Elements
 ====================
-
- {#pr2}
--------
 
 
 <br>
@@ -263,7 +280,7 @@ elems (x:::xs) = addElem x xs
 
 {-@ inline addElem @-}
 addElem :: (Ord a) => a -> List a -> S.Set a
-addElem x xs = S.singleton x `S.union` elems xs
+addElem x xs = S.union (S.singleton x) (elems xs)
 \end{code}
 
 <br>
@@ -288,14 +305,10 @@ addElem x xs = S.singleton x `S.union` elems xs
 Exercise: Verifying Permutation
 -------------------------------
 
-<br>
-
 Lets verify that `sortE` returns the same set of elements:
 
-<br>
-
 \begin{code}
-{-@ type ListE a S = {v:List a | elems v = S }@-}
+{-@ type ListE a S = {v:List a | elems v = S} @-}
 
 {-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
 sortE Emp         = Emp
@@ -307,8 +320,6 @@ insertE x (y:::ys)
   | x <= y        = x ::: y ::: ys
   | otherwise     = y ::: insertE x ys
 \end{code}
-
-<br>
 
 **Q:** Can you fix the type for `insertE` so `sortE` verifies?
 
@@ -328,9 +339,6 @@ insertE x (y:::ys)
 
 Property 3: Order
 =================
-
- {#pr3}
--------
 
 <br>
 
@@ -382,8 +390,6 @@ Refined Data: Ordered Pairs
 
 Lets write a type for **ordered pairs**
 
-<br>
-
 \begin{code}
 data OrdPair = OP {opX :: Int, opY :: Int}
 \end{code}
@@ -392,8 +398,6 @@ data OrdPair = OP {opX :: Int, opY :: Int}
 
 <div class="fragment">
 **Legal Values** value of `opX < opY`
-
-<br>
 
 \begin{spec}
 okPair  = OP 2 4  -- legal
@@ -521,7 +525,7 @@ Property 3: Ordered Lists
 
 <br>
 
-**Refine** the `List` data type to enforce *ordering**!
+**Refine** the `List` data type to enforce **ordering**!
 
 <br>
 <br>
@@ -674,9 +678,6 @@ insertO x _    = x :<: OEmp
 Multiple Measures
 =================
 
- {#multimeas}
--------------
-
 <br>
 <br>
 <br>
@@ -729,7 +730,7 @@ Data constructor refinements are **conjoined**
 \begin{spec}
 data List a where
   Emp   :: {v:List a |  length v = 0
-                 && elems  v = empty}
+                     && elems v  = empty}
   (:::) :: x:a
         -> xs:List a
         -> {v:List a |  length v = 1 + length xs
@@ -828,6 +829,9 @@ Continue
 </div>
 
 <br>
+
+[[Continue]](05-case-study-eval.html)
+
 <br>
 <br>
 <br>

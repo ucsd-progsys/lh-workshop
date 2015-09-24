@@ -79,6 +79,8 @@ Implementation errors could open up vulnerabilities
 "HeartBleed" in Haskell (1/3)
 -----------------------------
 
+<br>
+
 **A String Truncation Function**
 
 <br>
@@ -118,10 +120,7 @@ chop s n = s'
 
 <img src="img/overflow.png" height=100px>
 
-
 Works if you use the **valid prefix** size
-
-<br>
 
 \begin{spec}
 λ> let ex = "Ranjit Loves Burritos"
@@ -131,6 +130,20 @@ Works if you use the **valid prefix** size
 \end{spec}
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 "HeartBleed" in Haskell (3/3)
 -----------------------------
 
@@ -138,14 +151,26 @@ Works if you use the **valid prefix** size
 
 Leaks *overflow buffer* if **invalid prefix** size!
 
-<br>
-
 \begin{spec}
 λ> let ex = "Ranjit Loves Burritos"
 
 λ> heartBleed ex 30
 "Ranjit Loves Burritos\NUL\201\&1j\DC3\SOH\NUL"
 \end{spec}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Types Against Overflows
 -----------------------
@@ -164,11 +189,23 @@ Types Against Overflows
 
 <div class="fragment">Errors at *each* level are prevented by types at *lower* levels</div>
 
- {#ptr}
-=======
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 1. Low-level Pointer API
-------------------------
+========================
 
 <br>
 
@@ -184,11 +221,19 @@ Strategy: Specify and Verify Types for
 
 Errors at *each* level are prevented by types at *lower* levels
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-
-
-1. Low-Level Pointer API
-========================
 
 API: Types
 ----------
@@ -201,8 +246,6 @@ API: Types
 data Ptr a
 \end{spec}
 
-<br>
-
 <div class="fragment">
 **Foreign Pointers**
 
@@ -210,14 +253,26 @@ data Ptr a
 data ForeignPtr a
 \end{spec}
 
-<br>
-
 `ForeignPtr` wraps around `Ptr`; can be exported to/from C.
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 API: Operations (1/2)
 ---------------------
+
+<br>
 
 <div class="fragment">
 **Read**
@@ -227,7 +282,6 @@ peek     :: Ptr a -> IO a
 \end{spec}
 </div>
 
-<br>
 <div class="fragment">
 **Write**
 
@@ -236,8 +290,6 @@ poke     :: Ptr a -> a -> IO ()
 \end{spec}
 </div>
 
-<br>
-
 <div class="fragment">
 **Arithmetic**
 \begin{spec}
@@ -245,8 +297,23 @@ plusPtr  :: Ptr a -> Int -> Ptr b
 \end{spec}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 API: Operations (2/2)
 ---------------------
+
+<br>
 
 <div class="fragment">
 **Create**
@@ -268,10 +335,28 @@ withForeignPtr :: ForeignPtr a     -- pointer
 \end{spec}
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Example
 -------
 
+<br>
+
 **Allocate a block and write 4 zeros into it**
+
+<br>
 
 <div class="fragment">
 
@@ -289,12 +374,25 @@ zero4 = do fp <- malloc 4
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Example
 -------
 
-**Allocate a block and write 4 zeros into it**
+<br>
 
-How to *prevent overflows* e.g. writing 5 or 50 zeros?
+How to **prevent overflows** e.g. writing 5 or 50 zeros into 4-byte block ?
 
 <br>
 
@@ -311,6 +409,19 @@ How to *prevent overflows* e.g. writing 5 or 50 zeros?
 
 *Track sizes* in pointer operations
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Refined API: Types
 ------------------
@@ -330,14 +441,28 @@ measure fplen :: ForeignPtr a -> Int
 Abbreviations for pointers of size `N`
 
 \begin{spec}
-type PtrN a N        = {v:_ |  plen v  = N}
-type ForeignPtrN a N = {v:_ |  fplen v = N}
+type PtrN a N        = {v:_ | plen v  = N}
+type ForeignPtrN a N = {v:_ | fplen v = N}
 \end{spec}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Refined API: Ops (1/3)
 ----------------------
+
+<br>
 
 <div class="fragment">
 **Create**
@@ -353,11 +478,24 @@ malloc  :: n:Nat -> ForeignPtrN a n
 **Unwrap and Use**
 
 \begin{spec}
-withForeignPtr :: fp:ForeignPtr a
-               -> (PtrN a (fplen fp) -> IO b)
-               -> IO b
+withForeignPtr :: fp:ForeignPtr a              -- pointer
+               -> (PtrN a (fplen fp) -> IO b)  -- action
+               -> IO b                         -- use
 \end{spec}
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Refined API: Ops (2/3)
 ----------------------
@@ -373,16 +511,31 @@ Refine type to track *remaining* buffer size
 <div class="fragment">
 \begin{spec}
 plusPtr :: p:Ptr a
-        -> o:{Nat|o <= plen p}   -- in bounds
-        -> PtrN b (plen b - o)   -- remainder
+        -> o:{Nat | o <= plen p}   -- offset in bounds
+        -> PtrN b {plen b - o}     -- remainder
 \end{spec}
 
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 Refined API: Ops (3/3)
 ----------------------
+
+<br>
 
 **Read & Write require non-empty remaining buffer**
 
@@ -396,7 +549,6 @@ peek :: {v:Ptr a | 0 < plen v} -> IO a
 \end{spec}
 </div>
 
-<br>
 <div class="fragment">
 **Write**
 
@@ -405,12 +557,27 @@ poke :: {v:Ptr a | 0 < plen v} -> a -> IO ()
 \end{spec}
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Example: Overflow Prevented
 ---------------------------
 
+<br>
+
 How to *prevent overflows* e.g. writing 5 or 50 zeros?
 
-<br>
 
 <div class="fragment">
 
@@ -428,11 +595,21 @@ exBad = do fp <- malloc 4
 
 </div>
 
- {#bs}
-======
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 2. ByteString API
------------------
+=================
 
 <br>
 
@@ -449,11 +626,23 @@ Strategy: Specify and Verify Types for
 Errors at *each* level are prevented by types at *lower* levels
 
 
-2. ByteString API
-=================
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-Type
--------
+ByteString Type
+---------------
+
+<br>
 
 <img src="img/bytestring.png" height=150px>
 
@@ -466,8 +655,24 @@ data ByteString = PS {
 \end{code}
 
 
-Refined Type
-------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Refined ByteString Type
+-----------------------
+
+<br>
 
 <img src="img/bytestring.png" height=150px>
 
@@ -479,8 +684,24 @@ Refined Type
     }                                       @-}
 \end{code}
 
-Refined Type
-------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Refined ByteString Type
+-----------------------
+
+<br>
 
 <img src="img/bytestring.png" height=150px>
 
@@ -499,6 +720,20 @@ type ByteStringN N = {v:ByteString| bLen v = N}
 \end{code}
 </div>
 
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Legal Bytestrings
@@ -523,6 +758,20 @@ good2 = do fp <- malloc 5
 **Note:** *length* of `good2` is `3` which is *less than* allocated size `5`
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Illegal Bytestrings
 -----------------
 
@@ -542,8 +791,22 @@ bad2 = do fp <- malloc 3
 Claimed length *exceeds* allocation ... **rejected** at compile time
 </div>
 
-API: `create`
--------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+API `create` : Allocate and Fill a `ByteString`
+-----------------------------------------------
 
 <div class="hidden">
 \begin{code}
@@ -551,12 +814,11 @@ create :: Int -> (Ptr Word8 -> IO ()) -> ByteString
 \end{code}
 </div>
 
-*Allocate* and *fill* a `ByteString`
-
 <br>
 
 <div class="fragment">
 **Specification**
+
 \begin{code}
 {-@ create :: n:Nat -> (PtrN Word8 n -> IO ())
            -> ByteStringN n                @-}
@@ -581,16 +843,30 @@ Yikes, there is an error! How to fix?
 </div>
 -->
 
-API: `pack`
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+API `pack` : Convert List of `Char` into `ByteString`
 ------------
+
+<br>
 
 **Specification**
 
 \begin{code}
 {-@ pack :: s:String -> ByteStringN (len s) @-}
 \end{code}
-
-<br>
 
 <div class="fragment">
 
@@ -609,10 +885,22 @@ pack str      = create n $ \p -> go p xs
 
 
 
-API: `unsafeTake`
------------------
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-Extract *prefix* string of size `n`
+
+API `unsafeTake` : Extract *prefix* of size `n`
+-----------------------------------------------
 
 <br>
 
@@ -627,8 +915,6 @@ Extract *prefix* string of size `n`
 </div>
 
 
-<br>
-
 <div class="fragment">
 **Implementation**
 
@@ -637,14 +923,29 @@ unsafeTake n (PS x s l) = PS x s n
 \end{code}
 </div>
 
-API: `unpack`
--------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+API `unpack` : Convert `ByteString` into List of `Char`
+-------------------------------------------------------
+
+<br>
 
 **Specification**
 
 \begin{spec}
-unpack
- :: b:ByteString -> StringN (bLen b)
+unpack :: b:ByteString -> StringN (bLen b)
 \end{spec}
 
 <br>
@@ -670,16 +971,26 @@ unpack (PS ps s l)  = unsafePerformIO $ withForeignPtr ps $ \p ->
    go p 0 acc = peek p >>= \e -> return (w2c e : acc)
    go p n acc = peek (p `plusPtr` n) >>=   \e -> go p (n-1) (w2c e : acc)
 \end{code}
-
 </div>
 
- {#heartbleedredux}
-==================
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 3. Application API
--------------------
-
+==================
 
 <br>
 
@@ -695,15 +1006,28 @@ Strategy: Specify and Verify Types for
 
 Errors at *each* level are prevented by types at *lower* levels
 
-3. Application API
-==================
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Revisit "HeartBleed"
 --------------------
 
+<br>
+
 Lets revisit our potentially "bleeding" `chop`
 
-<br>
 
 <div class="hidden">
 \begin{code}
@@ -724,31 +1048,21 @@ chop s n =  s'
     s'   = unpack b'       -- up to high-level
 \end{code}
 
-<!-- BEGIN CUT
-<br>
-
-Yikes! How shall we fix it?
-
-     END CUT -->
 </div>
 
-<!-- BEGIN CUT
 
-A Well Typed `chop`
--------------------
-
-\begin{spec}
-{-@ chop :: s:String
-         -> n:{Nat | n <= len s}
-         -> {v:String | len v = n} @-}
-chop s n = s'
-  where
-    b    = pack s          -- down to low-level
-    b'   = unsafeTake n b  -- grab n chars
-    s'   = unpack b'       -- up to high-level
-\end{spec}
-
-END CUT -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 "HeartBleed" no more
 --------------------
@@ -758,14 +1072,28 @@ END CUT -->
 \begin{code}
 demo     = [ex6, ex30]
   where
-    ex   = ['N','o','r','m','a','n']
-    ex6  = chop ex 6  -- ok
+    ex   = "St. Louis" -- has size 9
+    ex6  = chop ex 6   -- ok
     ex30 = chop ex 30  -- out of bounds
 \end{code}
 
 <br>
 
 "Bleeding" `chop ex 30` *rejected* by compiler
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Recap: Types vs Overflows
 -------------------------
@@ -785,6 +1113,20 @@ Recap: Types vs Overflows
 **Errors at *each* level are prevented by types at *lower* levels**
 
 
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 

@@ -2,9 +2,8 @@
 <br>
 <br>
 <br>
-<br>
 
-<h1 style="border-bottom:none">Refinement Types for Haskell</b>
+<h1 style="border-bottom:none">Programming with Refinement Types</b>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (University of California, San Diego)</i></h4>
 
@@ -13,9 +12,6 @@
 <br>
 <br>
 <br>
-
-With: N. Vazou, E. Seidel, D. Vytiniotis, S. Peyton-Jones
-
 
 <br>
 <br>
@@ -270,6 +266,80 @@ Plan
 <br>
 <br>
 
+
+Evaluation
+----------
+
+<br>
+
++ Diverse Code Bases
+
++ 10KLoc / 56 Modules
+
++ Memory Safety, Termination, "Functional Correctness"
+
+<br>
+
+<div class="fragment">
+**Inference is Crucial**
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Evaluation
+----------
+
+
+<img src="img/code-spec-indiv.png" height=250px>
+
+
++ **Specifications:** 1 / 10 LOC  (*ok*)
+
++ **Compile Time:**  1s / 10 LOC  (*not ok!*)
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="hidden">
+
+Evaluation
+----------
+
+
+**Library**                     **LOC**     **Specs**      **Time**
+---------------------------   ---------   -----------    ----------
+`XMonad.StackSet`                   256            74          27s
+`Data.List`                         814            46          26s
+`Data.Set.Splay`                    149            27          27s
+`Data.Vector.Algorithms`           1219            76          89s
+`HsColour`                         1047            19         196s
+`Data.Map.Base`                    1396           125         174s
+`Data.Text`                        3128           305         499s
+`Data.Bytestring`                  3505           307         294s
+**Total**                     **11512**       **977**    **1336s**
+---------------------------   ---------   -----------    ----------
+
+</div>
+
+
+
+
+
 Conclusion
 ----------
 
@@ -310,70 +380,10 @@ Current & Future Work
 
 <br>
 
-**Technology**
-
-<br>
-
 + GHC Integration
 + Faster Checking
-+ *Error Messages*
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-Current & Future Work
----------------------
-
-<br>
-
-**Applications**
-
-<br>
-
-+ Testing
-+ Web frameworks
-+ Concurrency
-+ Code Completion
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Current & Future Work
----------------------
-
-<br>
-
-**Other Languages**
-
-<br>
-
-+ Typescript (*Coming soon!*)
-
-+ ? *(Your favorite language here)*
++ Easier Errors
++ Code Synthesis
 
 <br>
 <br>
@@ -411,5 +421,3 @@ Thank You!
 <br>
 <br>
 <br>
-
-

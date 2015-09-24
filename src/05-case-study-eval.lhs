@@ -365,10 +365,16 @@ test      = [ lookup hs langs   -- Ok
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Well-Scoped Evaluators
 ======================
+
 
 <br>
 <br>

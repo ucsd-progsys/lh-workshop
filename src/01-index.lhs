@@ -276,7 +276,7 @@ Evaluation
 
 + 10KLoc / 56 Modules
 
-+ Memory Safety, Termination, "Functional Correctness"
++ Memory Safety, Termination, Functional Correctness
 
 <br>
 

@@ -1,5 +1,3 @@
- {#assdidl}
-===========
 
 <div class="hidden">
 \begin{code}
@@ -35,14 +33,37 @@ member _  Emp = False
 \end{code}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
 Case Study: Associative Maps & Evaluation
------------------------------------------
+=========================================
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Associative Maps
+----------------
 
 <br>
 
 We've all been bitten by these!
-
-<br>
 
 \begin{spec}
 ghci> :m +Data.Map
@@ -73,8 +94,8 @@ ghci> m ! "python"
 
 
 
-Case Study: Associative Maps & Evaluation
------------------------------------------
+Associative Maps & Evaluation
+-----------------------------
 
 <br>
 
@@ -103,8 +124,6 @@ Next, lets see how to use:
 Associative Maps
 ================
 
- {#safemap}
------------
 
 <br>
 <br>
@@ -149,29 +168,23 @@ data Map k v = Emp
 <br>
 
 
-
-Tracking the Keys in a Map
---------------------------
+Lets Banish Missing Key Exceptions!
+-----------------------------------
 
 <br>
 
-We will banish unpleasant exceptions of the form:
+**1. Refine the Type with defined `keys`**
 
-\begin{spec} <div/>
-*** Exception: key is not in the map ***
+\begin{spec}
+keys   :: Map k v -> Set k
+type MapK k v Ks = {m:Map k v | keys m = Ks}
 \end{spec}
 
-<br>
+**2. Refine the API to track `keys`**
 
-By tracking the set of defined `keys` in the API
-
-\begin{spec} <div/>
-keys   :: Map k v -> Set k
-
-empty  :: {m:Map k v | keys m = emp}
-
-insert :: k:k -> v -> m:Map k v -> {m': Map k v | keys m' = add k m}
-
+\begin{spec}
+empty  :: MapK k v emp
+insert :: k:k -> v -> m:Map k v -> MapK k v {add k m}
 lookup :: k:k -> {m: Map | has k m} -> v
 \end{spec}
 
@@ -224,7 +237,11 @@ keys (Bind k _ m) = add k m
 The Empty `Map`
 ---------------
 
+<br>
+
 The `empty` map has **no keys**
+
+<br>
 
 \begin{code}
 {-@ empty :: {m:Map k v | noKeys m} @-}
@@ -235,6 +252,19 @@ empty = Emp
 noKeys :: (Ord k) => Map k v -> Bool
 noKeys m = keys m == S.empty
 \end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Inserting a New Key-Value Binding
@@ -253,8 +283,22 @@ insert k v m = Bind k v m
 
 {-@ inline add @-}
 add :: (Ord k) => k -> Map k v -> S.Set k
-add k kvs = S.singleton k `S.union` keys kvs
+add k kvs = S.union (S.singleton k) (keys kvs)
 \end{code}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 Exercise: Looking Up a Key's Value
@@ -263,6 +307,8 @@ Exercise: Looking Up a Key's Value
 <br>
 
 **Q:** Urgh! How can we *prevent the impossible* from happening?
+
+<br>
 
 \begin{code}
 {-@ lookup :: (Eq k) => k:k -> {m:Map k v | has k m} -> v @-}
@@ -273,13 +319,23 @@ lookup _  Emp = impossible "lookup"
 
 {-@ inline has @-}
 has :: (Ord k) => k -> Map k v -> Bool
-has k m = k `S.member` keys m -- True
-
--- HINT
---   keys     :: Map k v -> Set k
---   S.member :: k -> S.Set k -> Bool
+has k m = True    -- EXERCISE fix using,
+                  --   keys     :: Map k v -> Set k
+                  --   S.member :: k -> S.Set k -> Bool
 \end{code}
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Key Not Found Begone!
 ---------------------
@@ -303,12 +359,26 @@ test      = [ lookup hs langs   -- Ok
     py    = "python"
 \end{code}
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Well-Scoped Evaluators
 ======================
 
- {#evalapi}
------------
 
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -466,11 +536,7 @@ eval g (Let x e1 e2) = eval gx e2
 
 <br>
 
-**Yikes! `lookup` is rejected!**
-
-<br>
-
-*How to ensure that `Var` is in `Env`?*
+**Yikes! `lookup` is rejected!** How to ensure that `x::Var` is in `g::Env`?
 
 <br>
 <br>
@@ -484,15 +550,46 @@ eval g (Let x e1 e2) = eval gx e2
 <br>
 <br>
 <br>
+
+
+
+
+Free vs Bound Variables
+-----------------------
+
+<br>
+
+For example in `let x = 10 in x + y`
+
++ `y` occurs **free**,  *i.e.* defined *outside*,
++ `x` occurs **bound**, *i.e.* defined *inside* (as `10`).
+
+<br>
+
+`eval` looks-up `Env` for values of [free variables](http://en.wikipedia.org/wiki/Free_variables_and_bound_variables)
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 
 Free Variables
 --------------
 
 <br>
-
-`eval` looks-up `Env` for values of [free variables](http://en.wikipedia.org/wiki/Free_variables_and_bound_variables)
-
+Specify `free` variables as a `measure`
 <br>
 
 \begin{code}
@@ -500,15 +597,13 @@ Free Variables
 free               :: Expr -> S.Set Var
 free (Val _)       = S.empty
 free (Var x)       = S.singleton x
-free (Plus e1 e2)  = xs1 `S.union`  xs2
-  where
-    xs1            = free e1
-    xs2            = free e2
-free (Let x e1 e2) = xs1 `S.union` (xs2 `S.difference` xs)
-  where
-    xs1            = free e1
-    xs2            = free e2
-    xs             = S.singleton x
+free (Plus e1 e2)  = S.union xs1 xs2
+  where xs1        = free e1
+        xs2        = free e2
+free (Let x e1 e2) = S.union xs1 (S.difference xs2 xs)
+  where xs1        = free e1
+        xs2        = free e2
+        xs         = S.singleton x
 \end{code}
 
 <br>
@@ -524,17 +619,8 @@ free (Let x e1 e2) = xs1 `S.union` (xs2 `S.difference` xs)
 <br>
 <br>
 
-
-
-Free Variables
---------------
-
-<br>
-
-For example in `let x = 10 in x + y`
-
-+ `y` occurs free,
-+ `x` occurs bound.
+Free Variables: Example
+-----------------------
 
 <br>
 
@@ -545,7 +631,7 @@ ghci> let e1 = Let (V "x") (Val 10)
                  (Plus (Var (V "x")) (Var (V "y")))
 
 ghci> free e1
-      fromList [V "y"]
+      S.Set (V "y")
 \end{spec}
 </div>
 
@@ -563,13 +649,12 @@ ghci> free e1
 <br>
 
 
-
 Well-scoped Expressions
 -----------------------
 
 <br>
 
-`e` is **well-scoped** in an env `G` if free variables of `e` are defined in `G`:
+`e` is **well-scoped** in an env `G` if **free** variables of `e` are **defined in** `G`:
 
 <br>
 
@@ -578,7 +663,7 @@ Well-scoped Expressions
 
 {-@ inline wellScoped @-}
 wellScoped :: Env -> Expr -> Bool
-wellScoped g e = free e `S.isSubsetOf` keys g
+wellScoped g e = S.isSubsetOf (free e) (keys g)
 \end{code}
 
 <br>
@@ -622,8 +707,6 @@ Exercise: Top-level Evaluation
 
 A **closed** `Expr` can be evaluated in an **empty** environment.
 
-<br>
-
 \begin{code}
 {-@ type ClosedExpr = {e: Expr | closed e} @-}
 
@@ -631,11 +714,7 @@ A **closed** `Expr` can be evaluated in an **empty** environment.
 topEval =  eval Emp
 \end{code}
 
-<br>
-
 **Q:** Fix the definition of `closed` so `topEval` is safe?
-
-<br>
 
 \begin{code}
 {-@ inline closed @-}
@@ -694,6 +773,33 @@ safeEval g e
 <br>
 
 
+
+Wrap Up: Associative Maps & Evaluation
+--------------------------------------
+
+<br>
+<br>
+
+1. **Missing key** errors are everywhere (and annoying!)
+
+2. **Use sets** to refine associative map API
+
+3. **Use measures** to create well-scoped evaluators
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Continue
 --------
 
@@ -707,6 +813,9 @@ Continue
 + [Low-level Memory](06-case-study-bytestring.html)
 </div>
 
+<br>
+
+[[Continue]](06-case-study-bytestring.html)
 
 <br>
 <br>

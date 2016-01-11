@@ -1,17 +1,9 @@
-<div class="hidden">
-\begin{code}
-main = putStrLn "Easter Egg: to force Makefile"
-\end{code}
-</div>
-
-
-<br>
 <br>
 <br>
 <br>
 <br>
 
-<h1 style="border-bottom:none">Refinement Types for Haskell</b>
+<h1 style="border-bottom:none">Programming with Refinement Types</b>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (University of California, San Diego)</i></h4>
 
@@ -20,9 +12,6 @@ main = putStrLn "Easter Egg: to force Makefile"
 <br>
 <br>
 <br>
-
-With: N. Vazou, E. Seidel, D. Vytiniotis, S. Peyton-Jones
-
 
 <br>
 <br>
@@ -119,7 +108,7 @@ Missing Keys
 
 <div class="fragment">
 \begin{spec}
-λ> m ! "racket"
+λ> m ! "clojure"
 "*** Exception: key is not in the map
 \end{spec}
 </div>
@@ -181,9 +170,9 @@ Segmentation Faults
 
 \begin{spec}
 λ> :m + Data.Text Data.Text.Unsafe
-λ> let t = pack "LambdaConf"
+λ> let t = pack "StrangeLoop"
 λ> takeWord16 5 t
-"Lambda"
+"Stran"
 \end{spec}
 
 <br>
@@ -195,7 +184,7 @@ Memory overflows **leaking secrets**...
 
 \begin{spec}
 λ> takeWord16 20 t
-"LambdaConf\1912\3148\NUL\15928\2486\SOH\NUL"
+"StrangeLoop\1912\3148\NUL\15928\2486\SOH\NUL"
 \end{spec}
 </div>
 
@@ -277,6 +266,80 @@ Plan
 <br>
 <br>
 
+
+Evaluation
+----------
+
+<br>
+
++ Diverse Code Bases
+
++ 10KLoc / 56 Modules
+
++ Memory Safety, Termination, Functional Correctness
+
+<br>
+
+<div class="fragment">
+**Inference is Crucial**
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Evaluation
+----------
+
+
+<img src="img/code-spec-indiv.png" height=250px>
+
+
++ **Specifications:** 1 / 10 LOC  (*ok*)
+
++ **Compile Time:**  1s / 10 LOC  (*not ok!*)
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="hidden">
+
+Evaluation
+----------
+
+
+**Library**                     **LOC**     **Specs**      **Time**
+---------------------------   ---------   -----------    ----------
+`XMonad.StackSet`                   256            74          27s
+`Data.List`                         814            46          26s
+`Data.Set.Splay`                    149            27          27s
+`Data.Vector.Algorithms`           1219            76          89s
+`HsColour`                         1047            19         196s
+`Data.Map.Base`                    1396           125         174s
+`Data.Text`                        3128           305         499s
+`Data.Bytestring`                  3505           307         294s
+**Total**                     **11512**       **977**    **1336s**
+---------------------------   ---------   -----------    ----------
+
+</div>
+
+
+
+
+
 Conclusion
 ----------
 
@@ -317,45 +380,10 @@ Current & Future Work
 
 <br>
 
-**Technology**
-
-<br>
-
-+ GHC
-+ Speed
-+ Effects
-+ *Error Messages*
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-Current & Future Work
----------------------
-
-<br>
-
-**Applications**
-
-<br>
-
-+ Testing
-+ Web frameworks
-+ Concurrency
-+ Code Completion
-
++ GHC Integration
++ Faster Checking
++ Easier Errors
++ Code Synthesis
 
 <br>
 <br>
@@ -393,5 +421,3 @@ Thank You!
 <br>
 <br>
 <br>
-
-

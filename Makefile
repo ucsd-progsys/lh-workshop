@@ -1,9 +1,4 @@
 MATHJAX=http://cdn.mathjax.org/mathjax/latest
-RSYNC=$(shell pwd)/sync.sh
-remoteuser=rjhala
-remotedir=/home/rjhala/public_html/liquid/book
-remotehost=goto.ucsd.edu
-
 LIQUIDCLIENT=../liquid-client
 SLIDES=dist/_slides
 SITE=dist/_site
@@ -15,7 +10,7 @@ CSS=assets/css
 IMG=assets/img
 
 ##############################################
-
+PANDOC=pandoc
 INDEXER=$(FILTERS)/Toc.hs
 METATEMPLATE=$(TEMPLATES)/pagemeta.template
 INDEXTEMPLATE=$(TEMPLATES)/index.template
@@ -29,7 +24,7 @@ INDEX=$(DIST)/index.lhs
 
 ##############################################
 
-PANDOCHTML=pandoc \
+PANDOCHTML=$(PANDOC)\
      --from=markdown+lhs \
 	 --to=html5 \
      -s --mathjax \
@@ -44,7 +39,7 @@ PANDOCHTML=pandoc \
 	 --variable=notitle \
 	 --highlight-style=tango
 
-REVEAL=pandoc \
+REVEAL=$(PANDOC)\
 	   --from=markdown\
 	   --to=html5                           \
 	   --standalone                         \
@@ -55,7 +50,7 @@ REVEAL=pandoc \
 	   --variable reveal=js/reveal.js \
 	   --variable mathjax=$(MATHJAX)
 
-LIQUID=liquid --short-names
+# LIQUID=liquid --short-names
 
 ####################################################################
 
@@ -80,7 +75,7 @@ html: indexhtml $(htmlObjects)
 	cp -r $(LIQUIDCLIENT)/js    $(SITE)/
 
 indexhtml: $(INDEX)
-	pandoc --from=markdown+lhs --to=html5 --template=$(INDEX) $(PREAMBLE) -o $(SITE)/index.html
+	$(PANDOC) --from=markdown+lhs --to=html5 --template=$(INDEX) $(PREAMBLE) -o $(SITE)/index.html
 
 $(INDEX):
 	$(INDEXER) src/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
@@ -107,9 +102,6 @@ src/%.lhs.slide.html: src/.liquid/%.lhs.markdown
 
 clean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
-
-rsync:
-	$(RSYNC) _site/ $(remoteuser) $(remotehost) $(remotedir)
 
 #clean:
 #	cd lhs/ && ../cleanup && cd ../

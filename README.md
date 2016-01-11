@@ -61,11 +61,19 @@ Build Slides
 
 To build rust-style html (in dist/_site)
 
-     $ make html
+     $ stack exec -- make html
 
 To build reveal.js slides (in dist/_slides)
 
-     $ make slides
+     $ stack exec -- make slides
+
+Edit Slides
+-----------
+
+You can modify the following parameters:
+
+1. **Server URL**: change `liquidserver` in `assets/templates/preamble.lhs`
+
 
 Misc Links
 ----------

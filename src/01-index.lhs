@@ -9,9 +9,7 @@
 
 <br>
 <br>
-Follow online [http://goto.ucsd.edu/~nvazou/compose16/_site/01-index.html](http://goto.ucsd.edu/~nvazou/compose16/_site/01-index.html)
 
-<br>
 <br>
 <br>
 
@@ -62,7 +60,7 @@ Division By Zero
 λ> let average xs = sum xs `div` length xs
 
 λ> average [100, 202, 300]
-2
+200
 \end{spec}
 </div>
 

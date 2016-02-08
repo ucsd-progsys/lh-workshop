@@ -359,7 +359,7 @@ incr x    = x + 1
 Specification of Compose
 -------------------------
 
-Abstract over refinements of input functions:
+<br>
 
 \begin{code}
 {-@
@@ -494,7 +494,7 @@ Recap
 2. **Subtyping:** SMT Implication
 3. **Measures:** Specify Properties of Data
 4. **Abstract Refinements:** Decouple properties from code
-5. **Bounded Refinements:** Relating Absract Refinements
+5. **Bounded Refinements:** Relating Abstract Refinements
 
 
 <br> 

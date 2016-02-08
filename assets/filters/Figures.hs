@@ -83,9 +83,12 @@ txLink   :: (Walkable Inline b) => IORef Info -> b -> IO b
 txLink r = walkM (reLink r)
 
 reLink   :: IORef Info -> Inline -> IO Inline
+
+{-
 reLink r (Link [Str "auto"] tgt@('#':i,_))
   = do n <- getCount r i
        return $ Link [Str (show n)] tgt
+-}
 
 reLink _ i
   = return i

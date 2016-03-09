@@ -199,6 +199,23 @@ Plan
 
 
 <br>
+
+**Part II: Case Studies**
+
++ <div class="fragment">[**Insertion Sort**](04-case-study-insertsort.html)</div>
++ <div class="fragment">[**Well Scoped Evaluator**](05-case-study-eval.html)</div>
++ <div class="fragment">[**Low-level Memory**](06-case-study-bytestring.html)</div>
+
+<br>
+
+**Part III: Abstract Refinements**
+
++ <div class="fragment"> [**Abstract Refinements**](07-abstract-refinements.html)</div>
++ <div class="fragment"> [**Bounded Refinements**](08-bounded-refinements.html)</div>
+
+
+
+
 <br>
 <br>
 <br>

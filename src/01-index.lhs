@@ -3,13 +3,13 @@
 <br>
 <br>
 
-<h1 style="border-bottom:none">LiquidHaskell: Liquid Types for Haskell</b>
+<h1 style="border-bottom:none">Programming with Refinement Types</b>
 
-<h4 style="border-bottom:none"><i>Niki Vazou (University of California, San Diego)</i></h4>
+<h4 style="border-bottom:none"><i>Ranjit Jhala (University of California, San Diego)</i></h4>
 
 <br>
 <br>
-
+<br>
 <br>
 <br>
 
@@ -60,7 +60,7 @@ Division By Zero
 λ> let average xs = sum xs `div` length xs
 
 λ> average [100, 202, 300]
-200
+2
 \end{spec}
 </div>
 
@@ -90,13 +90,17 @@ Division By Zero
 
 
 
-Partial Functions
+Missing Keys
 ------------
 
 <div class="fragment">
 \begin{spec}
-λ> head "compose"
-'c'
+λ> :m +Data.Map
+λ> let m = fromList [ ("haskell"    , "lazy")
+                    , ("javascript" , "eager")]
+
+λ> m ! "haskell"
+"lazy"
 \end{spec}
 </div>
 
@@ -104,8 +108,8 @@ Partial Functions
 
 <div class="fragment">
 \begin{spec}
-λ> head []
-*** Exception: Prelude.head: empty list
+λ> m ! "clojure"
+"*** Exception: key is not in the map
 \end{spec}
 </div>
 
@@ -124,21 +128,63 @@ Partial Functions
 
 
 
-Fuctional Correctness
----------------------
+Segmentation Faults
+-------------------
 
 <div class="fragment">
 \begin{spec}
-λ> sort [42, 5, 3, 1]
-[5, 3]
+λ> :m +Data.Vector
+λ> let v = fromList ["haskell", "javascript"]
+λ> unsafeIndex v 0
+"haskell"
 \end{spec}
 </div>
 
 <div class="fragment">
 <br>
 \begin{spec}
-λ> (incr . incr) 40
-0
+λ> V.unsafeIndex v 3
+
+'ghci' terminated by signal SIGSEGV ...
+\end{spec}
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+"HeartBleeds"
+-------------
+
+
+\begin{spec}
+λ> :m + Data.Text Data.Text.Unsafe
+λ> let t = pack "StrangeLoop"
+λ> takeWord16 5 t
+"Stran"
+\end{spec}
+
+<br>
+
+<div class="fragment">
+Memory overflows **leaking secrets**...
+
+<br>
+
+\begin{spec}
+λ> takeWord16 20 t
+"StrangeLoop\1912\3148\NUL\15928\2486\SOH\NUL"
 \end{spec}
 </div>
 
@@ -192,11 +238,10 @@ Plan
 
 <br>
 
-1. [**Refinements Types**](02-refinements.html)
-2. [**Data Types**](03-datatypes.html)
-3. [**Abstract Refinements**](04-abstract-refinements.html)
-4. [**Bounded Refinements**](05-bounded-refinements.html)
+**Part I: Refinement Types**
 
++ <div class="fragment"> [**Refinements**](02-refinements.html)</div>
++ <div class="fragment"> [**Data Types**](03-datatypes.html)</div>
 
 <br>
 
@@ -338,6 +383,30 @@ Conclusion
 
 
 
+Current & Future Work
+---------------------
+
+<br>
+
++ GHC Integration
++ Faster Checking
++ Easier Errors
++ Code Synthesis
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 Thank You!
 ----------
@@ -345,11 +414,8 @@ Thank You!
 <br>
 <br>
 
-`cabal install liquidhaskell`
-<br>
+
 [`http://www.refinement-types.org`](http://www.refinement-types.org)
-<br>
-[online demo @ http://goto.ucsd.edu/liquidhaskell](http://goto.ucsd.edu/liquidhaskell)
 
 <br>
 <br>

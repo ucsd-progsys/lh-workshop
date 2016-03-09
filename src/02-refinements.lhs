@@ -13,6 +13,7 @@ zero        :: Int
 zero'       :: Int
 four        :: Int
 safeDiv     :: Int -> Int -> Int
+size, size' :: [a] -> Int
 \end{code}
 
 </div>
@@ -59,6 +60,106 @@ Simple Refinement Types
 <br>
 
 Refinement Types = *Types* + *Predicates*
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Types
+-----
+
+<br>
+
+\begin{spec}<div/>
+b := Int         -- base types
+   | Bool
+   | ...
+   | a, b, c     -- type variables
+
+t := {x:b | p}   -- refined base
+   | x:t -> t    -- refined function
+
+p := ...         -- predicate in decidable logic
+\end{spec}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+Predicates
+----------
+
+<br>
+
+\begin{spec} <div/>
+p := e           -- atom
+   | e1 == e2    -- equality
+   | e1 <  e2    -- ordering
+   | (p && p)    -- and
+   | (p || p)    -- or
+   | (not p)     -- negation
+\end{spec}
+
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Expressions
+-----------
+
+<br>
+
+\begin{spec} <div/>
+e := x, y, z,...    -- variable
+   | 0, 1, 2,...    -- constant
+   | (e + e)        -- addition
+   | (e - e)        -- subtraction
+   | (c * e)        -- linear multiplication
+   | (f e1 ... en)  -- uninterpreted function
+\end{spec}
+
+<div class="fragment">
+
+**Refinement Logic: QF-UFLIA**
+
+Quantifier-Free Logic of Uninterpreted Functions and Linear Arithmetic
+
+</div>
 
 
 <br>
@@ -194,6 +295,27 @@ Refinement Type Checking
 
 
 
+
+
+A Term Can Have *Many* Types
+----------------------------
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 A Term Can Have *Many* Types
@@ -358,7 +480,7 @@ $$
 \begin{array}{rcrccll}
 \mathbf{VC\ is\ Valid:} & x = 3 & \Rightarrow &  v = x + 1 & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
                         &       &             &            &             &               \\
-\mathbf{So:}            & x = 3 & \vdash      & \{v:Int\ |\ v = x + 1\}      & \preceq     & \Nat      &   \\
+\mathbf{So:}            & x = 3 & \vdash      & \Zero      & \preceq     & \Nat      &   \\
 \end{array}
 $$
 </div>
@@ -489,8 +611,6 @@ Let's write a **safe division** function
 <br>
 
 \begin{code}
-{-@ type NonZero = {v:Int | v /= 0} @-}
-
 {-@ safeDiv :: Int -> Int -> Int   @-}
 safeDiv _ 0 = impossible "divide-by-zero"
 safeDiv x n = x `div` n
@@ -556,6 +676,42 @@ $$
 <br>
 <br>
 
+
+Exercise: Check That Data
+-------------------------
+
+<br>
+
+\begin{code}
+calc :: IO ()
+calc = do
+  putStrLn "Enter numerator"
+  n <- readLn
+  putStrLn "Enter denominator"
+  d <- readLn
+  putStrLn ("Result = " ++ show (safeDiv n d))
+  calc
+\end{code}
+
+<br>
+
+**Q:** Can you fix `calc` so it typechecks?
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 Precondition Checked at Call-Site
 ---------------------------------
 
@@ -576,12 +732,107 @@ avg xs     = safeDiv total n
 
 $$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
+</div>
+
 
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-_How_ to talk about list length in logic?
+`size` returns positive values
+------------------------------
 
+<br>
+
+Specify **post-condition** as **output type**
+
+<br>
+
+\begin{code}
+{-@ size :: [a] -> Pos @-}
+size [_]    = 1
+size (_:xs) = 1 + size xs
+-- size _   = impossible "size"
+\end{code}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Postconditions Checked at Return
+--------------------------------
+
+<br>
+
+\begin{spec} <div/>
+{-@ size    :: [a] -> Pos @-}
+size []     = 1                        -- (1)
+size (_:xs) = 1 + n  where n = size xs -- (2)
+\end{spec}
+
+<br>
+
+<div class="fragment">
+**Verified As**
+
+$$\begin{array}{rll}
+\True   & \Rightarrow (v = 1)     & \Rightarrow (0 < v) & \qquad \mbox{at (1)} \\
+(0 < n) & \Rightarrow (v = 1 + n) & \Rightarrow (0 < v) & \qquad \mbox{at (2)} \\
+\end{array}$$
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Verifying `avg`
+---------------
+
+<br>
+
+\begin{code}
+avg' xs    = safeDiv total n
+  where
+    total  = sum  xs
+    n      = size xs           -- returns a Pos
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Verifies As**
+
+$$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
 </div>
 
 
@@ -644,13 +895,16 @@ Unfinished Business
 
 <br>
 
-How to describe  **non empty lists**?
+How to prevent calling `size` with **empty lists**?
 
 <br>
 
-\begin{spec}
-{-@ length    :: {v:[a]| length v > 0 } -> Pos @-}
-\end{spec}
+\begin{code}
+{-@ size'    :: [a] -> Pos @-}
+size' [_]    = 1
+size' (_:xs) = 1 + size' xs
+size' _      = impossible "size"
+\end{code}
 
 <br>
 

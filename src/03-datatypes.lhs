@@ -5,27 +5,25 @@
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-termination" @-}
-{- LIQUID "--totality"       @-} -- totality does not play well with record selectors
+{-@ LIQUID "--totality"       @-}
 {-@ LIQUID "--diff"           @-}
 
 module DataTypes where
 
-import Prelude hiding (length, sum)
-import qualified Data.Set as S -- hiding (elems, insert)
+import Prelude hiding (replicate, (++), sum, init, length, map, filter, foldr, foldr1)
 
+map         :: (a -> b) -> List a -> List b
+foldr1      :: (a -> a -> a) -> List a -> a
+head        :: List a -> a
+tail        :: List a -> List a
+init, init' :: (Int -> a) -> Int -> List a
+-- append      :: List a -> List a -> List a
+-- filter      :: (a -> Bool) -> List a -> List a
+impossible         :: String -> a
+average     :: List Int -> Int
+-- wtAverage   :: List (Int, Int) -> Int
 
-head       :: List a -> a
-tail       :: List a -> List a
-impossible :: String -> a
-avg        :: List Int -> Int
-insert     :: (Ord a) =>  a -> List a -> List a
-
-
-sum :: List Int -> Int 
-sum Emp = 0 
-sum (x ::: xs) = x + sum xs
 infixr 9 :::
-infixr 9 :<:
 
 {-@ data List [length] a = Emp | (:::) {hd :: a, tl :: List a } @-}
 {-@ invariant {v: List a | 0 <= length v} @-}
@@ -36,11 +34,11 @@ infixr 9 :<:
 {-@ impossible :: {v:_ | false} -> a @-}
 impossible = error
 
-{-@ safeDiv :: Int -> {v:Int | v /= 0} -> Int   @-}
-safeDiv :: Int -> Int -> Int 
-safeDiv _ 0 = impossible "divide-by-zero"
-safeDiv x n = x `div` n
-
+{-@ average :: ListNE Int -> Int @-}
+average xs = total `div` n
+  where
+    total   = foldr1 (+) xs
+    n       = length xs
 \end{code}
 
 </div>
@@ -204,7 +202,7 @@ Using Measures
 
 
 
-Example: *Partial* Functions
+Exercise: *Partial* Functions
 -----------------------------
 
 <br>
@@ -222,8 +220,6 @@ tail (_ ::: xs) = xs
 tail _          = impossible "tail"
 \end{code}
 
-<br> <br>
-
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
 
@@ -239,6 +235,7 @@ tail _          = impossible "tail"
 <br>
 <br>
 <br>
+
 
 Naming Non-Empty Lists
 ----------------------
@@ -300,114 +297,82 @@ tail _          = impossible "tail"
 <br>
 <br>
 
-Back to `average`
----------------------------------
+
+
+
+A Useful Partial Function: Fold / Reduce
+----------------------------------------
+
+<br>
+
+**Fold** or **Reduce** `f` over *any* list using seed `acc`
 
 <br>
 
 \begin{code}
-{-@ avg    :: List Int -> Int @-}
-avg xs     = safeDiv total n
+foldr :: (a -> b -> b) -> b -> List a -> b
+foldr _ acc Emp        = acc
+foldr f acc (x ::: xs) = f x (foldr f acc xs)
+\end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+A Useful Partial Function: Fold / Reduce
+----------------------------------------
+
+<br>
+
+**Fold** or **Reduce** `f` over *non-empty* list using *first element* as seed
+
+<br>
+
+\begin{code}
+{-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
+foldr1 f (x ::: xs) = foldr f x xs
+foldr1 _ _          = impossible "foldr1"
+\end{code}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Exercise: `average`
+-------------------
+
+<br>
+
+\begin{code}
+{-@ average' :: List Int -> Int @-}
+average' xs = total `div` n
   where
-    total  = sum    xs
-    n      = length xs         -- returns a Nat
-\end{code}
-
-<br> 
-**Q:** Write type for `avg` that verifies safe division.
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Multiple Measures
-=================
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-SMT Solvers Reason About Sets
------------------------------
-
-<div class="fragment">
-
-<br>
-
-Hence, we can write *Set-valued* measures
-
-<br>
-
-Using the `Data.Set` API for convenience
-
-<br>
-
-\begin{spec} <div/>
-import qualified Data.Set as S
-\end{spec}
-
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Specifying A `List`s Elements
------------------------------
-
-<br>
-
-\begin{code}
-{-@ measure elems @-}
-elems :: (Ord a) => List a -> S.Set a
-elems Emp      = S.empty
-elems (x:::xs) = addElem x xs
-
-{-@ inline addElem @-}
-addElem :: (Ord a) => a -> List a -> S.Set a
-addElem x xs = S.union (S.singleton x) (elems xs)
+    total   = foldr1 (+) xs
+    n       = length xs
 \end{code}
 
 <br>
 
-<div class="fragment">
-`inline` lets us reuse Haskell terms in refinements.
-</div>
+**Q:** What is a safe input type for `average'`?
 
 <br>
 <br>
@@ -421,80 +386,6 @@ addElem x xs = S.union (S.singleton x) (elems xs)
 <br>
 <br>
 <br>
-
-
-Multiple Measures
--------------------------------
-
-<br>
-
-*Strengthens* type of data constructor
-
-<br>
-
-<div class="fragment">
-
-\begin{spec} <div/>
-data List a where
-
-  Emp   :: {v:List a | length v == 0 
-                     && elems v == S.empty}
-
-
-  (:::) :: x:a -> xs:List a
-        -> {v:List a | length v == 1 + length xs
-                     && elems v == addElem v xs  }
-\end{spec}
-
-</div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Example : Inserting Elements
-----------------------------
-
-<br>
-\begin{code}
-{-@ insert :: x:a -> xs:List a 
-           -> {v : List a | length v == length xs + 1
-                          && elems v == addElem x xs  } @-}
-
-insert x Emp = x ::: Emp
-insert x (y ::: ys)
-  | x <= y    = x ::: y ::: ys
-  | otherwise = y ::: insert x ys 
-\end{code}
-
-<br>
-<br>
-
-Can we specify **sortedness**?
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 
@@ -520,165 +411,66 @@ Refining Data Types
 <br>
 <br>
 
-
-
-Example: Sorted Lists
-----------------------
-
-<br>
-
-Lets **define** a type for ordered lists
+Example: Year is 12 Months
+--------------------------
 
 <br>
 
 \begin{code}
-data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList a }
+data Year a = Year (List a)
 \end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Ordered Lists
--------------
-
-<br>
-
-Lets **refine** the type to enforce **order**
-
-<br>
-
-\begin{code}
-{-@ data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList {v:a | oHd <= v}} @-}
-\end{code}
-
-<br>
-
-Head `oHd` is **smaller than every value** `v` in tail `oTl`
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Ordered Lists
--------------
-
-<br>
-
-*Illegal values unrepresentable*
-
-<br>
-
-\begin{code}
-okList :: OList Int
-okList = 1 :<: 2 :<: 3 :<: OEmp
-
-badList :: OList Int
-badList = 1 :<: 3 :<: 2 :<: OEmp
-\end{code}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Exercise: Insertion Sort
-------------------------
-
-<br>
-
-**Q:** Oops. There's a problem! Can you fix it?
-
-<br>
-
-\begin{code}
-{-@ sortO ::  xs:List a -> OList a @-}
-sortO Emp      = OEmp
-sortO (x:::xs) = insertO x (sortO xs)
-
-{-@ insertO :: x:a -> xs:_  -> OList a @-}
-insertO x (y :<: ys)
-  | x <= y     = y :<: x :<: ys
-  | otherwise  = y :<: insertO x ys
-insertO x _    = x :<: OEmp
-\end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-Refinements vs. Full Dependent Types
-------------------------------------
-
-<br>
-
-+ *Limited* to **decidable logics** but ...
-
-+ *Offer* massive amounts of **automation**
 
 <br>
 
 <div class="fragment">
+**Legal Values:** Lists of `12` elements, e.g.
 
-Compare with `insertionSort` in:
+<br>
 
-+ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
-+ [Idris](https://github.com/davidfstr/idris-insertion-sort/tree/master)
-+ [Coq](http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v)
+`"jan" ::: "feb" ::: ... ::: "dec" ::: Emp"`
 
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Example: Year is 12 Months
+--------------------------
+
+<br>
+
+**Refine Type to Legal Values**
+
+\begin{code}
+{-@ data Year a = Year (ListN a 12) @-}
+\end{code}
+
+
+**Lists Of A Given Size**
+
+\begin{code}
+{-@ type ListN a N = {v: List a | length v == N} @-}
+\end{code}
+
+
+<div class="fragment">
+**Make illegal states unrepresentable**
+
+\begin{code}
+badYear = Year (1 ::: Emp)
+\end{code}
+</div>
 
 <br>
 <br>
@@ -694,20 +486,107 @@ Compare with `insertionSort` in:
 <br>
 
 
-
-Unfinished Business
--------------------
-<br>
-
-**Problem:** How to reason about `elems` and `lenght` of an `OList`?
+Exercise: `map`
+---------------
 
 <br>
 
-**Solution:** Make `OList` an instance of `List` using Abstract Refinements!
+\begin{code}
+{-@ map :: (a -> b) -> xs:List a -> List b @-}
+map _ Emp         = Emp
+map f (x ::: xs)  = f x ::: map f xs
+\end{code}
+
+<div class="fragment">
+**Q:** Can you fix `map` to verify `tempAverage`?
+
+\begin{code}
+data Weather = W { temp :: Int, rain :: Int }
+
+tempAverage :: Year Weather -> Int
+tempAverage (Year ms) = average months
+  where
+    months            = map temp ms
+\end{code}
+</div>
 
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Exercise: `init`
+----------------
+
+<br>
+
+\begin{code}
+{-@ init :: (Int -> a) -> Nat -> List a @-}
+init _ 0 = Emp
+init f n = f n ::: init f (n-1)
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted?
+
+<br>
+
+\begin{code}
+sanDiegoTemp :: Year Int
+sanDiegoTemp = Year (init (const 72) 12)
+\end{code}
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Exercise: `init'`
+------------------
+
+<br>
+
+\begin{code}
+{-@ init' :: (Int -> a) -> n:Nat -> List a @-}
+init' f n = go 0
+  where
+    go i | i < n     = f i ::: go (i+1)
+         | otherwise = Emp
+\end{code}
+
+<br>
+
+<div class="fragment">
+**Q:** For bonus points, fix `init'` so `sanDiegoTemp'`is accepted?
+
+
+\begin{code}
+sanDiegoTemp' :: Year Int
+sanDiegoTemp' = Year (init' (const 72) 12)
+\end{code}
+</div>
+
 <br>
 <br>
 <br>
@@ -735,7 +614,11 @@ Recap
 <br>
 
 <div class="fragment">
-**Next:** [Abstract Refinements](04-abstract-refinements.html)
+**Next: Case Studies**
+
++ [Insertion Sort](04-case-study-insertsort.html)
++ [Well Scoped Evaluator](05-case-study-eval.html)
++ [Low-level Memory](06-case-study-bytestring.html)
 </div>
 
 

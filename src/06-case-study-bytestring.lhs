@@ -4,7 +4,8 @@
 \begin{code}
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
-{-@ LIQUID "--diffcheck"     @-}
+{-@ LIQUID "--prune-unsorted" @-}
+{- LIQUID "--diffcheck"     @-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 
 module Memory where
@@ -1251,7 +1252,7 @@ unsafeHead (PS x s l) = liquidAssert (l > 0) $
 unsafeTail :: ByteString -> ByteString
 unsafeTail (PS ps s l) = liquidAssert (l > 0) $ PS ps (s+1) (l-1)
 
-{-@ null :: b:ByteString -> {v:Bool | ((Prop v) <=> ((bLen b) = 0))} @-}
+{-@ null :: b:ByteString -> {v:Bool | v <=> (bLen b == 0)} @-}
 null :: ByteString -> Bool
 null (PS _ _ l) = liquidAssert (l >= 0) $ l <= 0
 

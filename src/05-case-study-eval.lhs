@@ -3,6 +3,7 @@
 \begin{code}
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--prune-unsorted" @-}
 
 module Eval (Map, Expr (..), plus, eval, topEval, safeEval) where
 

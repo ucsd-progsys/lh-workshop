@@ -99,7 +99,7 @@ tocHtml toc = unlines $  ["<ul class='chapter'>"]
                       ++ ["</ul>"]
 
 tocChapters :: TOC -> [Chapter]
-tocChapters (TOC zs) = map mkChapter zs
+tocChapters (TOC zs) = [ mkChapter z | z@(i, f, ris) <- zs, not (null ris) ] 
 
 mkChapter :: (Int, FilePath, [(Ref, Info)]) -> Chapter
 mkChapter (i, f, ri:ris) = Ch i ri secs

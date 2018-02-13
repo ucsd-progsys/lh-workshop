@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
+  <script async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-106749122-1"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)};
+    gtag('js', new Date());
+    gtag('config', 'UA-106749122-1');
+  </script>
+
+     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
     <title>$$title$$</title>
@@ -141,8 +152,8 @@ $$body$$
 </div>
 </div>
 
+<!--Site Meter 
 <div class="hidden">
-<!--Site Meter -->
   <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
   <noscript>
     <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
@@ -150,8 +161,9 @@ $$body$$
       <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
       alt="Site Meter" border="0"/></a>
   </noscript>
-  <!-- Copyright (c)2009 Site Meter -->
+   Copyright (c)2009 Site Meter 
 </div>
+-->
 
 
 

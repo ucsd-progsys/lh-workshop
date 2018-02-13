@@ -1,7 +1,9 @@
-MATHJAX=http://cdn.mathjax.org/mathjax/latest
+# MATHJAX=http://cdn.mathjax.org/mathjax/latest
+MATHJAX=https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1
+
 LIQUIDCLIENT=../liquid-client
 SLIDES=dist/_slides
-SITE=dist/_site
+SITE=docs/
 DIST=dist/_build
 TEMPLATES=assets/templates
 FILTERS=assets/filters

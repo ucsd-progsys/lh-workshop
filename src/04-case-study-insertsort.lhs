@@ -795,7 +795,7 @@ Refinements vs. Full Dependent Types
 
 Compare with `insertionSort` in:
 
-+ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
++ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/6de84be37c9682c21fc250cd059178bc0ccfeef1/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
 + [Idris](https://github.com/davidfstr/idris-insertion-sort/tree/master)
 + [Coq](http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v)
 
